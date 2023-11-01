@@ -17,6 +17,8 @@ app.use(express.json());
 
 const port = 3000;
 
+app.use('/', require('./routes/router.js'));
+
 app.listen(port, () => {
     console.log(`App running on port ${port}`)
 })
