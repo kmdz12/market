@@ -1,4 +1,5 @@
 import React from 'react';
+import NavBarComponent from '../../components/NavBar/navbar.component';
 
 function LandingPage() {
 
@@ -6,7 +7,7 @@ function LandingPage() {
     return (
 
         <>
-            <h1>This is Landing Page</h1>
+            <NavBarComponent />
         </>
     )
 }
