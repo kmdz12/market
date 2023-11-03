@@ -81,7 +81,7 @@ function NavBarComponent() {
                             <Button
                                 variant="filled"
                                 size="md"
-                                className="hidden lg:inline-block rounded-none border-2 border-black"
+                                className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
                                 style={{ backgroundColor: "#FF5FAA" }}
                             >
                                 <span className="text-black">Registrate</span>
@@ -89,7 +89,7 @@ function NavBarComponent() {
                             <Button
                                 variant="filled"
                                 size="md"
-                                className="hidden lg:inline-block rounded-none border-2 border-black"
+                                className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
                                 style={{ backgroundColor: "#66FF7B" }}
                             >
                                 <span className="text-black">Inicia Sesion</span>
