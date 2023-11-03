@@ -28,21 +28,21 @@ function LandingPage() {
 
                 <div className="md:container md:mx-auto m-2 flex flex-col bg-white rounded-lg sm:flex-row">
                     <div className="mx-auto px-7 py-3 flex flex-col items-center md:w-1/3">
-                        <img src="./images/fruit-basket.png" alt="Fruit basket" className="h-80 w-auto" />
+                        <img src="./images/fruit-basket.png" alt="Fruit basket" className="h-80 w-auto md:h-52" />
                         <Typography variant="lead">Paso 1</Typography>
                         <Typography variant="paragraph">Busca tus frutas y vegetales deseados, usando la barra de busqueda o explorando nuestra lista de productos.</Typography>
                     </div>
 
                     <div className="mx-auto px-7 py-3 flex flex-col items-center md:w-1/3">
-                        <img src="./images/cart.png" alt="Fruit basket" className="h-80 w-auto" />
+                        <img src="./images/cart.png" alt="Fruit basket" className="h-80 w-auto md:h-52" />
                         <Typography variant="lead">Paso 2</Typography>
                         <Typography variant="paragraph">Agrega los items seleccionados a tu carrito y completa con tus datos para el envio!</Typography>
                     </div>
 
                     <div className="mx-auto px-7 py-3 flex flex-col items-center md:w-1/3">
-                        <img src="./images/delivery.png" alt="Fruit basket" className="h-80 w-auto" />
+                        <img src="./images/delivery.png" alt="Fruit basket" className="h-80 w-auto md:h-52" />
                         <Typography variant="lead">Paso 3</Typography>
-                        <Typography variant="paragraph">Realiza tu orden y listo! Relajate mientras preparamos tu pedido.</Typography>
+                        <Typography variant="paragraph">Realiza tu orden, paga con tu medio preferido y listo! Relajate mientras preparamos tu pedido.</Typography>
                     </div>
                 </div>
         </>
