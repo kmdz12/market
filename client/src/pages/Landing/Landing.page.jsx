@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography, Button } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import './Landing.style.css';
+import FooterComponent from '../../components/Footer/footer.component';
 
 function LandingPage() {
 
@@ -52,7 +53,7 @@ function LandingPage() {
             </div>
 
             <div className="md:container md:mx-auto m-2 flex flex-col bg-white rounded-lg divide-y">
-                <div className="my-2 md:container md:mx-auto flex flex-col md:flex-row items-center md:justify-evenly">
+                <div className="my-2 md:container md:mx-auto flex flex-col items-center md:flex-row md:justify-evenly">
                     <img src="./images/takeaway.png" alt="Takeaway" className="h-80 w-auto md:w-64 md:h-64" />
                     <div className="flex flex-col items-center mx-4 basis-1/4">
                         <Typography variant="lead" className="m-2 text-center">Como Delivery</Typography>
@@ -62,7 +63,7 @@ function LandingPage() {
                         </Button>
                     </div>
                 </div>
-                <div className="my-2 md:container md:mx-auto flex flex-col md:flex-row items-center md:justify-evenly">
+                <div className="my-2 md:container md:mx-auto flex flex-col items-center md:flex-row-reverse md:justify-evenly">
                     <img src="./images/partner.png" alt="Takeaway" className="h-80 w-auto md:w-64 md:h-64" />
                     <div className="flex flex-col items-center mx-4 basis-1/4">
                         <Typography variant="lead" className="m-2 text-center">Como Partner</Typography>
@@ -72,7 +73,7 @@ function LandingPage() {
                         </Button>
                     </div>
                 </div>
-                <div className="my-2 md:container md:mx-auto flex flex-col md:flex-row items-center md:justify-evenly">
+                <div className="my-2 md:container md:mx-auto flex flex-col items-center md:flex-row md:justify-evenly">
                     <img src="./images/meeting.png" alt="Takeaway" className="h-80 w-auto md:w-64 md:h-64" />
                     <div className="flex flex-col items-center mx-4 basis-1/4">
                         <Typography variant="lead" className="m-2 text-center">Como Equipo</Typography>
@@ -82,9 +83,9 @@ function LandingPage() {
                         </Button>
                     </div>
                 </div>
-                <div className="my-2 md:container md:mx-auto flex flex-col md:flex-row items-center md:justify-evenly">
+                <div className="my-2 md:container md:mx-auto flex flex-col items-center md:flex-row-reverse  md:justify-evenly">
                     <img src="./images/questions.png" alt="Takeaway" className="h-80 w-auto md:w-64 md:h-64" />
-                    <div className="flex flex-col items-center mx-4 basis-1/4">
+                    <div className="flex flex-col items-center mx-4 my-4 basis-1/4">
                         <Typography variant="lead" className="m-2 text-center">Aun con dudas?</Typography>
                         <Typography variant="paragraph" className="m-2 text-center">Sabemos que podes tener alguna duda con respecto a medios de pago o cobertura, pero no temas, aqui vas a poder algunas preguntas frecuentes que puedes llegar a tener!</Typography>
                         <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2">
@@ -92,6 +93,10 @@ function LandingPage() {
                         </Button>
                     </div>
                 </div>
+            </div>
+
+            <div className="md:container md:mx-auto m-2 flex flex-col bg-white rounded-lg divide-y">
+                <FooterComponent />
             </div>
         </>
     )
