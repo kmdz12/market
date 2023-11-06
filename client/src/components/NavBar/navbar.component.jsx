@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
-import { Navbar, MobileNav, Typography, Button, IconButton } from "@material-tailwind/react";
+import { Navbar, MobileNav, Typography, Button, IconButton, Collapse } from "@material-tailwind/react";
 import './navbar.style.css'
 
 function NavBarComponent() {
 
     const [openNav, setOpenNav] = React.useState(false);
-
-    useEffect(() => {
-        window.addEventListener("resize", () => window.innerWidth >= 960 && setOpenNav(false));
-    }, []);
+    const toggleOpen = () => setOpenNav((cur) => !cur);
 
     const navList = (
         <ul className="mt-2 mb-4 flex flex-col gap-2 items-center lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -99,7 +96,7 @@ function NavBarComponent() {
                             variant="text"
                             className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
                             ripple={false}
-                            onClick={() => setOpenNav(!openNav)}
+                            onClick={toggleOpen}
                         >
                             {openNav ? (
                                 <svg
@@ -134,7 +131,7 @@ function NavBarComponent() {
                         </IconButton>
                     </div>
                 </div>
-                <MobileNav open={openNav}>
+                <Collapse open={openNav}>
                     {navList}
                     <div className="flex justify-around gap-x-2">
                         <Button
@@ -154,7 +151,7 @@ function NavBarComponent() {
                             <span className="text-black">Inicia Sesion</span>
                         </Button>
                     </div>
-                </MobileNav>
+                </Collapse>
             </Navbar>
         </div>
 
