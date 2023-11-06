@@ -11,19 +11,18 @@ function FooterComponent() {
             {/* Sub Container */}
             <div className="flex flex-col md:flex-row md:justify-evenly">
                 {/* Name & Logo Container */}
-                <div className="flex flex-row-reverse justify-evenly items-center my-2 md:flex-col">
-                    <Typography variant="small" className="text-center my-2">Kilometro 12</Typography>
-                    <img className="h-12 w-12 rounded-full object-cover object-center" src="https://placehold.co/400" alt="logo" />
+                <div className="flex my-4 justify-center">
+                    <img className="h-24 w-24 rounded-full object-cover object-center" src="https://placehold.co/400" alt="logo" />
                 </div>
 
                 {/* Links Container */}
-                <div className="flex flex-col items-center md:flex-row md:justify-around">
-                    <div className="md:my-5">
+                <div className="flex flex-col items-center md:flex-row">
+                    <div className="">
                         <Typography className="text-center md:px-5 md:text-left" variant="small" color="blue"><a href="#">Inicio</a></Typography>
                         <Typography className="text-center md:px-5 md:text-left" variant="small" color="blue"><a href="#">Productos</a></Typography>
                         <Typography className="text-center md:px-5 md:text-left" variant="small" color="blue"><a href="#">Noticias</a></Typography>
                     </div>
-                    <div className="md:my-5">
+                    <div className="">
                         <Typography className="text-center md:px-5 md:text-left" variant="small" color="blue"><a href="#">Preguntas Frecuentes</a></Typography>
                         <Typography className="text-center md:px-5 md:text-left" variant="small" color="blue"><a href="#">Terminos y Condiciones</a></Typography>
                         <Typography className="text-center md:px-5 md:text-left" variant="small" color="blue"><a href="#">Contacto</a></Typography>
@@ -51,8 +50,10 @@ function FooterComponent() {
 
             </div>
 
+            <hr />
+
             {/* Copyright/Credits Container */}
-            <div className="flex w-full flex-col items-center align-center">
+            <div className="flex w-full flex-col items-center align-center mt-2">
                 <Typography variant="small">&copy; Kilometro 12 - 2023</Typography>
                 <Typography variant="small" color="blue"><a href="https://storyset.com/people">People illustrations by Storyset</a></Typography>
             </div>
