@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Navbar, MobileNav, Typography, Button, IconButton, Collapse } from "@material-tailwind/react";
 import './navbar.style.css'
+import { Link } from 'wouter';
 
 function NavBarComponent() {
 
@@ -75,22 +76,26 @@ function NavBarComponent() {
                     <div className="flex items-center gap-4">
                         <div className="mr-4 hidden lg:block">{navList}</div>
                         <div className="flex items-center gap-x-5">
-                            <Button
-                                variant="filled"
-                                size="md"
-                                className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
-                                style={{ backgroundColor: "#FF5FAA" }}
-                            >
-                                <span className="text-black">Registrate</span>
-                            </Button>
-                            <Button
-                                variant="filled"
-                                size="md"
-                                className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
-                                style={{ backgroundColor: "#66FF7B" }}
-                            >
-                                <span className="text-black">Inicia Sesion</span>
-                            </Button>
+                            <Link href="/register">
+                                <Button
+                                    variant="filled"
+                                    size="md"
+                                    className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
+                                    style={{ backgroundColor: "#FF5FAA" }}
+                                >
+                                    <span className="text-black">Registrate</span>
+                                </Button>
+                            </Link>
+                            <Link href="/login">
+                                <Button
+                                    variant="filled"
+                                    size="md"
+                                    className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
+                                    style={{ backgroundColor: "#66FF7B" }}
+                                >
+                                    <span className="text-black">Inicia Sesion</span>
+                                </Button>
+                            </Link>
                         </div>
                         <IconButton
                             variant="text"
@@ -134,22 +139,26 @@ function NavBarComponent() {
                 <Collapse open={openNav}>
                     {navList}
                     <div className="flex justify-around gap-x-2">
-                        <Button
-                            variant="filled"
-                            size="md"
-                            className="w-48 rounded-none border-2 border-black"
-                            style={{ backgroundColor: "#FF5FAA" }}
-                        >
-                            <span className="text-black">Registrate</span>
-                        </Button>
-                        <Button
-                            variant="filled"
-                            size="md"
-                            className="w-48 rounded-none border-2 border-black"
-                            style={{ backgroundColor: "#66FF7B" }}
-                        >
-                            <span className="text-black">Inicia Sesion</span>
-                        </Button>
+                        <Link href="/register">
+                            <Button
+                                variant="filled"
+                                size="md"
+                                className="w-48 rounded-none border-2 border-black"
+                                style={{ backgroundColor: "#FF5FAA" }}
+                            >
+                                <span className="text-black">Registrate</span>
+                            </Button>
+                        </Link>
+                        <Link href="/login">
+                            <Button
+                                variant="filled"
+                                size="md"
+                                className="w-48 rounded-none border-2 border-black"
+                                style={{ backgroundColor: "#66FF7B" }}
+                            >
+                                <span className="text-black">Inicia Sesion</span>
+                            </Button>
+                        </Link>
                     </div>
                 </Collapse>
             </Navbar>
