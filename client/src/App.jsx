@@ -1,7 +1,8 @@
 import { Switch, Route } from 'wouter';
 import LandingPage from './pages/Landing/Landing.page';
-import UserloginPage from './pages/UserLogin/userlogin.page';
-import CoordinatorLoginPage from './pages/CoordinatorLogin/coordinator.page';
+import UserLoginPage from './pages/UserLogin/userlogin.page';
+import CoordinatorLoginPage from './pages/CoordinatorLogin/CoordinatorLogin.page';
+import UserRegisterPage from './pages/UserRegister/UserRegister.page';
 
 function App() {
 
@@ -9,7 +10,8 @@ function App() {
     <>
       <Switch>
         <Route path="/" component={LandingPage} />
-        <Route path="/login" component={UserloginPage} />
+        <Route path="/login" component={UserLoginPage} />
+        <Route path="/register" component={UserRegisterPage} />
         <Route path="/coordinator/admin/login" component={CoordinatorLoginPage} />
       </Switch>
     </>
