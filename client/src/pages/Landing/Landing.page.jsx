@@ -15,7 +15,7 @@ function LandingPage() {
             <div className="h-[53rem]">
                 <div className="h-full w-full bg-cover bg-no-repeat intro bg-center flex justify-center items-center">
                     <div className="select-none text-center">
-                        <Typography variant="h1" color="white" className="text-2xl md:text-5xl tracking-wide drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,1)]">Kilometro 12</Typography>
+                        <Typography variant="h1" color="white" className="text-3xl md:text-5xl tracking-wide drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,1)]">Kilometro 12</Typography>
                         <Typography variant="lead" color="white" className="tracking-wide drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,1)]">Delivery de Frutas y Verduras</Typography>
                     </div>
                 </div>
