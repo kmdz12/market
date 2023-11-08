@@ -2,11 +2,9 @@ import React from 'react';
 import { Typography, Button } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
-import '../../App.css';
 import './Landing.style.css';
 
 function LandingPage() {
-
 
     return (
 
