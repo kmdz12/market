@@ -12,7 +12,7 @@ function UserRegisterPage() {
             {/* Form Container */}
             <div className="absolute inset-0">
                 <div className="h-full w-full flex justify-center items-center">
-                    <div className='h-1/2 w-4/5 md:w-1/4 md:h-3/6'>
+                    <div className='h-1/2 w-4/5 md:w-1/2 lg:w-2/5 xl:w-1/3 2xl:w-1/4'>
                         <div className='bg-gray-300 flex justify-center items-center rounded'>
                             <Card color="transparent" shadow={false}>
                                 <Typography variant="h4" color="blue-gray" className='text-center text-base my-5'>
