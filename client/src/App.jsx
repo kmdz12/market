@@ -3,7 +3,6 @@ import LandingPage from './pages/Landing/Landing.page';
 import UserLoginPage from './pages/UserLogin/UserLogin.page';
 import CoordinatorLoginPage from './pages/CoordinatorLogin/CoordinatorLogin.page';
 import UserRegisterPage from './pages/UserRegister/UserRegister.page';
-import UnknownPage from './pages/unknownPage/Unknown.page';
 import './App.css';
 
 function App() {
