@@ -30,10 +30,10 @@ const authController = {
                     })
                 }
 
-                res.status(200).json({ message: 'Values inserted successfully!', code: 200 })
+                res.status(200).json({ message: 'Registro Completado, ahora te redigiremos para loguearte...', code: 200 })
 
             } else {
-                res.status(302).json({ message: 'Email already in use!', code: 302 });
+                res.status(302).json({ message: 'Este correo ya esta en uso!', code: 302 });
             }
 
         } catch (e) {
