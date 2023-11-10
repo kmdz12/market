@@ -13,22 +13,28 @@ const authController = {
 
             const { email, password } = req.body;
 
-            if (email === process.env.OWNER_EMAIL || email == process.env.SUBOWNER_EMAIL || email == process.env.ENTERPRISE_EMAIL) {
+            const identityCheck = await pool.query("SELECT EXISTS (SELECT 1 FROM users WHERE email = $1) AS exists;", [email]);
 
-                bcrypt.hash(password, saltRounds, async (err, hash) => {
+            if (!identityCheck.rows[0]['exists']) {
 
-                    const query = await pool.query("INSERT INTO users (email, password, role) VALUES ($1, $2, $3)", [email, hash, 1]);
-                })
+                if (email === process.env.OWNER_EMAIL || email == process.env.SUBOWNER_EMAIL || email == process.env.ENTERPRISE_EMAIL) {
+
+                    bcrypt.hash(password, saltRounds, async (err, hash) => {
+                        const query = await pool.query("INSERT INTO users (email, password, role) VALUES ($1, $2, $3)", [email, hash, 1]);
+                    })
+
+                } else {
+
+                    bcrypt.hash(password, saltRounds, async (err, hash) => {
+                        const query = await pool.query("INSERT INTO users (email, password, role) VALUES ($1, $2, $3)", [email, hash, 2]);
+                    })
+                }
+
+                res.status(200).json({ message: 'Values inserted successfully!', code: 200 })
 
             } else {
-
-                bcrypt.hash(password, saltRounds, async (err, hash) => {
-
-                    const query = await pool.query("INSERT INTO users (email, password, role) VALUES ($1, $2, $3)", [email, hash, 2]);
-                })
+                res.status(302).json({ message: 'Email already in use!', code: 302 });
             }
-
-            res.status(200).json({ message: 'Values inserted successfully!' })
 
         } catch (e) {
             console.log(e)
