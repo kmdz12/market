@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Typography, Card, Input, Button, Alert } from '@material-tailwind/react';
+import { Typography, Card, Input, Button, Alert, Spinner } from '@material-tailwind/react';
 import DataService from '../../service/dataService';
 import './UserRegister.style.css';
 
@@ -9,6 +9,7 @@ function UserRegisterPage() {
     const [location, setLocation] = useLocation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [alertStatus, setAlertStatus] = useState({
         code: 0,
         message: '',
@@ -30,7 +31,10 @@ function UserRegisterPage() {
     function handleRegister(e) {
         e.preventDefault();
 
+        setIsLoading(true);
+
         if (email.match("([A-Za-z0-9][._]?)+[A-Za-z0-9]@[A-Za-z0-9]+(\.?[A-Za-z0-9]){2}\.(com?|net|org)+(\.[A-Za-z0-9]{2,4})?") && password.match("[0-9a-zA-Z]{8,}")) {
+
 
             dataService.userRegistration(email, password).then((response) => {
                 if (response.code === 200) {
@@ -42,7 +46,8 @@ function UserRegisterPage() {
                             show: false
                         }))
                         setLocation("/login")
-                    }, 5000);
+
+                    }, 4000);
 
                 } else if (response.code === 302) {
                     setAlertStatus({ code: 302, message: 'Este correo ya esta en uso!', show: true })
@@ -52,9 +57,11 @@ function UserRegisterPage() {
                             ...prevValue,
                             show: false
                         }))
-                    }, 5000);
+                        setIsLoading(false);
+                    }, 4000);
                 }
             })
+
         }
     }
 
@@ -110,9 +117,23 @@ function UserRegisterPage() {
                                         />
                                         <Typography variant="small" className="text-center">Contraseña debe tener minimo 8 caracteres</Typography>
                                     </div>
-                                    <Button className="mt-6" fullWidth color="pink" type='submit'>
-                                        Registrame!
-                                    </Button>
+
+                                    {
+                                        isLoading ?
+
+                                            <Button className="mt-6 flex items-center justify-center" disabled fullWidth color="pink" type='submit' children={
+
+                                                <Spinner className="h-4 w-4" color="blue" />
+                                            }>
+                                            </Button>
+
+                                            :
+
+                                            <Button className="mt-6" fullWidth color="pink" type='submit'>
+                                                Registrame!
+                                            </Button>
+
+                                    }
                                     <Typography color="gray" className="mt-4 text-center font-normal">
                                         Ya tenes una cuenta?{" "}
                                         <Link href="/login">
