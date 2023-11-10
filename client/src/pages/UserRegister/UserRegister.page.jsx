@@ -38,7 +38,7 @@ function UserRegisterPage() {
 
             dataService.userRegistration(email, password).then((response) => {
                 if (response.code === 200) {
-                    setAlertStatus({ code: 200, message: 'Registro Completado, ahora te redigiremos para loguearte!', show: true })
+                    setAlertStatus({ code: 200, message: response.message, show: true })
 
                     setTimeout(() => {
                         setAlertStatus((prevValue) => ({
@@ -50,7 +50,7 @@ function UserRegisterPage() {
                     }, 4000);
 
                 } else if (response.code === 302) {
-                    setAlertStatus({ code: 302, message: 'Este correo ya esta en uso!', show: true })
+                    setAlertStatus({ code: 302, message: response.message, show: true })
 
                     setTimeout(() => {
                         setAlertStatus((prevValue) => ({
