@@ -62,21 +62,21 @@ const authController = {
 
                         req.session.user = query.rows[0]['email'];
 
-                        res.status(200).json({ auth: true, token: token, result: query.rows[0] });
+                        res.status(200).json({ auth: true, token: token, result: query.rows[0], code: 200, message: 'Login Satisfactorio! Ahora te redirigiremos a la tienda...' });
 
                     } else {
 
-                        res.status(404).json({ auth: false, message: 'Wrong username/password' });
+                        res.status(404).json({ auth: false, message: 'Email y/o contraseña incorrecta', code: 404 });
                     }
                 })
 
             } else {
 
-                res.status(404).json({ auth: false, message: 'User does not exists!' });
+                res.status(404).json({ auth: false, message: 'El email no existe!', code: 404 });
             }
 
         } catch (e) {
-            res.status(404).json({ auth: false, message: 'An error has occured, please try again in a few seconds!' });
+            res.status(500).json({ auth: false, message: 'An error has occured, please try again in a few seconds!' });
         }
 
     },
