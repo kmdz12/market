@@ -1,12 +1,34 @@
-import React, { useEffect } from 'react';
-import { Navbar, MobileNav, Typography, Button, IconButton, Collapse } from "@material-tailwind/react";
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'wouter';
+import { Navbar, Typography, Button, IconButton, Collapse } from "@material-tailwind/react";
+import DataService from '../../service/dataService';
 import './navbar.style.css'
-import { Link } from 'wouter';
 
 function NavBarComponent() {
 
     const [openNav, setOpenNav] = React.useState(false);
     const toggleOpen = () => setOpenNav((cur) => !cur);
+    const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [location, setLocation] = useLocation();
+    const dataService = new DataService();
+
+    useEffect(() => {
+
+        if (localStorage.getItem('token') !== null) {
+            const token = localStorage.getItem('token');
+
+            dataService.checkUserStatus(token).then((response) => {
+
+                if(response.auth === false) {
+                    localStorage.removeItem('token');
+                    setLocation('/')
+                } else {
+                    setUserLoggedIn(response.auth)
+                }
+            })
+        }
+
+    }, [])
 
     const navList = (
         <ul className="mt-2 mb-4 flex flex-col gap-2 items-center lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -75,28 +97,36 @@ function NavBarComponent() {
                     />
                     <div className="flex items-center gap-4">
                         <div className="mr-4 hidden lg:block">{navList}</div>
-                        <div className="flex items-center gap-x-5">
-                            <Link href="/register">
-                                <Button
-                                    variant="filled"
-                                    size="md"
-                                    className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
-                                    style={{ backgroundColor: "#FF5FAA" }}
-                                >
-                                    <span className="text-black">Registrate</span>
-                                </Button>
-                            </Link>
-                            <Link href="/login">
-                                <Button
-                                    variant="filled"
-                                    size="md"
-                                    className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
-                                    style={{ backgroundColor: "#66FF7B" }}
-                                >
-                                    <span className="text-black">Inicia Sesion</span>
-                                </Button>
-                            </Link>
-                        </div>
+                        {
+                            userLoggedIn !== true ?
+
+                                <div className="flex items-center gap-x-5">
+                                    <Link href="/register">
+                                        <Button
+                                            variant="filled"
+                                            size="md"
+                                            className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
+                                            style={{ backgroundColor: "#FF5FAA" }}
+                                        >
+                                            <span className="text-black">Registrate</span>
+                                        </Button>
+                                    </Link>
+                                    <Link href="/login">
+                                        <Button
+                                            variant="filled"
+                                            size="md"
+                                            className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
+                                            style={{ backgroundColor: "#66FF7B" }}
+                                        >
+                                            <span className="text-black">Inicia Sesion</span>
+                                        </Button>
+                                    </Link>
+                                </div>
+
+                                :
+
+                                null
+                        }
                         <IconButton
                             variant="text"
                             className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
