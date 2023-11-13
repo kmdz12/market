@@ -57,7 +57,7 @@ const authController = {
 
                         const id = query.rows[0]['id'];
                         const token = jwt.sign({ id }, process.env.JWT_SECRET, {
-                            expiresIn: 300
+                            expiresIn: 86400
                         });
 
                         req.session.user = query.rows[0]['email'];
@@ -100,11 +100,8 @@ const authController = {
 
     },
 
-    isUserAuth: async (req, res) => {
-
+    isUserAuth: (req, res) => {
         verifyJWT(req, res);
-        res.send('User Authenticated!');
-
     }
 
 }
