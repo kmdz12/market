@@ -11,4 +11,7 @@ router.route('/login')
 router.route('/currentUser')
     .get(authController.checkLoggedUser)
 
+router.route('/userStatus')
+    .get(authController.isUserAuth)
+
 module.exports = router;
