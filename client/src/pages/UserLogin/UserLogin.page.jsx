@@ -38,6 +38,7 @@ function UserLoginPage() {
 
                 if (response.code === 200) {
                     setAlertStatus({ code: 200, message: response.message, show: true })
+                    localStorage.setItem('token', response.token)
 
                     setTimeout(() => {
                         setAlertStatus((prevValue) => ({
