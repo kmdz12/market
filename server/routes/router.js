@@ -8,4 +8,7 @@ router.route('/register')
 router.route('/login')
     .post(authController.login)
 
+router.route('/currentUser')
+    .get(authController.checkLoggedUser)
+
 module.exports = router;
