@@ -18,6 +18,10 @@ class DataService {
     userLogin = (email, password) => {
         return this.service.post('/login', { email, password }).then((response) => response.data).catch((error) => error.response.data);
     }
+
+    checkLoggedUser = () => {
+        return this.service.get('/currentUser').then((response) => response.data);
+    }
 }
 
 export default DataService;
