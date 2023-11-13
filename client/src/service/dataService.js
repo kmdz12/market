@@ -22,6 +22,10 @@ class DataService {
     checkLoggedUser = () => {
         return this.service.get('/currentUser').then((response) => response.data);
     }
+
+    checkUserStatus = (token) => {
+        return this.service.get('/userStatus', { headers: { "x-access-token": token } }).then((response) => response.data);
+    }
 }
 
 export default DataService;
