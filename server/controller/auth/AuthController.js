@@ -85,11 +85,7 @@ const authController = {
 
         try {
             const { email, password } = req.body;
-
-            console.log(email, password)
-
             const query = await pool.query('SELECT * FROM users where email = $1 AND role = 1', [email]);
-            console.log(query)
 
             if (query.rowCount > 0) {
 
