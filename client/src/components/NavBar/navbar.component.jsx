@@ -30,6 +30,11 @@ function NavBarComponent() {
 
     }, [])
 
+    function handleLogout() {
+        localStorage.removeItem('token');
+        setUserLoggedIn(false);
+    }
+
     const navList = (
         <ul className="mt-2 mb-4 flex flex-col gap-2 items-center lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             <Typography
@@ -77,10 +82,11 @@ function NavBarComponent() {
                 variant="small"
                 color="blue-gray"
                 className="p-1 font-normal"
+                onClick={handleLogout}
             >
-                <a href="#" className="flex items-center">
+                <Link to='/'>
                     Salir
-                </a>
+                </Link>
             </Typography>
         </ul>
     );
