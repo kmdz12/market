@@ -81,6 +81,48 @@ const authController = {
 
     },
 
+    adminLogin: async (req, res) => {
+
+        try {
+            const { email, password } = req.body;
+
+            console.log(email, password)
+
+            const query = await pool.query('SELECT * FROM users where email = $1 AND role = 1', [email]);
+            console.log(query)
+
+            if (query.rowCount > 0) {
+
+                bcrypt.compare(password, query.rows[0]['password'], (err, result) => {
+
+                    if (result) {
+
+                        const id = query.rows[0]['id'];
+                        const token = jwt.sign({ id }, process.env.JWT_SECRET, {
+                            expiresIn: 86400
+                        });
+
+                        req.session.user = query.rows[0]['email'];
+
+                        res.status(200).json({ auth: true, token: token, code: 200, message: 'Login Satisfactorio! Redirigiendo...' });
+
+                    } else {
+
+                        res.status(404).json({ auth: false, message: 'Email y/o contraseña incorrecta', code: 404 });
+                    }
+                })
+
+            } else {
+
+                res.status(404).json({ auth: false, message: 'El email no existe!', code: 404 });
+            }
+
+        } catch (e) {
+            res.status(500).json({ auth: false, message: 'An error has occured, please try again in a few seconds!' });
+        }
+
+    },
+
     checkLoggedUser: async (req, res) => {
 
         try {
