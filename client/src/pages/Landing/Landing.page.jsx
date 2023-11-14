@@ -8,7 +8,7 @@ function LandingPage() {
 
     return (
 
-        <div className="background">
+        <div className="background pb-2">
             <NavBarComponent />
             <div className="h-[53rem]">
                 <div className="h-full w-full bg-cover bg-no-repeat intro bg-center flex justify-center items-center">
@@ -25,7 +25,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="md:container md:mx-auto m-2 flex flex-col sm:flex-row bg-white rounded-lg divide-y md:divide-x">
+            <div className="md:container md:mx-auto flex flex-col sm:flex-row bg-white rounded-lg divide-y md:divide-x">
                 <div className="mx-auto px-7 py-3 flex flex-col items-center md:w-1/3">
                     <img src="./images/fruit-basket.png" alt="Fruit basket" className="h-80 w-auto md:h-52" />
                     <Typography variant="lead">Paso 1</Typography>
@@ -51,7 +51,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="md:container md:mx-auto m-2 flex flex-col bg-white rounded-lg divide-y">
+            <div className="md:container md:mx-auto flex flex-col bg-white rounded-lg divide-y">
                 <div className="my-2 md:container md:mx-auto flex flex-col items-center md:flex-row md:justify-evenly">
                     <img src="./images/takeaway.png" alt="Takeaway" className="h-80 w-auto md:w-64 md:h-64" />
                     <div className="flex flex-col items-center mx-4 basis-1/4">
@@ -94,7 +94,7 @@ function LandingPage() {
                 </div>
             </div>
 
-            <div className="md:container md:mx-auto m-2 flex flex-col bg-white rounded-lg divide-y">
+            <div className="md:container md:mx-auto flex flex-col bg-white rounded-lg divide-y">
                 <FooterComponent />
             </div>
         </div>
