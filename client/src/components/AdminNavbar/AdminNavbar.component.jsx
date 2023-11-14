@@ -110,10 +110,7 @@ function AdminNavbarComponent() {
                     </div>
                 </div>
                 <Collapse open={openNav}>
-                    <div className="flex justify-around gap-x-2">
                     {navList}
-                        
-                    </div>
                 </Collapse>
             </Navbar>
         </div>
