@@ -8,6 +8,9 @@ router.route('/register')
 router.route('/login')
     .post(authController.login)
 
+router.route('/adminLogin')
+    .post(authController.adminLogin)
+
 router.route('/currentUser')
     .get(authController.checkLoggedUser)
 
