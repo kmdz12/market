@@ -19,7 +19,7 @@ function NavBarComponent() {
 
             dataService.checkUserStatus(token).then((response) => {
 
-                if(response.auth === false) {
+                if (response.auth === false) {
                     localStorage.removeItem('token');
                     setLocation('/')
                 } else {
@@ -96,7 +96,6 @@ function NavBarComponent() {
                         alt="logo"
                     />
                     <div className="flex items-center gap-4">
-                        <div className="mr-4 hidden lg:block">{navList}</div>
                         {
                             userLoggedIn !== true ?
 
@@ -125,7 +124,7 @@ function NavBarComponent() {
 
                                 :
 
-                                null
+                                <div className="mr-4 hidden lg:block">{navList}</div>
                         }
                         <IconButton
                             variant="text"
