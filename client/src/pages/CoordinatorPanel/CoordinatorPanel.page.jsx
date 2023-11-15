@@ -1,39 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'wouter';
+import React, { useEffect } from 'react';
+import { Link, Redirect, useLocation } from 'wouter';
 import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
-import DataService from '../../service/dataService';
 import { Card, CardBody, CardFooter, Button, Typography } from '@material-tailwind/react';
 
-function CoordinatorPanelPage() {
+function CoordinatorPanelPage(props) {
 
-    const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [location, setLocation] = useLocation();
-    const dataService = new DataService();
 
     useEffect(() => {
+        console.log(props.user)
 
-        if (localStorage.getItem('token') !== null) {
-            const token = localStorage.getItem('token');
-
-            dataService.checkLoggedUser().then((response) => {
-
-                if (response.user !== import.meta.env.VITE_OWNER_EMAIL && response.user !== import.meta.env.VITE_SUBOWNER_EMAIL && response.user !== import.meta.env.VITE_ENTERPRISE_EMAIL) {
-                    setLocation('/')
-                }
-            })
-
-            dataService.checkUserStatus(token).then((response) => {
-
-                if (response.auth === false) {
-                    localStorage.removeItem('token');
-                    setLocation('/coordinator/admin/login')
-                } else {
-                    setUserLoggedIn(response.auth)
-                }
-            })
+        if (props.user.userType == 0 || props.user.userType == 2) {
+            console.log('You are not allowed here')
+            localStorage.removeItem('token');
+            setLocation('/')
         }
 
-    }, [])
+        // if (localStorage.getItem('token') !== null) {
+        //     const token = localStorage.getItem('token');
+
+        //     dataService.checkLoggedUser().then((response) => {
+
+        //         if (response.user !== import.meta.env.VITE_OWNER_EMAIL && response.user !== import.meta.env.VITE_SUBOWNER_EMAIL && response.user !== import.meta.env.VITE_ENTERPRISE_EMAIL) {
+        //             setLocation('/')
+        //         }
+        //     })
+
+        //     dataService.checkUserStatus(token).then((response) => {
+
+        //         if (response.auth === false) {
+        //             localStorage.removeItem('token');
+        //             setLocation('/coordinator/admin/login')
+        //         } else {
+        //             setUserLoggedIn(response.auth)
+        //         }
+        //     })
+        // }
+
+    }, [props])
 
     return (
         <div className='bg-white pb-5'>
@@ -85,7 +89,7 @@ function CoordinatorPanelPage() {
                     </CardFooter>
                 </Card>
             </div>
-            
+
         </div>
     )
 }
