@@ -40,9 +40,19 @@ function AdminNavbarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to="/coordinator/admin/panel">
+                    Panel
+                </Link>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal"
+            >
+                <Link to="/coordinator/admin/usuarios">
                     Usuarios
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -50,9 +60,9 @@ function AdminNavbarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to="/coordinator/admin/productos">
                     Productos
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -60,9 +70,9 @@ function AdminNavbarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to="/coordinator/admin/ordenes">
                     Ordenes
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -129,7 +139,7 @@ function AdminNavbarComponent() {
                         </IconButton>
                     </div>
                 </div>
-                <Collapse open={openNav}>
+                <Collapse open={openNav} className="lg:invisible">
                     {navList}
                 </Collapse>
             </Navbar>
