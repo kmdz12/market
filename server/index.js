@@ -13,6 +13,8 @@ const app = express();
 //Middlewares
 app.use(cors({
     origin: ['http://localhost:5173'],
+    // mobile
+    // origin: ['http://localhost:5173', 'http://192.168.1.33:5173'],
     credentials: true
 }));
 
@@ -43,3 +45,6 @@ app.use('/', require('./routes/router.js'));
 app.listen(port, () => {
     console.log(`App running on port ${port}`)
 })
+
+// mobile
+// app.listen(3000, '192.168.1.33')

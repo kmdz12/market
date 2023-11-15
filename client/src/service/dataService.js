@@ -5,6 +5,8 @@ class DataService {
     constructor() {
         let service = axios.create({
             baseURL: 'http://localhost:3000',
+            // mobile
+            // baseURL: 'http://192.168.1.33:3000',
             withCredentials: true
         });
 
