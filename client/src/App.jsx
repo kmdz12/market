@@ -5,6 +5,9 @@ import UserLoginPage from './pages/UserLogin/UserLogin.page';
 import CoordinatorLoginPage from './pages/CoordinatorLogin/CoordinatorLogin.page';
 import UserRegisterPage from './pages/UserRegister/UserRegister.page';
 import CoordinatorPanelPage from './pages/CoordinatorPanel/CoordinatorPanel.page';
+import CoordinatorProductosPage from './pages/CoordinatorProductos/CoordinatorProductos.page';
+import CoordinatorUsuariosPage from './pages/CoordinatorUsuarios/CoordinatorUsuarios.page';
+import CoordinatorOrdenesPage from './pages/CoordinatorOrdenes/CoordinatorOrdenes.page';
 // import DataService from './service/dataService';
 import './App.css';
 
@@ -72,6 +75,9 @@ function App() {
         <Route path="/register" component={UserRegisterPage} />
         <Route path="/coordinator/admin/login" component={CoordinatorLoginPage} />
         <Route path="/coordinator/admin/panel" component={CoordinatorPanelPage} />
+        <Route path="/coordinator/admin/usuarios" component={CoordinatorUsuariosPage} />
+        <Route path="/coordinator/admin/productos" component={CoordinatorProductosPage} />
+        <Route path="/coordinator/admin/ordenes" component={CoordinatorOrdenesPage} />
         {/* <Route path="/coordinator/admin/panel"><CoordinatorPanelPage user={{ userLoggedIn, userType }} /></Route> */}
         <Route path="/:rest*">{() => <Redirect to='/' />}</Route>
       </Switch>
