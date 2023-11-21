@@ -5,6 +5,8 @@ class DataService {
     constructor() {
         let service = axios.create({
             baseURL: 'http://localhost:3000',
+            // mobile
+            // baseURL: 'http://192.168.1.33:3000',
             withCredentials: true
         });
 
@@ -29,6 +31,34 @@ class DataService {
 
     checkUserStatus = (token) => {
         return this.service.get('/userStatus', { headers: { "x-access-token": token } }).then((response) => response.data);
+    }
+
+    getCategories = () => {
+        return this.service.get('/categories').then((response) => response.data);
+    }
+
+    getAllProducts = () => {
+        return this.service.get('/admin/products').then((response) => response.data);
+    }
+
+    createProduct = (product) => {
+        return this.service.post('/admin/products', { product }).then((response) => response.data);
+    }
+
+    updateProduct = (id, product) => {
+        return this.service.put('/admin/products', { id, product }).then((response) => response.data);
+    }
+
+    deleteProduct = (id) => {
+        return this.service.delete(`/admin/products/${id}`, { id }).then((response) => response.data);
+    }
+
+    imageUpload = (imageUrl) => {
+        return this.service.post('/admin/images', imageUrl).then((response) => response.data);
+    }
+
+    deleteImage = (public_id) => {
+        return this.service.delete(`/admin/images/${public_id}`).then((response) => response.data);
     }
 }
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { useLocation } from 'wouter';
 import { Typography, Card, Input, Button, Spinner, Alert } from '@material-tailwind/react';
 import DataService from '../../service/dataService';
-
 
 function CoordinatorLoginPage() {
 
@@ -46,7 +45,7 @@ function CoordinatorLoginPage() {
                             ...prevValue,
                             show: false
                         }))
-                        setLocation("/coordinator/panel")
+                        setLocation("/coordinator/admin/panel")
 
                     }, 4000);
 
