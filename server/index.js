@@ -12,7 +12,7 @@ const app = express();
 
 //Middlewares
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5173', 'https://km12-develop.netlify.app'],
     // mobile
     // origin: ['http://localhost:5173', 'http://192.168.1.33:5173'],
     credentials: true
