@@ -10,13 +10,6 @@ function CoordinatorPanelPage(props) {
     const dataService = new DataService();
 
     useEffect(() => {
-        // console.log(props.user)
-
-        // if (props.user.userType == 0 || props.user.userType == 2) {
-        //     console.log('You are not allowed here')
-        //     localStorage.removeItem('token');
-        //     setLocation('/')
-        // }
 
         if (localStorage.getItem('token') !== null) {
             const token = localStorage.getItem('token');
@@ -32,8 +25,6 @@ function CoordinatorPanelPage(props) {
                         if (response.auth === false) {
                             localStorage.removeItem('token');
                             setLocation('/coordinator/admin/login')
-                        } else {
-                            console.log('free to action')
                         }
                     })
                 }
