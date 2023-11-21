@@ -4,7 +4,7 @@ class DataService {
 
     constructor() {
         let service = axios.create({
-            baseURL: 'https://km12-market-backend.onrender.com/',
+            baseURL: process.env.VITE_BASE_URL,
             withCredentials: true
         });
 
