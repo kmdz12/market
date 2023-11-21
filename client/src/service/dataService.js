@@ -4,7 +4,7 @@ class DataService {
 
     constructor() {
         let service = axios.create({
-            baseURL: process.env.VITE_BASE_URL,
+            baseURL: import.meta.env.VITE_BASE_URL,
             withCredentials: true
         });
 
