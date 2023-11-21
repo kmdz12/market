@@ -128,7 +128,7 @@ const authController = {
 
             } else {
 
-                res.status(404).json({ loggedIn: false });
+                res.status(401).json({ loggedIn: false });
             }
 
         } catch (e) {
