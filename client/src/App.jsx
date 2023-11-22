@@ -8,6 +8,7 @@ import CoordinatorPanelPage from './pages/CoordinatorPanel/CoordinatorPanel.page
 import CoordinatorProductosPage from './pages/CoordinatorProductos/CoordinatorProductos.page';
 import CoordinatorUsuariosPage from './pages/CoordinatorUsuarios/CoordinatorUsuarios.page';
 import CoordinatorOrdenesPage from './pages/CoordinatorOrdenes/CoordinatorOrdenes.page';
+import StorePage from './pages/Store/Store.page';
 // import DataService from './service/dataService';
 import './App.css';
 
@@ -73,6 +74,7 @@ function App() {
         <Route path="/" component={LandingPage} />
         <Route path="/login" component={UserLoginPage} />
         <Route path="/register" component={UserRegisterPage} />
+        <Route path="/store" component={StorePage} />
         <Route path="/coordinator/admin/login" component={CoordinatorLoginPage} />
         <Route path="/coordinator/admin/panel" component={CoordinatorPanelPage} />
         <Route path="/coordinator/admin/usuarios" component={CoordinatorUsuariosPage} />
