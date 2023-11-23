@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Collapse, Button, Card, CardHeader, CardBody, CardFooter, Checkbox, Select, Option, Input } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
+import DataService from '../../service/dataService';
 
 const MOCK_DATA = [
     {
@@ -60,16 +61,23 @@ function StorePage() {
 
     const [allProducts, setAllProducts] = useState(MOCK_DATA);
     const [filteredProducts, setFilteredProducts] = useState(allProducts)
+    const [allCategories, setCategories] = useState();
+    const [filteredCategories, setFilteredCategories] = useState([]);
     const [open, setOpen] = useState(false);
     const toggleOpen = () => setOpen((cur) => !cur);
+    const dataService = new DataService();
+
+    useEffect(() => {
+        dataService.getCategories().then((response) => setCategories(response))
+    }, [])
 
     function handleSort(e) {
 
         if (e === '0') {
-            let tempValue = [...filteredProducts.sort((a, b) => a.price - b.price)]
+            let tempValue = [...allProducts.sort((a, b) => a.price - b.price)]
             setFilteredProducts(tempValue)
         } else {
-            let tempValue = [...filteredProducts.sort((a, b) => b.price - a.price)]
+            let tempValue = [...allProducts.sort((a, b) => b.price - a.price)]
             setFilteredProducts(tempValue)
         }
 
@@ -83,13 +91,35 @@ function StorePage() {
             let tempValue = filteredProducts.filter((element) => element.name.toLowerCase().includes(query));
             setFilteredProducts(tempValue)
         } else {
-            setFilteredProducts(allProducts)
+            setFilteredProducts(allProducts);
         }
     }
 
+    function handleCategory(e) {
+
+        if (e.target.checked) {
+            let tempValue = allCategories[parseInt(e.target.value) - 1].category;
+            setFilteredCategories(prevValue => [...prevValue, tempValue])
+
+        } else {
+            setFilteredCategories(filteredCategories.filter((cat) => cat !== allCategories[parseInt(e.target.value) - 1].category))
+        }
+    }
+
+    function filterCategories() {
+        let tempValue = allProducts.filter(prod => filteredCategories.includes(prod.category_id))
+        setFilteredProducts(tempValue)
+    }
+
     useEffect(() => {
-        // console.log(products)
-    }, [filteredProducts])
+
+        if (filteredCategories.length <= 0) {
+            setFilteredProducts(allProducts)
+        } else {
+            filterCategories();
+        }
+
+    }, [filteredCategories])
 
     return (
         <div className="background">
@@ -99,65 +129,63 @@ function StorePage() {
                 <Typography variant="h2" className='text-center'>Nuestros Productos</Typography>
             </div>
 
-            <div className="flex flex-col justify-center items-center py-5">
+            <div className="flex flex-col justify-center items-center">
                 <Button variant='gradient' onClick={toggleOpen}>Categorias</Button>
                 <div>
-                    <Collapse open={open}>
-                        <Card className="my-2 mx-auto w-8/12">
-                            <CardBody>
-                                <Checkbox
-                                    label="Frutas"
-                                    color='pink'
-                                    ripple={false}
-                                    className="h-8 w-8 rounded-full border-pink-900/20 bg-pink-900/10 transition-all hover:scale-105 hover:before:opacity-0"
-                                />
-                                <Checkbox
-                                    label="Vegetales"
-                                    color='pink'
-                                    ripple={false}
-                                    className="h-8 w-8 rounded-full border-pink-900/20 bg-pink-900/10 transition-all hover:scale-105 hover:before:opacity-0"
-                                />
-                                <Checkbox
+                    <Collapse open={open} >
+                        <Card className="my-2 mx-auto w-2/3">
+                            <CardBody className='md:flex md:flex-row flex-wrap justify-center'>
+                                {
+                                    allCategories?.map((cat, index) => (
+                                        <Checkbox
+                                            key={index}
+                                            label={cat.category}
+                                            color='pink'
+                                            ripple={false}
+                                            value={cat.id}
+                                            onChange={handleCategory}
+                                            className="h-8 w-8 rounded-full border-pink-900/20 bg-pink-900/10 transition-all hover:scale-105 hover:before:opacity-0"
+                                        />
+                                    ))
+                                }
+                                {/* <Checkbox
                                     label="En Oferta"
                                     color='pink'
                                     ripple={false}
+                                    value={2}
                                     className="h-8 w-8 rounded-full border-pink-900/20 bg-pink-900/10 transition-all hover:scale-105 hover:before:opacity-0"
-                                />
+                                /> */}
                             </CardBody>
                         </Card>
                     </Collapse>
                 </div>
             </div>
 
-            <div className="flex flex-col justify-center items-center py-2">
-                <div className="w-72">
+            <div className="flex flex-col justify-center items-center py-2 md:container md:mx-auto md:flex-row lg:justify-between">
+                <div className="w-72 my-2 md:mx-5">
                     <Select label="Ordenar por" variant="outlined" size="lg" className="text-black-900 bg-white" onChange={handleSort}>
                         <Option value={'0'}>Precio mas bajo</Option>
                         <Option value={'1'}>Precio mas alto</Option>
                     </Select>
                 </div>
-            </div>
-
-            <div className="flex flex-col justify-center items-center py-2">
-                <div className='w-72 bg-white'>
+                <div className='w-72 bg-white my-2 md:mx-5'>
                     <Input label="Buscar" icon={<i className="fas fa-heart" />} onChange={handleSearch} />
                 </div>
             </div>
 
-            <hr />
-
-            <div className="flex flex-col justify-center items-center py-2">
-                <div className='w-72'>
+            <div className="flex flex-col justify-center items-center mb-5">
+                <div className='justify-center p-5 md:flex md:flex-row md:p-0 md:flex-wrap lg:w-full'>
                     {
                         filteredProducts.map((product, index) => (
 
                             product.available ?
 
-                                <Card className="w-full my-2 shadow-xl" key={index}>
+                                <Card className="my-2 shadow-xl md:mx-10 md:w-1/3 lg:w-1/6 rounded-none" key={index}>
                                     <CardHeader color="blue-gray" className="mt-4">
                                         <img
                                             src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
                                             alt="card-image"
+                                            className='w-full'
                                         />
                                     </CardHeader>
                                     <CardBody>
@@ -182,7 +210,6 @@ function StorePage() {
             </div>
 
             <div className='bg-white'>
-
                 <FooterComponent />
             </div>
         </div>
