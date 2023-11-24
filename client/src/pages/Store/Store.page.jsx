@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Typography, Collapse, Button, Card, CardHeader, CardBody, CardFooter, Checkbox, Select, Option, Input } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
+import CartContext from '../../store/CartContext';
 import DataService from '../../service/dataService';
 
 const MOCK_DATA = [
@@ -59,6 +60,7 @@ const MOCK_DATA = [
 
 function StorePage() {
 
+    const cartCTX = useContext(CartContext);
     const [allProducts, setAllProducts] = useState(MOCK_DATA);
     const [filteredProducts, setFilteredProducts] = useState(allProducts)
     const [allCategories, setCategories] = useState();
@@ -114,6 +116,16 @@ function StorePage() {
         } else {
             setFilteredProducts(tempValue)
         }
+    }
+
+    function addToCartHandler(id, name, sku, amount, price) {
+        cartCTX.addItem({
+            id: id,
+            name: name,
+            sku: sku,
+            quantity: amount,
+            price: price
+        })
     }
 
     useEffect(() => {
@@ -202,7 +214,7 @@ function StorePage() {
                                         </Typography>
                                     </CardBody>
                                     <CardFooter className="pt-0 text-center">
-                                        <Button variant='outlined'>Agregar al Carrito</Button>
+                                        <Button variant='outlined' onClick={() => addToCartHandler(product.id, product.name, product.sku, 1, product.price)}>Agregar al Carrito</Button>
                                     </CardFooter>
                                 </Card>
 
