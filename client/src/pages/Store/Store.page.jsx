@@ -4,6 +4,7 @@ import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
 import CartContext from '../../store/CartContext';
 import DataService from '../../service/dataService';
+import '../../animations/animista.css';
 
 const MOCK_DATA = [
     {
@@ -190,14 +191,14 @@ function StorePage() {
                 </div>
             </div>
 
-            <div className="flex flex-col justify-center items-center mb-5">
+            <div className="mb-5">
                 <div className='justify-center p-5 md:flex md:flex-row md:p-0 md:flex-wrap lg:w-full'>
                     {
                         filteredProducts.map((product, index) => (
 
                             product.available ?
 
-                                <Card className="my-2 shadow-xl md:mx-10 md:w-1/3 lg:w-1/6 rounded-none" key={index}>
+                                <Card className="my-2 md:mx-1 md:w-1/3 lg:w-1/6 rounded-none shadow-pop-br" key={index}>
                                     <CardHeader color="blue-gray" className="mt-4">
                                         <img
                                             src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
