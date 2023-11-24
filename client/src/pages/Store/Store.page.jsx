@@ -74,10 +74,10 @@ function StorePage() {
     function handleSort(e) {
 
         if (e === '0') {
-            let tempValue = [...allProducts.sort((a, b) => a.price - b.price)]
+            let tempValue = [...filteredProducts.sort((a, b) => a.price - b.price)]
             setFilteredProducts(tempValue)
         } else {
-            let tempValue = [...allProducts.sort((a, b) => b.price - a.price)]
+            let tempValue = [...filteredProducts.sort((a, b) => b.price - a.price)]
             setFilteredProducts(tempValue)
         }
 
@@ -91,7 +91,7 @@ function StorePage() {
             let tempValue = filteredProducts.filter((element) => element.name.toLowerCase().includes(query));
             setFilteredProducts(tempValue)
         } else {
-            setFilteredProducts(allProducts);
+            filterCategories()
         }
     }
 
@@ -108,7 +108,12 @@ function StorePage() {
 
     function filterCategories() {
         let tempValue = allProducts.filter(prod => filteredCategories.includes(prod.category_id))
-        setFilteredProducts(tempValue)
+
+        if (tempValue.length <= 0) {
+            setFilteredProducts(allProducts)
+        } else {
+            setFilteredProducts(tempValue)
+        }
     }
 
     useEffect(() => {
