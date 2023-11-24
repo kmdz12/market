@@ -9,6 +9,7 @@ import CoordinatorProductosPage from './pages/CoordinatorProductos/CoordinatorPr
 import CoordinatorUsuariosPage from './pages/CoordinatorUsuarios/CoordinatorUsuarios.page';
 import CoordinatorOrdenesPage from './pages/CoordinatorOrdenes/CoordinatorOrdenes.page';
 import StorePage from './pages/Store/Store.page';
+import CartProvider from './store/CartProvider';
 // import DataService from './service/dataService';
 import './App.css';
 
@@ -69,20 +70,22 @@ function App() {
 
   return (
     <>
-      <Switch>
-        {/* <Route path="/"><LandingPage user={{ userLoggedIn, userType }} /></Route> */}
-        <Route path="/" component={LandingPage} />
-        <Route path="/login" component={UserLoginPage} />
-        <Route path="/register" component={UserRegisterPage} />
-        <Route path="/store" component={StorePage} />
-        <Route path="/coordinator/admin/login" component={CoordinatorLoginPage} />
-        <Route path="/coordinator/admin/panel" component={CoordinatorPanelPage} />
-        <Route path="/coordinator/admin/usuarios" component={CoordinatorUsuariosPage} />
-        <Route path="/coordinator/admin/productos" component={CoordinatorProductosPage} />
-        <Route path="/coordinator/admin/ordenes" component={CoordinatorOrdenesPage} />
-        {/* <Route path="/coordinator/admin/panel"><CoordinatorPanelPage user={{ userLoggedIn, userType }} /></Route> */}
-        <Route path="/:rest*">{() => <Redirect to='/' />}</Route>
-      </Switch>
+      <CartProvider>
+        <Switch>
+          {/* <Route path="/"><LandingPage user={{ userLoggedIn, userType }} /></Route> */}
+          <Route path="/" component={LandingPage} />
+          <Route path="/login" component={UserLoginPage} />
+          <Route path="/register" component={UserRegisterPage} />
+          <Route path="/store" component={StorePage} />
+          <Route path="/coordinator/admin/login" component={CoordinatorLoginPage} />
+          <Route path="/coordinator/admin/panel" component={CoordinatorPanelPage} />
+          <Route path="/coordinator/admin/usuarios" component={CoordinatorUsuariosPage} />
+          <Route path="/coordinator/admin/productos" component={CoordinatorProductosPage} />
+          <Route path="/coordinator/admin/ordenes" component={CoordinatorOrdenesPage} />
+          {/* <Route path="/coordinator/admin/panel"><CoordinatorPanelPage user={{ userLoggedIn, userType }} /></Route> */}
+          <Route path="/:rest*">{() => <Redirect to='/' />}</Route>
+        </Switch>
+      </CartProvider>
     </>
   )
 }
