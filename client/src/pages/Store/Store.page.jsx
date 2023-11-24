@@ -143,12 +143,12 @@ function StorePage() {
         <div className="background">
             <NavBarComponent />
 
-            <div className='md:container md:mx-auto my-4'>
+            <div className='md:container md:mx-auto my-8'>
                 <Typography variant="h2" className='text-center'>Nuestros Productos</Typography>
             </div>
 
             <div className="flex flex-col justify-center items-center">
-                <Button variant='gradient' onClick={toggleOpen}>Categorias</Button>
+                <Button variant='standard' color="pink" onClick={toggleOpen} className='shadow-pop-br'>Categorias</Button>
                 <div>
                     <Collapse open={open} >
                         <Card className="my-2 mx-auto w-2/3">
