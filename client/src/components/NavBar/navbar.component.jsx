@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Navbar, Typography, Button, IconButton, Collapse } from "@material-tailwind/react";
 import DataService from '../../service/dataService';
-import './navbar.style.css'
+import '../../animations/animista.css';
 
 function NavBarComponent() {
 
