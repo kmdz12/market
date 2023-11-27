@@ -30,13 +30,38 @@ const productController = {
         }
     },
 
+    getAllClientProducts: async (req, res) => {
+
+        try {
+
+            const query = await pool.query('SELECT * FROM "productsView"');
+            res.status(200).json(query.rows);
+
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
+    getClientProductDetails: async (req, res) => {
+
+        try {
+
+            const { id } = req.params;
+            const query = await pool.query('SELECT * FROM "productsView" WHERE id = $1', [id]);
+            res.status(200).json(query.rows[0])
+
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
     getAllCategories: async (req, res) => {
 
         try {
 
             const query = await pool.query('SELECT * FROM categories');
             res.status(200).json(query.rows);
-            
+
         } catch (e) {
             console.log(e)
         }
