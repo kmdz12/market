@@ -9,6 +9,7 @@ import CoordinatorProductosPage from './pages/CoordinatorProductos/CoordinatorPr
 import CoordinatorUsuariosPage from './pages/CoordinatorUsuarios/CoordinatorUsuarios.page';
 import CoordinatorOrdenesPage from './pages/CoordinatorOrdenes/CoordinatorOrdenes.page';
 import StorePage from './pages/Store/Store.page';
+import ProductDetailsPage from './pages/ProductDetails/ProductsDetails.page';
 import CartProvider from './store/CartProvider';
 // import DataService from './service/dataService';
 import './App.css';
@@ -77,6 +78,7 @@ function App() {
           <Route path="/login" component={UserLoginPage} />
           <Route path="/register" component={UserRegisterPage} />
           <Route path="/store" component={StorePage} />
+          <Route path="/store/product/:id" component={ProductDetailsPage} />
           <Route path="/coordinator/admin/login" component={CoordinatorLoginPage} />
           <Route path="/coordinator/admin/panel" component={CoordinatorPanelPage} />
           <Route path="/coordinator/admin/usuarios" component={CoordinatorUsuariosPage} />
