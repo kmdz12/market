@@ -33,6 +33,12 @@ router.route('/userStatus')
 router.route('/categories')
     .get(productController.getAllCategories)
 
+router.route('/client/products')
+    .get(productController.getAllClientProducts)
+
+router.route('/client/products/:id')
+    .get(productController.getClientProductDetails)
+
 router.route('/admin/products')
     .get(productController.getAllProducts)
     .post(productController.createProduct)
