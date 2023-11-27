@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import CartContext from "./CartContext";
 
 const defaultCartState = {
@@ -28,6 +28,8 @@ const cartReducer = (state, action) => {
             updatedItems = state.items.concat(action.item);
         }
 
+        localStorage.setItem('cart', JSON.stringify({ items: updatedItems, total: updatedTotal }));
+
         return {
             items: updatedItems,
             total: updatedTotal
@@ -50,6 +52,9 @@ const cartReducer = (state, action) => {
             updatedItems[existingCartItemIndex] = updatedItem
         }
 
+        //TODO: Test if removing items on Cart page updates the storage accordingly
+        localStorage.setItem('cart', JSON.stringify({ items: updatedItems, total: updatedTotal }));
+
         return {
             items: updatedItems,
             total: updatedTotal
@@ -62,6 +67,17 @@ const cartReducer = (state, action) => {
 function CartProvider(props) {
 
     const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState);
+
+    useEffect(() => {
+
+        const local = JSON.parse(localStorage.getItem('cart'))
+
+        if(local) {
+            cartState.items = local.items;
+            cartState.total = local.total
+        }
+
+    }, [])
 
     function addItemToCartHander(item) {
         dispatchCartAction({ type: 'ADD', item: item });
@@ -78,7 +94,8 @@ function CartProvider(props) {
         removeItem: removeItemFromCartHandler
     }
 
-    localStorage.setItem('cart', JSON.stringify(cartContext));
+    // Resets after refresh and overwrites everything
+    // localStorage.setItem('cart', JSON.stringify(cartContext));
 
     return (
         <CartContext.Provider value={cartContext}>{props.children}</CartContext.Provider>
