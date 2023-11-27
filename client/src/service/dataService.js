@@ -35,6 +35,14 @@ class DataService {
         return this.service.get('/categories').then((response) => response.data);
     }
 
+    getAllStoreProducts = () => {
+        return this.service.get('/client/products').then((response) => response.data);
+    }
+
+    getStoreProductDetails = (id) => {
+        return this.service.get(`/client/products/${id}`).then((response) => response.data);
+    }
+
     getAllProducts = () => {
         return this.service.get('/admin/products').then((response) => response.data);
     }
