@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'wouter';
 import { Typography, Collapse, Button, Card, CardHeader, CardBody, CardFooter, Checkbox, Select, Option, Input } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
@@ -6,63 +7,10 @@ import CartContext from '../../store/CartContext';
 import DataService from '../../service/dataService';
 import '../../animations/animista.css';
 
-const MOCK_DATA = [
-    {
-        id: 1,
-        sku: "MZNRJ1KG",
-        name: "Manzana Roja por Kilo",
-        price: 2000,
-        category_id: "Frutas",
-        image_url: 'https://placehold.co/400',
-        description: 'Manzana Roja por Kilogramo',
-        available: true
-    },
-    {
-        id: 2,
-        sku: "MZNVRD1KG",
-        name: "Manzana Verde por Kilo",
-        price: 2500,
-        category_id: "Frutas",
-        image_url: 'https://placehold.co/400',
-        description: 'Manzana Verde por Kilogramo',
-        available: true
-    },
-    {
-        id: 3,
-        sku: "NRJ1KG",
-        name: "Naranja por Kilo",
-        price: 1700,
-        category_id: "Frutas",
-        image_url: 'https://placehold.co/400',
-        description: 'Naranja por Kilogramo',
-        available: true
-    },
-    {
-        id: 4,
-        sku: "PR1KG",
-        name: "Pera por Kilo",
-        price: 2700,
-        category_id: "Frutas",
-        image_url: 'https://placehold.co/400',
-        description: 'Pera por Kilogramo',
-        available: false
-    },
-    {
-        id: 5,
-        sku: "LCHG1KG",
-        name: "Lechuga por Kilo",
-        price: 1950,
-        category_id: "Verduras",
-        image_url: 'https://placehold.co/400',
-        description: 'Lechuga por Kilogramo',
-        available: true
-    }
-]
-
 function StorePage() {
 
     const cartCTX = useContext(CartContext);
-    const [allProducts, setAllProducts] = useState(MOCK_DATA);
+    const [allProducts, setAllProducts] = useState();
     const [filteredProducts, setFilteredProducts] = useState(allProducts)
     const [allCategories, setCategories] = useState();
     const [filteredCategories, setFilteredCategories] = useState([]);
@@ -71,8 +19,13 @@ function StorePage() {
     const dataService = new DataService();
 
     useEffect(() => {
+        dataService.getAllStoreProducts().then((response) => setAllProducts(response))
         dataService.getCategories().then((response) => setCategories(response))
     }, [])
+
+    useEffect(() => {
+        setFilteredProducts(allProducts)
+    }, [allProducts])
 
     function handleSort(e) {
 
@@ -110,7 +63,7 @@ function StorePage() {
     }
 
     function filterCategories() {
-        let tempValue = allProducts.filter(prod => filteredCategories.includes(prod.category_id))
+        let tempValue = allProducts.filter(prod => filteredCategories.includes(prod.category))
 
         if (tempValue.length <= 0) {
             setFilteredProducts(allProducts)
@@ -120,6 +73,7 @@ function StorePage() {
     }
 
     function addToCartHandler(id, name, sku, amount, price) {
+
         cartCTX.addItem({
             id: id,
             name: name,
@@ -127,6 +81,7 @@ function StorePage() {
             quantity: amount,
             price: price
         })
+
     }
 
     useEffect(() => {
@@ -148,7 +103,7 @@ function StorePage() {
             </div>
 
             <div className="flex flex-col justify-center items-center">
-                <Button variant='standard' color="pink" onClick={toggleOpen} className='shadow-pop-br'>Categorias</Button>
+                <Button variant='gradient' color="pink" onClick={toggleOpen} className='shadow-pop-br'>Categorias</Button>
                 <div>
                     <Collapse open={open} >
                         <Card className="my-2 mx-auto w-2/3">
@@ -192,28 +147,30 @@ function StorePage() {
             </div>
 
             <div className="mb-5">
-                <div className='justify-center p-5 md:flex md:flex-row md:p-0 md:flex-wrap lg:w-full'>
+                <div className='justify-center p-10 md:flex md:flex-row md:p-0 md:flex-wrap lg:w-full'>
                     {
-                        filteredProducts.map((product, index) => (
+                        filteredProducts?.map((product, index) => (
 
                             product.available ?
 
-                                <Card className="my-2 md:mx-1 md:w-1/3 lg:w-1/6 rounded-none shadow-pop-br" key={index}>
-                                    <CardHeader color="blue-gray" className="mt-4">
-                                        <img
-                                            src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
-                                            alt="card-image"
-                                            className='w-full'
-                                        />
-                                    </CardHeader>
-                                    <CardBody>
-                                        <Typography variant="h5" color="blue-gray" className="mb-2 text-center">
-                                            {product.name}
-                                        </Typography>
-                                        <Typography variant='h5' className='text-center'>
-                                            $ {product.price} c/u
-                                        </Typography>
-                                    </CardBody>
+                                <Card className="my-2 md:mx-1 md:w-1/3 lg:w-1/4 xl:w-1/6 rounded-none shadow-pop-br cursor-pointer" key={index}>
+                                    <Link to={`/store/product/${product.id}`}>
+                                        <CardHeader color="blue-gray" className="mt-4">
+                                            <img
+                                                src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
+                                                alt="card-image"
+                                                className='w-full'
+                                            />
+                                        </CardHeader>
+                                        <CardBody className='py-6'>
+                                            <Typography variant="h6" color="blue-gray" className="mb-2 text-center lg:text-2xl">
+                                                {product.name}
+                                            </Typography>
+                                            <Typography variant='h5' className='text-center'>
+                                                $ {product.price}
+                                            </Typography>
+                                        </CardBody>
+                                    </Link>
                                     <CardFooter className="pt-0 text-center">
                                         <Button variant='outlined' onClick={() => addToCartHandler(product.id, product.name, product.sku, 1, product.price)}>Agregar al Carrito</Button>
                                     </CardFooter>
