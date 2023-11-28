@@ -35,7 +35,7 @@ function NavBarComponent() {
         setUserLoggedIn(false);
     }
 
-    const navList = (
+    const nonUserNavList = (
         <ul className="mt-2 mb-4 flex flex-col gap-2 items-center lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             <Typography
                 as="li"
@@ -43,9 +43,9 @@ function NavBarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to='/store'>
                     Tienda
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -53,9 +53,9 @@ function NavBarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to='/cart'>
                     Carrito
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -63,9 +63,24 @@ function NavBarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to='/faq'>
                     FAQ
-                </a>
+                </Link>
+            </Typography>
+        </ul>
+    );
+
+    const userNavList = (
+        <ul className="mt-2 mb-4 flex flex-col gap-2 items-center lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal"
+            >
+                <Link to='/store'>
+                    Tienda
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -73,9 +88,29 @@ function NavBarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to='/cart'>
+                    Carrito
+                </Link>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal"
+            >
+                <Link to='/faq'>
+                    FAQ
+                </Link>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal"
+            >
+                <Link to='/account'>
                     Mi Cuenta
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -106,6 +141,7 @@ function NavBarComponent() {
                             userLoggedIn !== true ?
 
                                 <div className="flex items-center gap-x-5">
+                                    <div className="mr-4 hidden lg:block">{nonUserNavList}</div>
                                     <Link href="/register">
                                         <Button
                                             variant="filled"
@@ -130,7 +166,7 @@ function NavBarComponent() {
 
                                 :
 
-                                <div className="mr-4 hidden lg:block">{navList}</div>
+                                <div className="mr-4 hidden lg:block">{userNavList}</div>
                         }
                         <IconButton
                             variant="text"
@@ -175,31 +211,34 @@ function NavBarComponent() {
                     {
                         userLoggedIn ?
 
-                            { navList }
+                            { userNavList }
 
                             :
 
-                            <div className="flex justify-around gap-x-2 mt-4">
-                                <Link href="/register">
-                                    <Button
-                                        variant="filled"
-                                        size="md"
-                                        className="w-48 rounded-none border-2 border-black"
-                                        style={{ backgroundColor: "#FF5FAA" }}
-                                    >
-                                        <span className="text-black">Registrate</span>
-                                    </Button>
-                                </Link>
-                                <Link href="/login">
-                                    <Button
-                                        variant="filled"
-                                        size="md"
-                                        className="w-48 rounded-none border-2 border-black"
-                                        style={{ backgroundColor: "#66FF7B" }}
-                                    >
-                                        <span className="text-black">Inicia Sesion</span>
-                                    </Button>
-                                </Link>
+                            <div>
+                                {nonUserNavList}
+                                <div className="flex justify-around gap-x-2 mt-4">
+                                    <Link to="/register">
+                                        <Button
+                                            variant="filled"
+                                            size="md"
+                                            className="w-48 rounded-none border-2 border-black"
+                                            style={{ backgroundColor: "#FF5FAA" }}
+                                        >
+                                            <span className="text-black">Registrate</span>
+                                        </Button>
+                                    </Link>
+                                    <Link to="/login">
+                                        <Button
+                                            variant="filled"
+                                            size="md"
+                                            className="w-48 rounded-none border-2 border-black"
+                                            style={{ backgroundColor: "#66FF7B" }}
+                                        >
+                                            <span className="text-black">Inicia Sesion</span>
+                                        </Button>
+                                    </Link>
+                                </div>
                             </div>
                     }
                 </Collapse>
