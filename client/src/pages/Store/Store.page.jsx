@@ -172,7 +172,7 @@ function StorePage() {
                                         </CardBody>
                                     </Link>
                                     <CardFooter className="pt-0 text-center">
-                                        <Button variant='outlined' onClick={() => addToCartHandler(product.id, product.name, product.sku, 1, product.price)}>Agregar al Carrito</Button>
+                                        <Button color='pink' variant='outlined' className='shadow-pop-br' onClick={() => addToCartHandler(product.id, product.name, product.sku, 1, product.price)}>Agregar al Carrito</Button>
                                     </CardFooter>
                                 </Card>
 
