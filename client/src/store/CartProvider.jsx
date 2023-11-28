@@ -3,7 +3,8 @@ import CartContext from "./CartContext";
 
 const defaultCartState = {
     items: [],
-    total: 0
+    total: 0,
+    paymentType: 0
 };
 
 const cartReducer = (state, action) => {
@@ -28,15 +29,16 @@ const cartReducer = (state, action) => {
             updatedItems = state.items.concat(action.item);
         }
 
-        localStorage.setItem('cart', JSON.stringify({ items: updatedItems, total: updatedTotal }));
+        localStorage.setItem('cart', JSON.stringify({ items: updatedItems, total: updatedTotal, paymentType: state.paymentType }));
 
         return {
             items: updatedItems,
-            total: updatedTotal
+            total: updatedTotal,
+            paymentType: state.paymentType
         };
     }
 
-    if (action.type = 'REMOVE') {
+    if (action.type === 'REMOVE') {
         const existingCartItemIndex = state.items.findIndex((item) => item.id === action.id);
         const existingItem = state.items[existingCartItemIndex];
         const updatedTotal = state.total - existingItem.price;
@@ -52,12 +54,41 @@ const cartReducer = (state, action) => {
             updatedItems[existingCartItemIndex] = updatedItem
         }
 
-        //TODO: Test if removing items on Cart page updates the storage accordingly
-        localStorage.setItem('cart', JSON.stringify({ items: updatedItems, total: updatedTotal }));
+        localStorage.setItem('cart', JSON.stringify({ items: updatedItems, total: updatedTotal, paymentType: state.paymentType }));
 
         return {
             items: updatedItems,
-            total: updatedTotal
+            total: updatedTotal,
+            paymentType: state.paymentType
+        }
+    }
+
+    if (action.type === 'DESTROY') {
+        const existingCartItemIndex = state.items.findIndex((item) => item.id === action.id);
+        const existingItem = state.items[existingCartItemIndex];
+        const updatedTotal = state.total - existingItem.price * existingItem.quantity;
+
+        let updatedItems;
+
+        updatedItems = state.items.filter(item => item.id !== action.id);
+
+        localStorage.setItem('cart', JSON.stringify({ items: updatedItems, total: updatedTotal, paymentType: state.paymentType }));
+
+        return {
+            items: updatedItems,
+            total: updatedTotal,
+            paymentType: state.paymentType
+        }
+    }
+
+    if (action.type === 'PAYMENT') {
+
+        localStorage.setItem('cart', JSON.stringify({ items: state.items, total: state.total, paymentType: action.value }));
+
+        return {
+            items: state.items,
+            total: state.total,
+            paymentType: action.value
         }
     }
 
@@ -72,9 +103,10 @@ function CartProvider(props) {
 
         const local = JSON.parse(localStorage.getItem('cart'))
 
-        if(local) {
+        if (local) {
             cartState.items = local.items;
-            cartState.total = local.total
+            cartState.total = local.total;
+            cartState.paymentType = local.paymentType;
         }
 
     }, [])
@@ -87,15 +119,23 @@ function CartProvider(props) {
         dispatchCartAction({ type: 'REMOVE', id: id });
     }
 
+    function destroyItemFromCartHandler(id) {
+        dispatchCartAction({ type: 'DESTROY', id: id });
+    }
+
+    function selectPaymentHandler(value) {
+        dispatchCartAction({ type: 'PAYMENT', value: value });
+    }
+
     const cartContext = {
         items: cartState.items,
         total: cartState.total,
+        paymentType: cartState.paymentType,
         addItem: addItemToCartHander,
-        removeItem: removeItemFromCartHandler
+        removeItem: removeItemFromCartHandler,
+        destroyItem: destroyItemFromCartHandler,
+        selectPayment: selectPaymentHandler
     }
-
-    // Resets after refresh and overwrites everything
-    // localStorage.setItem('cart', JSON.stringify(cartContext));
 
     return (
         <CartContext.Provider value={cartContext}>{props.children}</CartContext.Provider>
