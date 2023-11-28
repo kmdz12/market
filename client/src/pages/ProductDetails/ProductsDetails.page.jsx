@@ -73,7 +73,7 @@ function ProductDetailsPage() {
                                 <Input label='Cantidad' variant="outlined" type='number' min={1} max={5} defaultValue={1} name="quantity" onChange={quantityHandler} />
                             </div>
                             <div className='p-5 self-center'>
-                                <Button onClick={addToCartHandler}>Agregar al Carrito</Button>
+                                <Button onClick={addToCartHandler} color='pink' className='shadow-pop-br'>Agregar al Carrito</Button>
                             </div>
                         </div>
                     </div>
