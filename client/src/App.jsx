@@ -10,6 +10,7 @@ import CoordinatorUsuariosPage from './pages/CoordinatorUsuarios/CoordinatorUsua
 import CoordinatorOrdenesPage from './pages/CoordinatorOrdenes/CoordinatorOrdenes.page';
 import StorePage from './pages/Store/Store.page';
 import ProductDetailsPage from './pages/ProductDetails/ProductsDetails.page';
+import CartPage from './pages/Cart/Cart.page';
 import CartProvider from './store/CartProvider';
 // import DataService from './service/dataService';
 import './App.css';
@@ -79,6 +80,7 @@ function App() {
           <Route path="/register" component={UserRegisterPage} />
           <Route path="/store" component={StorePage} />
           <Route path="/store/product/:id" component={ProductDetailsPage} />
+          <Route path="/cart" component={CartPage} />
           <Route path="/coordinator/admin/login" component={CoordinatorLoginPage} />
           <Route path="/coordinator/admin/panel" component={CoordinatorPanelPage} />
           <Route path="/coordinator/admin/usuarios" component={CoordinatorUsuariosPage} />
