@@ -3,6 +3,7 @@ import { Typography, Button } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
 import './Landing.style.css';
+import '../../animations/animista.css';
 
 function LandingPage() {
 
@@ -57,7 +58,7 @@ function LandingPage() {
                     <div className="flex flex-col items-center mx-4 basis-1/4">
                         <Typography variant="lead" className="m-2 text-center">Como Delivery</Typography>
                         <Typography variant="paragraph" className="m-2 text-center">Encargate de entregar nuestros pedidos, todo lo que necesitas es un vehiculo!</Typography>
-                        <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2">
+                        <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2 shadow-pop-br">
                             <span>Viaja con Nosotros</span>
                         </Button>
                     </div>
@@ -67,7 +68,7 @@ function LandingPage() {
                     <div className="flex flex-col items-center mx-4 basis-1/4">
                         <Typography variant="lead" className="m-2 text-center">Como Partner</Typography>
                         <Typography variant="paragraph" className="m-2 text-center">Ayudanos a proveer a las personas con las frutas y vegetables mas frescos.</Typography>
-                        <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2">
+                        <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2 shadow-pop-br">
                             <span>Trabaja con Nosotros</span>
                         </Button>
                     </div>
@@ -77,7 +78,7 @@ function LandingPage() {
                     <div className="flex flex-col items-center mx-4 basis-1/4">
                         <Typography variant="lead" className="m-2 text-center">Como Equipo</Typography>
                         <Typography variant="paragraph" className="m-2 text-center">Se parte del equipo que esta detras de esta gran plataforma.</Typography>
-                        <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2">
+                        <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2 shadow-pop-br">
                             <span>Crea con Nosotros</span>
                         </Button>
                     </div>
@@ -87,7 +88,7 @@ function LandingPage() {
                     <div className="flex flex-col items-center mx-4 my-4 basis-1/4">
                         <Typography variant="lead" className="m-2 text-center">Aun con dudas?</Typography>
                         <Typography variant="paragraph" className="m-2 text-center">Sabemos que podes tener alguna duda con respecto a medios de pago o cobertura, pero no temas, aqui vas a poder algunas preguntas frecuentes que puedes llegar a tener!</Typography>
-                        <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2">
+                        <Button variant="outlined" size="md" className="w-48 rounded-none border-2 border-black m-2 shadow-pop-br">
                             <span>Preguntas Frecuentes</span>
                         </Button>
                     </div>
