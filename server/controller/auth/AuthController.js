@@ -66,13 +66,13 @@ const authController = {
 
                     } else {
 
-                        res.status(404).json({ auth: false, message: 'Email y/o contraseña incorrecta', code: 404 });
+                        res.status(404).json({ auth: false, message: 'Email y/o contraseña incorrecta!', code: 404 });
                     }
                 })
 
             } else {
 
-                res.status(404).json({ auth: false, message: 'El email no existe!', code: 404 });
+                res.status(404).json({ auth: false, message: 'Email y/o contraseña incorrecta!', code: 404 });
             }
 
         } catch (e) {
