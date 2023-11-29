@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Typography, Card, Input, Button, Spinner, Alert } from '@material-tailwind/react';
 import DataService from '../../service/dataService';
+import './UserLogin.style.css';
 
 function UserLoginPage() {
 
@@ -68,16 +69,8 @@ function UserLoginPage() {
     return (
         <div>
             {/* Background Image Container */}
-            <div className="w-screem h-screen bg-[url('./images/login.jpg')] bg-auto bg-no-repeat bg-center absolute inset-0 blur-sm"></div>
-            {
-                alertStatus.show ?
-
-                    <div>
-                        <Alert className="flex justify-center" variant="gradient" color={alertStatus.code === 200 ? "green" : "red"} open={alertStatus.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alertStatus.message}</Alert>
-                    </div>
-                    :
-                    null
-            }
+            <div className="w-screem h-screen login bg-auto bg-no-repeat bg-center absolute inset-0 blur-sm lg:bg-cover"></div>
+            <Alert className="flex justify-center" variant="gradient" color={alertStatus.code === 200 ? "green" : "red"} open={alertStatus.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alertStatus.message}</Alert>
             {/* Form Container */}
             <div className="absolute inset-0">
                 <div className="h-full w-full flex justify-center items-center">

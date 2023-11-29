@@ -68,16 +68,8 @@ function UserRegisterPage() {
     return (
         <div>
             {/* Background Image Container */}
-            <div className="w-screem h-screen register bg-auto bg-no-repeat bg-center absolute inset-0 blur-sm"></div>
-            {
-                alertStatus.show ?
-
-                    <div>
-                        <Alert className="flex justify-center" variant="gradient" color={alertStatus.code === 200 ? "green" : "red"} open={alertStatus.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alertStatus.message}</Alert>
-                    </div>
-                    :
-                    null
-            }
+            <div className="w-screem h-screen register bg-auto bg-no-repeat bg-center absolute inset-0 blur-sm lg:bg-cover"></div>
+            <Alert className="flex justify-center" variant="gradient" color={alertStatus.code === 200 ? "green" : "red"} open={alertStatus.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alertStatus.message}</Alert>
             {/* Form Container */}
             <div className="absolute inset-0">
                 <div className="h-full w-full flex justify-center items-center">
