@@ -6,7 +6,7 @@ function FooterComponent() {
     return (
 
         //Main Container
-        <div className="md:container md:mx-auto flex flex-col p-2">
+        <div className="md:container md:mx-auto flex flex-col p-2 bg-white">
 
             {/* Sub Container */}
             <div className="flex flex-col md:flex-row md:justify-evenly">
