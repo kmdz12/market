@@ -211,7 +211,9 @@ function NavBarComponent() {
                     {
                         userLoggedIn ?
 
-                            { userNavList }
+                            <div>
+                                {userNavList}
+                            </div>
 
                             :
 
