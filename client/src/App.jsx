@@ -11,6 +11,7 @@ import CoordinatorOrdenesPage from './pages/CoordinatorOrdenes/CoordinatorOrdene
 import StorePage from './pages/Store/Store.page';
 import ProductDetailsPage from './pages/ProductDetails/ProductsDetails.page';
 import CartPage from './pages/Cart/Cart.page';
+import AccountPage from './pages/Account/Account.page';
 import CartProvider from './store/CartProvider';
 // import DataService from './service/dataService';
 import './App.css';
@@ -81,6 +82,7 @@ function App() {
           <Route path="/store" component={StorePage} />
           <Route path="/store/product/:id" component={ProductDetailsPage} />
           <Route path="/cart" component={CartPage} />
+          <Route path="/account" component={AccountPage} />
           <Route path="/coordinator/admin/login" component={CoordinatorLoginPage} />
           <Route path="/coordinator/admin/panel" component={CoordinatorPanelPage} />
           <Route path="/coordinator/admin/usuarios" component={CoordinatorUsuariosPage} />
