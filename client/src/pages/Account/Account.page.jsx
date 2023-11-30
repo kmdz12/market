@@ -18,7 +18,7 @@ function AccountPage() {
                     {/* My Data Container */}
                     <div className='bg-gray-300 flex flex-col items-center rounded'>
                         <Typography variant='h5' className='py-3'>Mis Datos</Typography>
-                        <div className='py-3 w-64'>
+                        <div className='w-full py-3 px-4'>
                             <div className='py-2'>
                                 <Input className="bg-white" label='Nombre' variant="outlined" size='lg' />
                             </div>
@@ -40,7 +40,7 @@ function AccountPage() {
                     <div className='bg-gray-300 flex flex-col items-center rounded my-3'>
                         <Typography variant='h5' className='py-3'>Mis Direcciones</Typography>
                         {/* Saved Directions Container*/}
-                        <div className='flex flex-row overflow-x-scroll py-2 w-64'>
+                        <div className='flex flex-row overflow-x-scroll py-2 w-full px-4'>
                             <div className='bg-gray-500 rounded p-3 mx-1'>
                                 <Typography className='whitespace-nowrap'>Godoy Cruz</Typography>
                                 <Typography className='whitespace-nowrap'>Las Tortugas</Typography>
@@ -59,7 +59,7 @@ function AccountPage() {
                             </div>
                         </div>
                         {/* New Direction Container */}
-                        <div className='py-3 w-64'>
+                        <div className='py-3 w-full px-4'>
                             <div className='py-2'>
                                 <Select label="Departamento" className='bg-white'>
                                     <Option>Material Tailwind HTML</Option>
@@ -91,10 +91,10 @@ function AccountPage() {
                         </div>
                     </div>
 
-                    <div className='bg-gray-300 flex flex-col items-center rounded mb-5'>
+                    <div className='bg-gray-300 flex flex-col items-center rounded mb-5 px-4'>
                         <Typography variant='h5' className='py-3'>Mis Ordenes</Typography>
 
-                        <div className='py-2 my-3 w-64 bg-gray-100 rounded mb-2'>
+                        <div className='py-2 w-full bg-gray-100 rounded mb-5'>
                             <Typography className='text-center'>Orden #318947u91283791379</Typography>
                             <div className='flex justify-between items-center my-2 p-2'>
                                 <div>
@@ -118,7 +118,7 @@ function AccountPage() {
                             </div>
                         </div>
 
-                        <div className='py-2 my-3 w-64 bg-gray-100 rounded mb-2'>
+                        <div className='py-2 w-full bg-gray-100 rounded mb-5'>
                             <Typography className='text-center'>Orden #318947u91283791379</Typography>
                             <div className='flex justify-between items-center my-2 p-2'>
                                 <div>
