@@ -9,7 +9,14 @@ import '../../animations/animista.css';
 function AccountPage() {
 
     const [userLogged, setUserLogged] = useState();
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState({
+        email: '',
+        id: 0,
+        info_id: 0,
+        name: '',
+        phone: '',
+        surname: ''
+    });
     const [location, setLocation] = useLocation();
     const dataService = new DataService();
 
@@ -20,6 +27,7 @@ function AccountPage() {
                 setUserLogged(response)
             }).catch((e) => {
                 setUserLogged(e.response.data.loggedIn)
+                localStorage.removeItem('token');
                 setLocation('/login')
             })
         } else {
@@ -33,8 +41,9 @@ function AccountPage() {
     }, [userLogged])
 
     // useEffect(() => {
+    // console.log(userLogged)
     // console.log(currentUser)
-    // }, [currentUser])
+    // }, [setCurrentUser])
 
     function handleDataChange(e) {
         const { name, value } = e.target;
