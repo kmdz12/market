@@ -48,7 +48,7 @@ function CartPage() {
             setUserStatus(response)
 
             if (response.loggedIn) {
-                setLocation('/completeOrder')
+                setLocation('/delivery/details')
             }
 
         }).catch((e) => {
