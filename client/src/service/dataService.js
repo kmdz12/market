@@ -31,6 +31,14 @@ class DataService {
         return this.service.get('/userStatus', { headers: { "x-access-token": token } }).then((response) => response.data);
     }
 
+    getUser = () => {
+        return this.service.get('/account').then((response) => response.data);
+    }
+
+    saveUserData = (name, surname, phone) => {
+        return this.service.post('/account', { name, surname, phone }).then((response) => response.data);
+    }
+
     getCategories = () => {
         return this.service.get('/categories').then((response) => response.data);
     }
