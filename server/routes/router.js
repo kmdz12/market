@@ -6,6 +6,7 @@ const { productController } = require('../controller/product/productController.j
 
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
+const { userController } = require('../controller/user/UserController.js');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -32,6 +33,10 @@ router.route('/userStatus')
 
 router.route('/categories')
     .get(productController.getAllCategories)
+
+router.route('/account')
+    .get(userController.getUser)
+    .post(userController.saveUserData)
 
 router.route('/client/products')
     .get(productController.getAllClientProducts)
