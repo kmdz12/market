@@ -1,10 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'wouter';
+import { Button, Input, Typography, Select, Option, Textarea } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
-import { Button, Input, Typography, Select, Option, Textarea } from '@material-tailwind/react';
+import DataService from '../../service/dataService';
 import '../../animations/animista.css';
 
 function AccountPage() {
+
+    const [userLogged, setUserLogged] = useState();
+    const [currentUser, setCurrentUser] = useState({});
+    const [location, setLocation] = useLocation();
+    const dataService = new DataService();
+
+    useEffect(() => {
+        if (localStorage.getItem('token') !== null) {
+
+            dataService.checkLoggedUser().then((response) => {
+                setUserLogged(response)
+            }).catch((e) => {
+                setUserLogged(e.response.data.loggedIn)
+                setLocation('/login')
+            })
+        } else {
+            setLocation('/login')
+        }
+
+    }, [])
+
+    useEffect(() => {
+        dataService.getUser().then((response) => setCurrentUser(response))
+    }, [userLogged])
+
+    // useEffect(() => {
+    // console.log(currentUser)
+    // }, [currentUser])
+
+    function handleDataChange(e) {
+        const { name, value } = e.target;
+
+        setCurrentUser((prevValue) => {
+            return {
+                ...prevValue,
+                [name]: value
+            }
+        })
+    }
+
+    function handleUserDataSubmit(e) {
+        e.preventDefault();
+
+        if (Object.values([currentUser.name, currentUser.surname, currentUser.phone]).some(o => o == '' || o == null)) {
+            alert('Por favor completa el formulario antes de Guardar!')
+        } else {
+            dataService.saveUserData(currentUser.name, currentUser.surname, currentUser.phone);
+        }
+    }
 
     return (
         <>
@@ -21,21 +72,22 @@ function AccountPage() {
                         <div className='bg-gray-300 flex flex-col items-center rounded lg:items-start'>
                             <Typography variant='h5' className='p-3'>Mis Datos</Typography>
                             <div className='w-full py-3 px-4 lg:p-0'>
-                                <div className='md:flex justify-between lg:flex-col xl:flex-row'>
-                                    <div className='p-2 xl:w-full'>
-                                        <Input className="bg-white" label='Nombre' variant="outlined" size='lg' />
+                                <form onSubmit={handleUserDataSubmit}>
+                                    <div className='md:flex justify-between lg:flex-col xl:flex-row'>
+                                        <div className='p-2 xl:w-full'>
+                                            <Input className="bg-white" label='Nombre' variant="outlined" size='lg' name='name' value={currentUser?.name ?? ''} onChange={handleDataChange} required />
+                                        </div>
+                                        <div className='p-2 xl:w-full'>
+                                            <Input className="bg-white" label='Apellido' variant="outlined" size='lg' name='surname' value={currentUser?.surname ?? ''} onChange={handleDataChange} required />
+                                        </div>
+                                        <div className='p-2 xl:w-full'>
+                                            <Input className="bg-white" label="Telefono" type="number" variant="outlined" size='lg' name='phone' value={currentUser?.phone ?? ''} onChange={handleDataChange} required />
+                                        </div>
                                     </div>
-                                    <div className='p-2 xl:w-full'>
-                                        <Input className="bg-white" label='Apellido' variant="outlined" size='lg' />
+                                    <div className='flex md:flex-col md:items-center md:py-2'>
+                                        <Button className='flex grow justify-center shadow-pop-br' color='pink' variant="gradient" type='submit'>Guardar Datos</Button>
                                     </div>
-                                    <div className='p-2 xl:w-full'>
-                                        <Input className="bg-white" label="Telefono" type="number" variant="outlined" size='lg' />
-                                    </div>
-                                </div>
-
-                                <div className='flex md:flex-col md:items-center md:py-2'>
-                                    <Button className='flex grow justify-center shadow-pop-br' color='pink' variant="gradient">Guardar Datos</Button>
-                                </div>
+                                </form>
                             </div>
                         </div>
 
