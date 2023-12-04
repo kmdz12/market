@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Typography, Button, Select, Option } from '@material-tailwind/react';
+import { Typography, Button, Select, Option, Spinner } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
 import CartContext from '../../store/CartContext';
@@ -12,6 +12,7 @@ function CartPage() {
     const [cartProducts, setCartProducts] = useState({});
     const [paymentType, setPaymentType] = useState(0);
     const [userStatus, setUserStatus] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [location, setLocation] = useLocation();
     const dataService = new DataService();
 
@@ -44,17 +45,28 @@ function CartPage() {
 
     function handleDirectionsCheck() {
 
-        dataService.checkLoggedUser().then((response) => {
-            setUserStatus(response)
+        setIsLoading(true);
 
-            if (response.loggedIn) {
-                setLocation('/delivery/details')
-            }
+        if (localStorage.getItem('token') !== null) {
 
-        }).catch((e) => {
-            setUserStatus(e.response.data.loggedIn)
+            dataService.checkLoggedUser().then((response) => {
+
+                setUserStatus(response)
+
+                if (response.loggedIn) {
+                    setLocation('/delivery/details')
+                }
+
+            }).catch((e) => {
+                setUserStatus(e.response.data.loggedIn)
+                setLocation('/login')
+
+            }).finally(() => setIsLoading(false));
+
+        } else {
             setLocation('/login')
-        })
+        }
+
     }
 
     useEffect(() => {
@@ -176,7 +188,18 @@ function CartPage() {
                                     <Link to="/store">
                                         <Button className='p-5 my-2 shadow-pop-br' color='white' variant="gradient" size="lg">Volver a la Tienda</Button>
                                     </Link>
-                                    <Button className='p-5 my-2 shadow-pop-br' color='white' variant="gradient" size='lg' onClick={handleDirectionsCheck}>Continuar</Button>
+                                    {
+                                        isLoading ?
+
+                                            <Button className='p-5 my-2 flex justify-center items-center' color='white' variant="gradient" size='lg' disabled>
+                                                <Spinner className='mr-2' color='blue' />
+                                                <span>Procesando</span>
+                                            </Button>
+
+                                            :
+
+                                            <Button className='p-5 my-2 shadow-pop-br' color='white' variant="gradient" size='lg' onClick={handleDirectionsCheck}>Continuar</Button>
+                                    }
                                 </div>
                             </div>
                         </div>
