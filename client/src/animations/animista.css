@@ -8,36 +8,54 @@
 /**
  * ----------------------------------------
  * animation shadow-pop-br
+ * fade-in-right
  * ----------------------------------------
  */
 
- .shadow-pop-br:hover {
-    animation: shadow-pop-br 0.2s ease-in-out both;
+.shadow-pop-br:hover {
+  animation: shadow-pop-br 0.2s ease-in-out both;
 }
 
 .shadow-pop-br:not(:hover) {
-    animation: shadow-pop-reverse 0.2s linear reverse backwards;
+  animation: shadow-pop-reverse 0.2s linear reverse backwards;
+}
+
+.fade-in-right {
+  animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
 @keyframes shadow-pop-br {
-    0% {
-        box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
-        transform: translateX(0) translateY(0);
-    }
+  0% {
+    box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
+    transform: translateX(0) translateY(0);
+  }
 
-    100% {
-        box-shadow: 1px 1px #3e3e3e, 2px 2px #3e3e3e, 3px 3px #3e3e3e, 4px 4px #3e3e3e, 5px 5px #3e3e3e;
-        transform: translateX(-2px) translateY(-2px);
-    }
+  100% {
+    box-shadow: 1px 1px #3e3e3e, 2px 2px #3e3e3e, 3px 3px #3e3e3e, 4px 4px #3e3e3e, 5px 5px #3e3e3e;
+    transform: translateX(-2px) translateY(-2px);
+  }
 }
 
 @keyframes shadow-pop-reverse {
-    0% {
-      box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
-      transform: translateX(0) translateY(0);
-    }
-    100% {
-      box-shadow: 1px 1px #3e3e3e, 2px 2px #3e3e3e, 3px 3px #3e3e3e, 4px 4px #3e3e3e, 5px 5px #3e3e3e;
-      transform: translateX(-2px) translateY(-2px);
-    }
+  0% {
+    box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
+    transform: translateX(0) translateY(0);
   }
+
+  100% {
+    box-shadow: 1px 1px #3e3e3e, 2px 2px #3e3e3e, 3px 3px #3e3e3e, 4px 4px #3e3e3e, 5px 5px #3e3e3e;
+    transform: translateX(-2px) translateY(-2px);
+  }
+}
+
+@keyframes fade-in-right {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
