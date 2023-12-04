@@ -145,12 +145,12 @@ function NavBarComponent() {
                             userLoggedIn !== true ?
 
                                 <div className="flex items-center gap-x-5">
-                                    <div className="mr-4 lg:block">{nonUserNavList}</div>
+                                    <div className="mr-4 hidden lg:block">{nonUserNavList}</div>
                                     <Link href="/register">
                                         <Button
                                             variant="filled"
                                             size="md"
-                                            className="lg:inline-block rounded-none border-2 border-black shadow-pop-br"
+                                            className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
                                             style={{ backgroundColor: "#FF5FAA" }}
                                         >
                                             <span className="text-black">Registrate</span>
@@ -160,7 +160,7 @@ function NavBarComponent() {
                                         <Button
                                             variant="filled"
                                             size="md"
-                                            className="lg:inline-block rounded-none border-2 border-black shadow-pop-br"
+                                            className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
                                             style={{ backgroundColor: "#66FF7B" }}
                                         >
                                             <span className="text-black">Inicia Sesion</span>
@@ -170,7 +170,7 @@ function NavBarComponent() {
 
                                 :
 
-                                <div className="mr-4 lg:block fade-in-right">{userNavList}</div>
+                                <div className="mr-4 hidden lg:block fade-in-right">{userNavList}</div>
                         }
                         <IconButton
                             variant="text"
