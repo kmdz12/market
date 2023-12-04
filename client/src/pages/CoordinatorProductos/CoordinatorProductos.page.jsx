@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { Button, Card, Typography, Dialog, DialogHeader, DialogBody, DialogFooter, Input, Select, Option, Textarea, Checkbox } from '@material-tailwind/react';
+import { Button, Card, Typography, Dialog, DialogHeader, DialogBody, DialogFooter, Input, Select, Option, Textarea, Checkbox, Spinner } from '@material-tailwind/react';
 import DatePicker from "react-datepicker";
 import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
 import DataService from '../../service/dataService';
@@ -30,6 +30,7 @@ function CoordinatorProductosPage() {
     const [producto, setProducto] = useState(initialProductState);
     const [allProducts, setAllProducts] = useState();
     const [allCategories, setAllCategories] = useState();
+    const [isLoading, setIsLoading] = useState(true);
     const [location, setLocation] = useLocation();
     const dataService = new DataService();
 
@@ -60,6 +61,9 @@ function CoordinatorProductosPage() {
     useEffect(() => {
         dataService.getAllProducts().then((response) => setAllProducts(response));
         dataService.getCategories().then((response) => setAllCategories(response));
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1500);
     }, [setAllProducts])
 
     function handleOpen() {
@@ -107,13 +111,15 @@ function CoordinatorProductosPage() {
 
     async function handleCreate() {
 
+        setIsLoading(true);
+
         if (edit) {
             await dataService.updateProduct(id, producto)
         } else {
             await dataService.createProduct(producto)
         }
 
-        await dataService.getAllProducts().then((response) => setAllProducts(response))
+        await dataService.getAllProducts().then((response) => setAllProducts(response)).finally(() => setIsLoading(false))
         setOpen(false);
     }
 
@@ -147,8 +153,9 @@ function CoordinatorProductosPage() {
         const id = e.target.value;
 
         if (window.confirm(`Esta seguro de eliminar el producto ${id}?`)) {
+            setIsLoading(true);
             await dataService.deleteProduct(id);
-            await dataService.getAllProducts().then((response) => setAllProducts(response));
+            await dataService.getAllProducts().then((response) => setAllProducts(response)).finally(() => setIsLoading(false));
         }
     }
 
@@ -172,6 +179,7 @@ function CoordinatorProductosPage() {
 
         if (window.confirm('Esta seguro de eliminar esta imagen?')) {
 
+            setIsLoading(true);
             dataService.deleteImage(producto.public_id).then((response) => {
 
                 if (response.result == 'ok') {
@@ -183,15 +191,11 @@ function CoordinatorProductosPage() {
                         }
                     })
                 }
-            })
+
+            }).finally(() => setIsLoading(false));
         }
 
     }
-
-    // useEffect(() => {
-    // console.log(allCategories)
-    // console.log(allProducts)
-    // }, [allProducts])
 
     return (
         <>
@@ -221,39 +225,79 @@ function CoordinatorProductosPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {allProducts?.map(({ id, sku, name, price, available }, index) => (
-                                    <tr key={id} className="even:bg-blue-gray-50/50">
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {id}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {sku}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {name}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {price}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {available ? 'Si' : 'No'}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4 flex justify-around">
-                                            <Button variant="gradient" size="sm" color="amber" onClick={handleEdit} value={id}>Editar</Button>
-                                            <Button variant="gradient" size="sm" color="red" onClick={handleDelete} value={id}>Eliminar</Button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {
+                                    isLoading ?
+
+                                        <tr key={id} className="even:bg-blue-gray-50/50 animate-pulse">
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div className='flex justify-between'>
+                                                    <div className="h-4 w-1/2 mx-1 bg-gray-600 rounded"></div>
+                                                    <div className="h-4 w-1/2 mx-1 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        :
+
+                                        allProducts?.map(({ id, sku, name, price, available }, index) => (
+                                            <tr key={id} className="even:bg-blue-gray-50/50">
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {id}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {sku}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {name}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {price}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {available ? 'Si' : 'No'}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4 flex justify-around">
+                                                    <Button variant="gradient" size="sm" color="amber" onClick={handleEdit} value={id}>Editar</Button>
+                                                    <Button variant="gradient" size="sm" color="red" onClick={handleDelete} value={id}>Eliminar</Button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                }
                             </tbody>
                         </table>
                     </Card>
@@ -374,9 +418,21 @@ function CoordinatorProductosPage() {
                                 <div className='md:w-1/2 my-1 mx-1'>
                                     <Input variant="static" name='image' type="file" accept="image/*" className='border-none' onChange={handleImageUpload} />
                                 </div>
-                                <div className='md:w-1/2 my-1 mx-1 flex justify-center'>
-                                    <Button color="red" onClick={handleDeleteImage}>Eliminar Imagen Actual</Button>
-                                </div>
+                                {
+                                    isLoading ?
+
+                                        <div className='md:w-1/2 my-1 mx-1 flex justify-center'>
+                                            <Button color="red" disabled className='w-52 flex justify-center items-center'>
+                                                <Spinner className="h-4" />
+                                            </Button>
+                                        </div>
+
+                                        :
+
+                                        <div className='md:w-1/2 my-1 mx-1 flex justify-center'>
+                                            <Button color="red" onClick={handleDeleteImage} className='w-52'>Eliminar Imagen Actual</Button>
+                                        </div>
+                                }
                             </div>
                             <div className='flex flex-col md:flex-col md:justify-between'>
                                 <Typography variant="h6" color="blue-gray" className="mb-3">
@@ -434,9 +490,19 @@ function CoordinatorProductosPage() {
                     >
                         <span>Salir</span>
                     </Button>
-                    <Button variant="gradient" color="green" onClick={handleCreate}>
-                        <span>Confirmar</span>
-                    </Button>
+                    {
+                        isLoading ?
+
+                            <Button variant="gradient" color="green" className='w-28' disabled>
+                                <Spinner className="h-4 w-full" />
+                            </Button>
+
+                            :
+
+                            <Button variant="gradient" color="green" className='w-28' onClick={handleCreate}>
+                                <span>Confirmar</span>
+                            </Button>
+                    }
                 </DialogFooter>
             </Dialog>
         </>
