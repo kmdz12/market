@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Input, Typography, Select, Option, Textarea, Button } from '@material-tailwind/react';
+import { Input, Typography, Select, Option, Textarea, Button, Checkbox } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
 import DataService from '../../service/dataService';
@@ -22,6 +22,7 @@ function DeliveryDetailsPage() {
         name: '',
         surname: ''
     })
+    const [saveAddress, setSaveAddress] = useState(false);
     const dataService = new DataService();
 
     useEffect(() => {
@@ -66,6 +67,11 @@ function DeliveryDetailsPage() {
         // console.log(cartProducts)
     }, [currentUser, userLogged])
 
+    function handleAddress(e) {
+
+        setSaveAddress(e.target.checked);
+    }
+
     function handlePickupChange(e) {
         const { name, value } = e.target;
 
@@ -83,7 +89,7 @@ function DeliveryDetailsPage() {
                 <NavBarComponent />
                 <div className='p-2 background lg:flex lg:justify-center grow'>
                     {/* Final Cart Details */}
-                    <div className='flex flex-col my-4 bg-gray-300 p-5 lg:w-1/3'>
+                    <div className='flex flex-col my-4 bg-gray-300 p-5 lg:w-1/2'>
                         <Typography variant="h2" className='text-center'>Tu Carrito</Typography>
                         <div className='flex justify-between mt-5'>
                             <div className='flex flex-col'>
@@ -127,7 +133,7 @@ function DeliveryDetailsPage() {
                     </div>
 
                     {/* Delivery Details */}
-                    <div className='flex flex-col my-4 bg-gray-300 p-5 lg:w-1/3'>
+                    <div className='flex flex-col my-4 bg-gray-300 p-5 lg:w-1/2'>
                         <div>
                             <Typography variant="h2" className='text-center'>Informacion de Delivery</Typography>
                             <Typography variant='paragraph' className='text-center mt-5'>A continuacion, provee los detalles para el envio de tu pedido, o selecciona uno previamente guardado!</Typography>
@@ -215,8 +221,11 @@ function DeliveryDetailsPage() {
                                         </div>
                                     </div>
 
-                                    <div className='flex justify-center md:flex-col md:items-end grow md:justify-end mt-10'>
-                                        <Button className='flex shadow-pop-br md:py-6 md:px-32 rounded-none lg:text-xl' color='pink' variant="gradient">Finalizar Orden</Button>
+                                    <div className='flex flex-col justify-center items-center md:flex-col md:items-center grow md:justify-end mt-5'>
+                                        <Checkbox label="Guardar direccion?" name="address" color='pink' value={saveAddress} checked={saveAddress} onChange={handleAddress} />
+                                        <div className='mt-5'>
+                                            <Button className='flex shadow-pop-br md:py-6 md:px-32 rounded-none lg:text-xl' color='pink' variant="gradient">Finalizar Orden</Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
