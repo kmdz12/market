@@ -9,6 +9,7 @@ function NavBarComponent() {
     const [openNav, setOpenNav] = React.useState(false);
     const toggleOpen = () => setOpenNav((cur) => !cur);
     const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [location, setLocation] = useLocation();
     const dataService = new DataService();
 
@@ -25,8 +26,12 @@ function NavBarComponent() {
                 } else {
                     setUserLoggedIn(response.auth)
                 }
-            })
+            }).finally(() => setIsLoading(false));
+
+        } else {
+            setIsLoading(false);
         }
+
 
     }, [])
 
@@ -127,7 +132,6 @@ function NavBarComponent() {
     );
 
     return (
-
         <div className="sticky top-0 z-10 max-h-[768px] w-[calc(100%)] overflow-none">
             <Navbar className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
                 <div className="flex items-center justify-between text-blue-gray-900">
@@ -136,17 +140,17 @@ function NavBarComponent() {
                         src="https://placehold.co/400"
                         alt="logo"
                     />
-                    <div className="flex items-center gap-4">
+                    <div className={`flex items-center gap-4 ${isLoading ? 'invisible' : 'visible'}`}>
                         {
                             userLoggedIn !== true ?
 
                                 <div className="flex items-center gap-x-5">
-                                    <div className="mr-4 hidden lg:block">{nonUserNavList}</div>
+                                    <div className="mr-4 lg:block">{nonUserNavList}</div>
                                     <Link href="/register">
                                         <Button
                                             variant="filled"
                                             size="md"
-                                            className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
+                                            className="lg:inline-block rounded-none border-2 border-black shadow-pop-br"
                                             style={{ backgroundColor: "#FF5FAA" }}
                                         >
                                             <span className="text-black">Registrate</span>
@@ -156,7 +160,7 @@ function NavBarComponent() {
                                         <Button
                                             variant="filled"
                                             size="md"
-                                            className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
+                                            className="lg:inline-block rounded-none border-2 border-black shadow-pop-br"
                                             style={{ backgroundColor: "#66FF7B" }}
                                         >
                                             <span className="text-black">Inicia Sesion</span>
@@ -166,7 +170,7 @@ function NavBarComponent() {
 
                                 :
 
-                                <div className="mr-4 hidden lg:block">{userNavList}</div>
+                                <div className="mr-4 lg:block fade-in-right">{userNavList}</div>
                         }
                         <IconButton
                             variant="text"
