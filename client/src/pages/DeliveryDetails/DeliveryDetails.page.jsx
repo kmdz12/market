@@ -1,15 +1,36 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Input, Typography, Select, Option, Textarea, Button, Checkbox } from '@material-tailwind/react';
+import { Input, Typography, Select, Option, Textarea, Button, Checkbox, Radio, Card, List, ListItem, ListItemPrefix } from '@material-tailwind/react';
 import NavBarComponent from '../../components/NavBar/navbar.component';
 import FooterComponent from '../../components/Footer/footer.component';
 import DataService from '../../service/dataService';
 import CartContext from '../../store/CartContext';
+import './DeliveryDetails.style.css';
 
 function DeliveryDetailsPage() {
 
     const cartCTX = useContext(CartContext);
     const [cartProducts, setCartProducts] = useState({});
     const [userLogged, setUserLogged] = useState();
+    const [addressList, setAddressList] = useState([
+        {
+            department: 'Godoy Cruz',
+            locality: 'Las Tortugas',
+            street: 'Calle Falsa 123',
+            indications: 'Pasando la rotonda, hacia los monoblocks'
+        },
+        {
+            department: 'Capital',
+            locality: 'Centro',
+            street: '9 de Julio 2331',
+            indications: null
+        },
+        {
+            department: 'Maipu',
+            locality: 'Coquimbito',
+            street: 'Calle Falsa 312',
+            indications: 'Antes de llegar al casino, en el callejon oscuro...'
+        }
+    ]);
     const [currentUser, setCurrentUser] = useState({
         email: '',
         id: 0,
@@ -23,6 +44,7 @@ function DeliveryDetailsPage() {
         surname: ''
     })
     const [saveAddress, setSaveAddress] = useState(false);
+    const [currentAddress, setCurrentAddress] = useState(0);
     const dataService = new DataService();
 
     useEffect(() => {
@@ -67,7 +89,7 @@ function DeliveryDetailsPage() {
         // console.log(cartProducts)
     }, [currentUser, userLogged])
 
-    function handleAddress(e) {
+    function handleSaveAddress(e) {
 
         setSaveAddress(e.target.checked);
     }
@@ -81,6 +103,10 @@ function DeliveryDetailsPage() {
                 [name]: value
             }
         })
+    }
+
+    function handleAddressCheck(e) {
+        setCurrentAddress(e.target.value)
     }
 
     return (
@@ -157,77 +183,153 @@ function DeliveryDetailsPage() {
                                     <Typography variant='h5' className='p-3'>Mis Direcciones</Typography>
                                 </div>
                                 {/* Saved Directions Container*/}
-                                <div className='flex flex-row overflow-x-scroll py-2 w-full px-4'>
-                                    <div className='bg-gray-500 rounded p-3 mx-1'>
-                                        <Typography className='whitespace-nowrap'>Godoy Cruz</Typography>
-                                        <Typography className='whitespace-nowrap'>Las Tortugas</Typography>
-                                        <Typography className='whitespace-nowrap'>Calle Falsa 123</Typography>
-                                        <Typography className='whitespace-wrap md:whitespace-nowrap'>Pasando el puente, al lado del rotonda</Typography>
-                                    </div>
-                                    <div className='bg-gray-500 rounded p-3 mx-1'>
-                                        <Typography>Department</Typography>
-                                        <Typography>Locality</Typography>
-                                        <Typography>Street</Typography>
-                                    </div>
-                                    <div className='bg-gray-500 rounded p-3 mx-1'>
-                                        <Typography>Department</Typography>
-                                        <Typography>Locality</Typography>
-                                        <Typography>Street</Typography>
-                                    </div>
-                                    <div className='bg-gray-500 rounded p-3 mx-1'>
-                                        <Typography>Department</Typography>
-                                        <Typography>Locality</Typography>
-                                        <Typography>Street</Typography>
-                                    </div>
-                                    <div className='bg-gray-500 rounded p-3 mx-1'>
-                                        <Typography>Department</Typography>
-                                        <Typography>Locality</Typography>
-                                        <Typography>Street</Typography>
-                                    </div>
-                                    <div className='bg-gray-500 rounded p-3 mx-1'>
-                                        <Typography>Department</Typography>
-                                        <Typography>Locality</Typography>
-                                        <Typography>Street</Typography>
-                                    </div>
+                                <div className='flex flex-row my-5 w-full lg:px-4'>
+                                    <Card className="flex w-full lg:w-auto">
+                                        <List className="flex flex-col lg:flex-wrap lg:flex-row lg:gap-0">
+                                            <ListItem className='flex p-0 lg:w-1/2'>
+                                                <label
+                                                    htmlFor="address"
+                                                    className="flex w-full cursor-pointer items-center lg:grow h-full"
+                                                >
+                                                    <ListItemPrefix className="flex m-0 grow fill-space h-full">
+                                                        <Radio
+                                                            name="address"
+                                                            ripple={false}
+                                                            defaultChecked
+                                                            className="hover:before:opacity-0"
+                                                            containerProps={{
+                                                                className: "flex",
+                                                            }}
+                                                            label={
+                                                                <Typography
+                                                                    color="blue-gray"
+                                                                    className="font-medium text-blue-gray-400 grow lg:self-center"
+                                                                >
+                                                                    Nueva Dirección
+                                                                </Typography>
+                                                            }
+                                                            labelProps={{
+                                                                className: 'flex grow h-full p-5'
+                                                            }}
+                                                            onChange={handleAddressCheck}
+                                                            value={0}
+                                                        />
+                                                    </ListItemPrefix>
+                                                </label>
+                                            </ListItem>
+                                            {
+                                                addressList.map((add, index) => (
+
+                                                    <ListItem key={index} className='flex p-0 lg:w-1/2'>
+                                                        <label
+                                                            htmlFor="address"
+                                                            className="flex w-full cursor-pointer items-center lg:grow h-full"
+                                                        >
+                                                            <ListItemPrefix className="flex m-0 grow fill-space h-full">
+                                                                <Radio
+                                                                    name="address"
+                                                                    ripple={false}
+                                                                    className="hover:before:opacity-0"
+                                                                    containerProps={{
+                                                                        className: "flex",
+                                                                    }}
+                                                                    label={
+                                                                        <div className='flex flex-col justify-center h-full'>
+                                                                            <Typography
+                                                                                color="blue-gray"
+                                                                                className="font-medium text-blue-gray-400"
+                                                                            >
+                                                                                {add.street}
+                                                                            </Typography>
+                                                                            <Typography
+                                                                                color="blue-gray"
+                                                                                className="font-medium text-blue-gray-400"
+                                                                            >
+                                                                                {add.locality}
+                                                                            </Typography>
+                                                                            <Typography
+                                                                                color="blue-gray"
+                                                                                className="font-medium text-blue-gray-400"
+                                                                            >
+                                                                                {add.department}
+                                                                            </Typography>
+                                                                            {
+                                                                                add.indications ?
+
+                                                                                    <Typography
+                                                                                        color="blue-gray"
+                                                                                        className="font-medium text-blue-gray-400"
+                                                                                    >
+                                                                                        {add.indications}
+                                                                                    </Typography>
+                                                                                    :
+
+                                                                                    null
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                    labelProps={{
+                                                                        className: 'flex grow h-full p-5'
+                                                                    }}
+                                                                    onChange={handleAddressCheck}
+                                                                />
+                                                            </ListItemPrefix>
+                                                        </label>
+                                                    </ListItem>
+                                                ))
+                                            }
+
+                                        </List>
+                                    </Card>
                                 </div>
                                 {/* New Direction Container */}
-                                <div className='flex flex-col py-3 w-full px-4 grow'>
-                                    <div className='md:flex md:justify-between'>
-                                        <div className='py-2 md:w-full md:mr-1'>
-                                            <Select label="Departamento" className='bg-white'>
-                                                <Option>Material Tailwind HTML</Option>
-                                                <Option>Material Tailwind React</Option>
-                                                <Option>Material Tailwind Vue</Option>
-                                                <Option>Material Tailwind Angular</Option>
-                                                <Option>Material Tailwind Svelte</Option>
-                                            </Select>
-                                        </div>
-                                        <div className='py-2 md:w-full md:ml-1'>
-                                            <Select label="Localidad" className='bg-white'>
-                                                <Option>Material Tailwind HTML</Option>
-                                                <Option>Material Tailwind React</Option>
-                                                <Option>Material Tailwind Vue</Option>
-                                                <Option>Material Tailwind Angular</Option>
-                                                <Option>Material Tailwind Svelte</Option>
-                                            </Select>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className='py-2'>
-                                            <Input className="bg-white" label="Calle" type="text" variant="outlined" size='lg' />
-                                        </div>
-                                        <div className='py-2'>
-                                            <Textarea label="Indicaciones" className='bg-white' variant='outlined' size='md' />
-                                        </div>
-                                    </div>
 
-                                    <div className='flex flex-col justify-center items-center md:flex-col md:items-center grow md:justify-end mt-5'>
-                                        <Checkbox label="Guardar direccion?" name="address" color='pink' value={saveAddress} checked={saveAddress} onChange={handleAddress} />
-                                        <div className='mt-5'>
-                                            <Button className='flex shadow-pop-br md:py-6 md:px-32 rounded-none lg:text-xl' color='pink' variant="gradient">Finalizar Orden</Button>
+                                {
+                                    currentAddress == 0 ?
+
+                                        <div className='flex flex-col py-3 w-full px-4 grow'>
+                                            <div className='md:flex md:justify-between'>
+                                                <div className='py-2 md:w-full md:mr-1'>
+                                                    <Select label="Departamento" className='bg-white' aria-required>
+                                                        <Option>Material Tailwind HTML</Option>
+                                                        <Option>Material Tailwind React</Option>
+                                                        <Option>Material Tailwind Vue</Option>
+                                                        <Option>Material Tailwind Angular</Option>
+                                                        <Option>Material Tailwind Svelte</Option>
+                                                    </Select>
+                                                </div>
+                                                <div className='py-2 md:w-full md:ml-1'>
+                                                    <Select label="Localidad" className='bg-white' aria-required>
+                                                        <Option>Material Tailwind HTML</Option>
+                                                        <Option>Material Tailwind React</Option>
+                                                        <Option>Material Tailwind Vue</Option>
+                                                        <Option>Material Tailwind Angular</Option>
+                                                        <Option>Material Tailwind Svelte</Option>
+                                                    </Select>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className='py-2'>
+                                                    <Input className="bg-white" label="Calle" type="text" variant="outlined" size='lg' required/>
+                                                </div>
+                                                <div className='py-2'>
+                                                    <Textarea label="Indicaciones" className='bg-white' variant='outlined' size='md' required/>
+                                                </div>
+                                            </div>
+
+                                            <div className='flex flex-col justify-center items-center md:flex-col md:items-center grow md:justify-end mt-5'>
+                                                <Checkbox label="Guardar direccion?" name="address" color='pink' value={saveAddress} checked={saveAddress} onChange={handleSaveAddress} />
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+
+                                        :
+
+                                        null
+                                }
+
+                            </div>
+                            <div className='flex flex-col justify-center items-center md:flex-col md:items-center grow md:justify-end'>
+                                <Button className='flex shadow-pop-br md:py-6 md:px-32 rounded-none lg:text-lg' color='pink' variant="gradient">Finalizar Orden</Button>
                             </div>
                         </div>
                     </div>
