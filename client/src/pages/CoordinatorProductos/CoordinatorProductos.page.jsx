@@ -204,7 +204,7 @@ function CoordinatorProductosPage() {
             <div className='md:container md:mx-auto p-2'>
                 <div className="my-5 flex justify-between items-center">
                     <Typography variant="h2">ABM Productos</Typography>
-                    <Button variant="gradient" size="sm" color="green" onClick={handleOpen}>Nuevo</Button>
+                    <Button variant="gradient" size="sm" color="green" onClick={handleOpen} disabled={isLoading ? true : false}>Nuevo</Button>
                 </div>
                 <div>
                     <Card className="h-full w-full overflow-scroll">
@@ -309,8 +309,8 @@ function CoordinatorProductosPage() {
                 <DialogBody className='flex justify-center'>
                     <form className="w-full" encType='multipart/form-data'>
                         <div className="mb-1 flex flex-col gap-6">
-                            <div className='flex flex-col md:flex-col lg:flex-row'>
-                                <div className='lg:w-1/4 my-1 mx-1'>
+                            <div className='flex flex-col md:flex-col lg:flex-row lg:flex-wrap lg:grow'>
+                                <div className='my-1 mx-1 lg:w-1/3 lg:grow'>
                                     <Typography variant="h6" color="blue-gray" className="mb-3">
                                         Nombre
                                     </Typography>
@@ -327,7 +327,7 @@ function CoordinatorProductosPage() {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className='lg:w-1/4 my-1 mx-1'>
+                                <div className='my-1 mx-1 lg:w-1/3 lg:grow'>
                                     <Typography variant="h6" color="blue-gray" className="mb-3">
                                         SKU
                                     </Typography>
@@ -344,7 +344,7 @@ function CoordinatorProductosPage() {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className='lg:w-1/4 my-1 mx-1'>
+                                <div className='lg:w-1/3 lg:grow my-1 mx-1'>
                                     <Typography variant="h6" color="blue-gray" className="mb-3">
                                         Precio
                                     </Typography>
@@ -362,7 +362,7 @@ function CoordinatorProductosPage() {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className='lg:w-1/4 my-1 mx-1'>
+                                <div className='lg:w-1/3 lg:grow my-1 mx-1'>
                                     <Typography variant="h6" color="blue-gray" className="mb-3">
                                         Categoria
                                     </Typography>
@@ -445,17 +445,15 @@ function CoordinatorProductosPage() {
                                 <Checkbox label="Esta en oferta?" name="offer" disabled value={producto.offer} onChange={handleChange} />
                             </div>
                             <div className='flex flex-col md:flex-row md:justify-between'>
-                                <div className='md:w-1/2 my-1 mx-1'>
+                                <div className='flex flex-col md:w-1/2 my-1 mx-1'>
                                     <Typography>Duracion de la Oferta</Typography>
                                     <DatePicker
-                                        className='w-72 md:w-96 border border-blue-gray-200 rounded py-1' disabled selected={producto.offer_duration} name="offer_duration" onChange={(date) => setProducto((prevValue) => {
+                                        className='w-full border border-blue-gray-200 rounded py-1' disabled selected={producto.offer_duration} name="offer_duration" onChange={(date) => setProducto((prevValue) => {
                                             return {
                                                 ...prevValue,
                                                 ['offer_duration']: date
                                             }
                                         })} />
-                                    <div className='w-auto'>
-                                    </div>
                                 </div>
                                 <div className='md:w-1/2 my-1 mx-1'>
                                     <Typography>Precio de la Oferta</Typography>
