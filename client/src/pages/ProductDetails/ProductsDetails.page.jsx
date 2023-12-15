@@ -11,17 +11,18 @@ function ProductDetailsPage() {
     const { id } = useParams();
     const [product, setProduct] = useState();
     const [quantity, setQuantity] = useState(1);
-    const cartCTX = useContext(CartContext)
+    const cartCTX = useContext(CartContext);
     const dataService = new DataService();
 
     useEffect(() => {
-        dataService.getStoreProductDetails(id).then((response) => setProduct(response))
+        dataService.getStoreProductDetails(id).then((response) => setProduct(response));
     }, [])
 
     function quantityHandler(e) {
 
         if (isNaN(e.target.value)) {
-            setQuantity(1)
+            setQuantity(1);
+
         } else {
             setQuantity(parseInt(e.target.value));
         }
@@ -30,17 +31,18 @@ function ProductDetailsPage() {
     function addToCartHandler() {
 
         if (isNaN(quantity)) {
-            alert('Por favor ingresa un numero')
+            alert('Por favor ingresa un numero');
+
         } else {
+
             cartCTX.addItem({
                 id: product.id,
-                name: product.name,
+                title: product.name,
                 sku: product.sku,
                 quantity: quantity,
-                price: product.price
-            })
+                unit_price: Number(product.price)
+            });
         }
-
     }
 
     return (
@@ -70,7 +72,7 @@ function ProductDetailsPage() {
                                 <Typography variant="paragraph" className='p-1'>{product?.description}</Typography>
                             </div>
                             <div className='flex justify-center items-center p-2'>
-                                <Input label='Cantidad' variant="outlined" type='number' min={1} max={5} defaultValue={1} name="quantity" onChange={quantityHandler} />
+                                <Input label='Cantidad' variant="outlined" type='number' min={1} defaultValue={1} name="quantity" onChange={quantityHandler} />
                             </div>
                             <div className='p-5 self-center'>
                                 <Button onClick={addToCartHandler} color='pink' className='shadow-pop-br'>Agregar al Carrito</Button>
