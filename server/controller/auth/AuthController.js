@@ -30,21 +30,22 @@ const authController = {
                     })
                 }
 
-                res.status(200).json({ message: 'Registro Completado, ahora te redigiremos para loguearte...', code: 200 })
+                res.status(200).json({ message: 'Registro Completado, ahora te redigiremos para loguearte...', code: 200 });
 
             } else {
+
                 res.status(302).json({ message: 'Este correo ya esta en uso!', code: 302 });
             }
 
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
-
     },
 
     login: async (req, res) => {
 
         try {
+
             const { email, password } = req.body;
 
             const query = await pool.query('SELECT * FROM users where email = $1', [email]);
@@ -76,14 +77,15 @@ const authController = {
             }
 
         } catch (e) {
+
             res.status(500).json({ auth: false, message: 'An error has occured, please try again in a few seconds!' });
         }
-
     },
 
     adminLogin: async (req, res) => {
 
         try {
+
             const { email, password } = req.body;
             const query = await pool.query('SELECT * FROM users where email = $1 AND role = 1', [email]);
 
@@ -114,9 +116,9 @@ const authController = {
             }
 
         } catch (e) {
+
             res.status(500).json({ auth: false, message: 'An error has occured, please try again in a few seconds!' });
         }
-
     },
 
     checkLoggedUser: async (req, res) => {
@@ -124,6 +126,7 @@ const authController = {
         try {
 
             if (req.session.user) {
+
                 res.status(200).json({ loggedIn: true, user: req.session.user });
 
             } else {
@@ -135,13 +138,11 @@ const authController = {
 
             res.status(404).json({ message: 'An error has ocurred, please try again later!' });
         }
-
     },
 
     isUserAuth: (req, res) => {
         verifyJWT(req, res);
     }
-
 }
 
 module.exports = { authController }
