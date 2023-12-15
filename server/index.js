@@ -27,12 +27,14 @@ app.use(session({
         tableName: 'sessions',
         createTableIfMissing: true
     }),
+    key: 'user_sid',
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 1,
-        // secure: true
+        secure: true,
         sameSite: 'none'
     }
 }));
