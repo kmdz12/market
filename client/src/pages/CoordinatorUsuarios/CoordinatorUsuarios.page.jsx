@@ -1,23 +1,10 @@
 import React from 'react';
 import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
-import { Button, Card, Typography } from '@material-tailwind/react';
+import { Card, Typography } from '@material-tailwind/react';
 
 function CoordinatorUsuariosPage() {
 
     const TABLE_HEAD = ["ID", "Email", "Rol"];
-
-    const TABLE_ROWS = [
-        {
-            id: 1,
-            email: 'jetorrico@gmail.com',
-            role: 2
-        },
-        {
-            id: 2,
-            email: 'market.km12@google.com',
-            role: 1
-        }
-    ];
 
     return (
         <>
@@ -46,7 +33,7 @@ function CoordinatorUsuariosPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {TABLE_ROWS.map(({ id, email, role }, index) => (
+                                {/* {TABLE_ROWS.map(({ id, email, role }, index) => (
                                     <tr key={id} className="even:bg-blue-gray-50/50">
                                         <td className="p-4">
                                             <Typography variant="small" color="blue-gray" className="font-normal">
@@ -64,7 +51,7 @@ function CoordinatorUsuariosPage() {
                                             </Typography>
                                         </td>
                                     </tr>
-                                ))}
+                                ))} */}
                             </tbody>
                         </table>
                     </Card>
