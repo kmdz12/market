@@ -1,32 +1,11 @@
-import React, { useEffect } from 'react';
-import { Link, useLocation } from 'wouter';
-import { Navbar, Typography, Button, IconButton, Collapse } from "@material-tailwind/react";
+import React from 'react';
+import { Link } from 'wouter';
+import { Navbar, Typography, IconButton, Collapse } from "@material-tailwind/react";
 
 function AdminNavbarComponent() {
 
     const [openNav, setOpenNav] = React.useState(false);
     const toggleOpen = () => setOpenNav((cur) => !cur);
-    const [location, setLocation] = useLocation();
-
-    useEffect(() => {
-
-        // if (localStorage.getItem('token') !== null) {
-        //     const token = localStorage.getItem('token');
-
-        //     dataService.checkUserStatus(token).then((response) => {
-
-        //         if (response.auth === false) {
-        //             localStorage.removeItem('token');
-        //             setLocation('/coordinator/admin/login')
-        //         } else {
-        //             setUserLoggedIn(response.auth)
-        //         }
-        //     })
-        // } else {
-        //     setLocation('/coordinator/admin/login')
-        // }
-
-    }, [])
 
     function handleLogout() {
         localStorage.removeItem('token');
