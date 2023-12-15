@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { Button, Card, Typography, Dialog, DialogHeader, DialogBody, DialogFooter, Input, Select, Option, Textarea, Checkbox, Spinner } from '@material-tailwind/react';
 import DatePicker from "react-datepicker";
+import { Button, Card, Typography, Dialog, DialogHeader, DialogBody, DialogFooter, Input, Select, Option, Textarea, Checkbox, Spinner } from '@material-tailwind/react';
 import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
 import DataService from '../../service/dataService';
 import './CoordinatorProductos.style.css';
@@ -35,35 +35,42 @@ function CoordinatorProductosPage() {
     const dataService = new DataService();
 
     useEffect(() => {
+
         if (localStorage.getItem('token') !== null) {
+
             const token = localStorage.getItem('token');
 
             dataService.checkLoggedUser().then((response) => {
 
                 if (response.user !== import.meta.env.VITE_OWNER_EMAIL && response.user !== import.meta.env.VITE_SUBOWNER_EMAIL && response.user !== import.meta.env.VITE_ENTERPRISE_EMAIL) {
-                    setLocation('/')
+                    setLocation('/');
+
                 } else {
 
                     dataService.checkUserStatus(token).then((response) => {
 
                         if (response.auth === false) {
                             localStorage.removeItem('token');
-                            setLocation('/coordinator/admin/login')
+                            setLocation('/coordinator/admin/login');
                         }
                     })
                 }
             })
+
         } else {
-            setLocation('/coordinator/admin/login')
+            setLocation('/coordinator/admin/login');
         }
+
     }, [])
 
     useEffect(() => {
         dataService.getAllProducts().then((response) => setAllProducts(response));
         dataService.getCategories().then((response) => setAllCategories(response));
+
         setTimeout(() => {
             setIsLoading(false);
         }, 1500);
+
     }, [setAllProducts])
 
     function handleOpen() {
@@ -86,17 +93,17 @@ function CoordinatorProductosPage() {
                     ...prevValue,
                     [name]: newValue
                 }
-            })
+            });
 
         } else {
+
             setProducto((prevValue) => {
                 return {
                     ...prevValue,
                     [name]: value
                 }
-            })
+            });
         }
-
     }
 
     function handleSelect(value) {
@@ -106,7 +113,7 @@ function CoordinatorProductosPage() {
                 ...prevValue,
                 ['category']: value
             }
-        })
+        });
     }
 
     async function handleCreate() {
@@ -114,12 +121,12 @@ function CoordinatorProductosPage() {
         setIsLoading(true);
 
         if (edit) {
-            await dataService.updateProduct(id, producto)
+            await dataService.updateProduct(id, producto);
         } else {
-            await dataService.createProduct(producto)
+            await dataService.createProduct(producto);
         }
 
-        await dataService.getAllProducts().then((response) => setAllProducts(response)).finally(() => setIsLoading(false))
+        await dataService.getAllProducts().then((response) => setAllProducts(response)).finally(() => setIsLoading(false));
         setOpen(false);
     }
 
@@ -128,7 +135,7 @@ function CoordinatorProductosPage() {
         const editID = e.target.value;
         setId(editID);
 
-        const tempProduct = allProducts.filter((product) => product.id == editID)[0]
+        const tempProduct = allProducts.filter((product) => product.id == editID)[0];
 
         setProducto({
             sku: tempProduct.sku,
@@ -142,7 +149,7 @@ function CoordinatorProductosPage() {
             offer_duration: new Date(tempProduct.offer_duration),
             offer_price: tempProduct.offer_price,
             available: tempProduct.available
-        })
+        });
 
         setOpen(true);
         setEdit(true);
@@ -165,13 +172,14 @@ function CoordinatorProductosPage() {
         data.append('image', e.target.files[0]);
 
         dataService.imageUpload(data).then((response) => {
+
             setProducto((prevValue) => {
                 return {
                     ...prevValue,
                     ['image_url']: response.url,
                     ['public_id']: response.public_id
                 }
-            })
+            });
         })
     }
 
@@ -183,18 +191,18 @@ function CoordinatorProductosPage() {
             dataService.deleteImage(producto.public_id).then((response) => {
 
                 if (response.result == 'ok') {
+
                     setProducto((prevValue) => {
                         return {
                             ...prevValue,
                             ['image_url']: initialProductState.image_url,
                             ['public_id']: initialProductState.public_id
                         }
-                    })
+                    });
                 }
 
             }).finally(() => setIsLoading(false));
         }
-
     }
 
     return (
