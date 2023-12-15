@@ -16,14 +16,29 @@ function CartPage() {
     const [location, setLocation] = useLocation();
     const dataService = new DataService();
 
+    useEffect(() => {
+
+        const local = JSON.parse(localStorage.getItem('cart'));
+
+        if (local) {
+            setCartProducts(local);
+            setPaymentType(local.paymentType);
+
+        } else {
+            return;
+        }
+
+    }, [cartCTX])
+
     function cartItemAddHandler(id, name, sku, amount, price) {
+
         cartCTX.addItem({
             id: id,
-            name: name,
+            title: name,
             sku: sku,
             quantity: amount,
-            price: price
-        })
+            unit_price: price
+        });
     }
 
     function cartItemRemoveHandler(id) {
@@ -33,7 +48,6 @@ function CartPage() {
     function destroyCartItemHandler(id) {
 
         if (window.confirm('Quitar este producto del Carrito?')) {
-
             cartCTX.destroyItem(id);
         }
     }
@@ -54,33 +68,18 @@ function CartPage() {
                 setUserStatus(response)
 
                 if (response.loggedIn) {
-                    setLocation('/delivery/details')
+                    setLocation('/delivery');
                 }
 
             }).catch((e) => {
-                setUserStatus(e.response.data.loggedIn)
-                setLocation('/login')
-
-            }).finally(() => setIsLoading(false));
+                setUserStatus(e.response.data.loggedIn);
+                setLocation('/login');
+            });
 
         } else {
-            setLocation('/login')
+            setLocation('/login');
         }
-
     }
-
-    useEffect(() => {
-
-        const local = JSON.parse(localStorage.getItem('cart'));
-
-        if (local) {
-            setCartProducts(local)
-            setPaymentType(local.paymentType)
-        } else {
-            return;
-        }
-
-    }, [cartCTX])
 
     return (
         <>
@@ -109,18 +108,18 @@ function CartPage() {
                                             <div className='flex flex-row justify-between my-4' key={index}>
                                                 <div className='flex md:grow'>
                                                     <div className='flex self-center'>
-                                                        <Button className='p-0 mx-1' variant="text" onClick={() => destroyCartItemHandler(item.id)}>
+                                                        <Button name='Eliminar item del Carrito' className='p-0 mx-1' variant="text" onClick={() => destroyCartItemHandler(item.id)}>
                                                             <svg fill="#000000" width="48px" height="48px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M589 307v-51H435v51H307v51h410v-51M333 410v358h358V410H333zm102 307h-51V461h51v256zm103 0h-52V461h52v256zm102 0h-51V461h51v256z"></path></g></svg>
                                                         </Button>
                                                     </div>
                                                     <div className='flex flex-col md:flex-row md:items-center md:grow md:w-full md:justify-between'>
-                                                        <Typography variant="small" className='pr-10 md:text-lg md:p-0'>{item.name}</Typography>
+                                                        <Typography variant="small" className='pr-10 md:text-lg md:p-0'>{item.title}</Typography>
                                                         <div className='flex flex-col md:basis-[45%] md:px-0'>
                                                             <div className='flex flex-row md:justify-center'>
                                                                 <Typography variant="paragraph" className='my-2'>Cantidad:{item.quantity}</Typography>
                                                             </div>
                                                             <div className='flex md:items-center md:justify-center'>
-                                                                <Button className='px-4 mr-2' variant="gradient" color='pink' onClick={() => cartItemAddHandler(item.id, item.name, item.sku, 1, item.price)}>
+                                                                <Button className='px-4 mr-2' variant="gradient" color='pink' onClick={() => cartItemAddHandler(item.id, item.title, item.sku, 1, item.unit_price)}>
                                                                     <Typography variant='small'>+</Typography>
                                                                 </Button>
                                                                 <Button className='px-4' variant="gradient" color='gray' onClick={() => cartItemRemoveHandler(item.id)}>
@@ -131,7 +130,7 @@ function CartPage() {
                                                     </div>
                                                 </div>
                                                 <div className='flex items-center mx-5 md:m-0 md:basis-[23%] lg:basis-[16%] lg:justify-end'>
-                                                    <Typography variant="lead" className='mx-2 md:px-8 lg:mr-5 lg:p-0' >${item.price * item.quantity}</Typography>
+                                                    <Typography variant="lead" className='mx-2 md:px-8 lg:mr-5 lg:p-0' >${item.unit_price * item.quantity}</Typography>
                                                 </div>
                                             </div>
                                         ))}
@@ -149,7 +148,7 @@ function CartPage() {
 
                         {/* Total */}
                         <div className='flex justify-center p-5'>
-                            <Typography variant="h4">Total: $ {cartProducts.total}</Typography>
+                            <Typography variant="h3">Total: $ {cartProducts.total}</Typography>
                         </div>
                     </div>
                 </div>
@@ -165,9 +164,9 @@ function CartPage() {
 
                             <div className='flex grow mt-5 lg:grow-0'>
                                 <div className="p-5 px-10 grow lg:mt-5">
-                                    <Select label="Metodo de Pago" className='bg-white' variant="outlined" size='lg' value={String(paymentType)} name="paymentType" onChange={handlePaymentType}>
-                                        <Option value='0'>Transferencia</Option>
-                                        <Option value='1'>Mercado Pago</Option>
+                                    <Select label="Metodo de Pago" className='bg-white' variant="outlined" size='lg' value={String(paymentType)} name="Selector Metodo de Pago" onChange={handlePaymentType}>
+                                        <Option value='1'>Transferencia</Option>
+                                        <Option value='2'>Mercado Pago</Option>
                                     </Select>
                                 </div>
                             </div>
@@ -192,13 +191,14 @@ function CartPage() {
                                         isLoading ?
 
                                             <Button className='p-5 my-2 flex justify-center items-center' color='white' variant="gradient" size='lg' disabled>
-                                                <Spinner className='mr-2' color='blue' />
+                                                <Spinner className='mr-1 h-5' color='blue' />
                                                 <span>Procesando</span>
                                             </Button>
 
                                             :
 
                                             <Button className='p-5 my-2 shadow-pop-br' color='white' variant="gradient" size='lg' onClick={handleDirectionsCheck}>Continuar</Button>
+
                                     }
                                 </div>
                             </div>
@@ -208,7 +208,6 @@ function CartPage() {
 
                         null
                 }
-
             </div>
             <FooterComponent />
         </>
