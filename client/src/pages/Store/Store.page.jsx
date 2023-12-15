@@ -11,7 +11,7 @@ function StorePage() {
 
     const cartCTX = useContext(CartContext);
     const [allProducts, setAllProducts] = useState();
-    const [filteredProducts, setFilteredProducts] = useState(allProducts)
+    const [filteredProducts, setFilteredProducts] = useState(allProducts);
     const [allCategories, setCategories] = useState();
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -20,27 +20,32 @@ function StorePage() {
     const dataService = new DataService();
 
     useEffect(() => {
-        dataService.getAllStoreProducts().then((response) => setAllProducts(response))
-        dataService.getCategories().then((response) => setCategories(response))
+
+        dataService.getAllStoreProducts().then((response) => setAllProducts(response));
+        dataService.getCategories().then((response) => setCategories(response));
     }, [])
 
     useEffect(() => {
-        setFilteredProducts(allProducts)
+
+        setFilteredProducts(allProducts);
         setTimeout(() => {
             setIsLoading(false);
         }, 1000);
+
     }, [allProducts])
 
     function handleSort(e) {
 
         if (e === '0') {
-            let tempValue = [...filteredProducts.sort((a, b) => a.price - b.price)]
-            setFilteredProducts(tempValue)
-        } else {
-            let tempValue = [...filteredProducts.sort((a, b) => b.price - a.price)]
-            setFilteredProducts(tempValue)
-        }
 
+            let tempValue = [...filteredProducts.sort((a, b) => a.price - b.price)];
+            setFilteredProducts(tempValue);
+
+        } else {
+
+            let tempValue = [...filteredProducts.sort((a, b) => b.price - a.price)];
+            setFilteredProducts(tempValue);
+        }
     }
 
     function handleSearch(e) {
@@ -48,31 +53,35 @@ function StorePage() {
         let query = e.target.value;
 
         if (query !== "") {
+
             let tempValue = filteredProducts.filter((element) => element.name.toLowerCase().includes(query));
-            setFilteredProducts(tempValue)
+            setFilteredProducts(tempValue);
+
         } else {
-            filterCategories()
+            filterCategories();
         }
     }
 
     function handleCategory(e) {
 
         if (e.target.checked) {
+
             let tempValue = allCategories[parseInt(e.target.value) - 1].category;
-            setFilteredCategories(prevValue => [...prevValue, tempValue])
+            setFilteredCategories(prevValue => [...prevValue, tempValue]);
 
         } else {
-            setFilteredCategories(filteredCategories.filter((cat) => cat !== allCategories[parseInt(e.target.value) - 1].category))
+            setFilteredCategories(filteredCategories.filter((cat) => cat !== allCategories[parseInt(e.target.value) - 1].category));
         }
     }
 
     function filterCategories() {
-        let tempValue = allProducts.filter(prod => filteredCategories.includes(prod.category))
+        let tempValue = allProducts.filter(prod => filteredCategories.includes(prod.category));
 
         if (tempValue.length <= 0) {
-            setFilteredProducts(allProducts)
+            setFilteredProducts(allProducts);
+
         } else {
-            setFilteredProducts(tempValue)
+            setFilteredProducts(tempValue);
         }
     }
 
@@ -80,18 +89,18 @@ function StorePage() {
 
         cartCTX.addItem({
             id: id,
-            name: name,
+            title: name,
             sku: sku,
             quantity: amount,
-            price: price
+            unit_price: price
         })
-
     }
 
     useEffect(() => {
 
         if (filteredCategories.length <= 0) {
-            setFilteredProducts(allProducts)
+            setFilteredProducts(allProducts);
+
         } else {
             filterCategories();
         }
@@ -99,10 +108,8 @@ function StorePage() {
     }, [filteredCategories])
 
     return (
-        <div className='flex flex-col h-screen'>
-
+        <div className='flex flex-col'>
             <NavBarComponent />
-
             <div className="flex flex-col background grow">
                 <div className='md:container md:mx-auto my-8'>
                     <Typography variant="h2" className='text-center'>Nuestros Productos</Typography>
@@ -114,7 +121,6 @@ function StorePage() {
                         <div className='flex flex-col justify-center items-center p-5 grow'>
                             <Spinner className='h-16 w-16 text-gray-900/50' />
                         </div>
-
 
                         :
 
@@ -135,16 +141,10 @@ function StorePage() {
                                                             value={cat.id}
                                                             onChange={handleCategory}
                                                             className="h-8 w-8 rounded-full border-pink-900/20 bg-pink-900/10 transition-all hover:scale-105 hover:before:opacity-0"
+                                                            name={cat.category}
                                                         />
                                                     ))
                                                 }
-                                                {/* <Checkbox
-                                    label="En Oferta"
-                                    color='pink'
-                                    ripple={false}
-                                    value={2}
-                                    className="h-8 w-8 rounded-full border-pink-900/20 bg-pink-900/10 transition-all hover:scale-105 hover:before:opacity-0"
-                                /> */}
                                             </CardBody>
                                         </Card>
                                     </Collapse>
@@ -153,13 +153,13 @@ function StorePage() {
 
                             <div className="flex flex-col justify-center items-center py-2 md:container md:mx-auto md:flex-row lg:justify-between">
                                 <div className="w-72 my-2 md:mx-5">
-                                    <Select label="Ordenar por" variant="outlined" size="lg" className="text-black-900 bg-white" onChange={handleSort}>
+                                    <Select name='Selector Ordenar por' labelProps={{ className: 'text-black-900' }} label="Ordenar por" variant="outlined" size="lg" className="text-black-900 bg-white" onChange={handleSort}>
                                         <Option value={'0'}>Precio mas bajo</Option>
                                         <Option value={'1'}>Precio mas alto</Option>
                                     </Select>
                                 </div>
                                 <div className='w-72 bg-white my-2 md:mx-5'>
-                                    <Input label="Buscar" icon={<i className="fas fa-heart" />} onChange={handleSearch} />
+                                    <Input name='Buscar' label="Buscar" icon={<i className="fas fa-heart" />} onChange={handleSearch} />
                                 </div>
                             </div>
 
@@ -180,7 +180,7 @@ function StorePage() {
                                                             />
                                                         </CardHeader>
                                                         <CardBody className='py-6'>
-                                                            <Typography variant="h6" color="blue-gray" className="mb-2 text-center lg:text-2xl">
+                                                            <Typography variant="h4" color="blue-gray" className="mb-2 text-center lg:text-2xl">
                                                                 {product.name}
                                                             </Typography>
                                                             <Typography variant='h5' className='text-center'>
@@ -189,7 +189,7 @@ function StorePage() {
                                                         </CardBody>
                                                     </Link>
                                                     <CardFooter className="pt-0 text-center">
-                                                        <Button color='pink' variant='outlined' className='shadow-pop-br' onClick={() => addToCartHandler(product.id, product.name, product.sku, 1, product.price)}>Agregar al Carrito</Button>
+                                                        <Button color='pink' variant='gradient' onClick={() => addToCartHandler(product.id, product.name, product.sku, 1, Number(product.price))}>Agregar al Carrito</Button>
                                                     </CardFooter>
                                                 </Card>
 
@@ -201,12 +201,10 @@ function StorePage() {
                                 </div>
                             </div>
                         </div>
-
                 }
             </div>
             <FooterComponent />
         </div>
-
     )
 }
 
