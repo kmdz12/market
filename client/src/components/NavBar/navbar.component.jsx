@@ -22,16 +22,15 @@ function NavBarComponent() {
 
                 if (response.auth === false) {
                     localStorage.removeItem('token');
-                    setLocation('/')
+                    setLocation('/');
                 } else {
-                    setUserLoggedIn(response.auth)
+                    setUserLoggedIn(response.auth);
                 }
             }).finally(() => setIsLoading(false));
 
         } else {
             setIsLoading(false);
         }
-
 
     }, [])
 
@@ -177,6 +176,8 @@ function NavBarComponent() {
                             className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
                             ripple={false}
                             onClick={toggleOpen}
+                            name='hamburger menu button'
+                            title='hamburger menu button'
                         >
                             {openNav ? (
                                 <svg
@@ -186,6 +187,7 @@ function NavBarComponent() {
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
                                     strokeWidth={2}
+                                    name='hamburger menu button'
                                 >
                                     <path
                                         strokeLinecap="round"
@@ -200,6 +202,7 @@ function NavBarComponent() {
                                     fill="none"
                                     stroke="currentColor"
                                     strokeWidth={2}
+                                    name='hamburger menu button'
                                 >
                                     <path
                                         strokeLinecap="round"
