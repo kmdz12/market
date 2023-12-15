@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
-import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
 import { Card, CardBody, CardFooter, Button, Typography } from '@material-tailwind/react';
+import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
 import DataService from '../../service/dataService';
 
 function CoordinatorPanelPage(props) {
@@ -12,25 +12,28 @@ function CoordinatorPanelPage(props) {
     useEffect(() => {
 
         if (localStorage.getItem('token') !== null) {
+
             const token = localStorage.getItem('token');
 
             dataService.checkLoggedUser().then((response) => {
 
                 if (response.user !== import.meta.env.VITE_OWNER_EMAIL && response.user !== import.meta.env.VITE_SUBOWNER_EMAIL && response.user !== import.meta.env.VITE_ENTERPRISE_EMAIL) {
-                    setLocation('/')
+                    setLocation('/');
+
                 } else {
 
                     dataService.checkUserStatus(token).then((response) => {
 
                         if (response.auth === false) {
                             localStorage.removeItem('token');
-                            setLocation('/coordinator/admin/login')
+                            setLocation('/coordinator/admin/login');
                         }
                     })
                 }
             })
+
         } else {
-            setLocation('/coordinator/admin/login')
+            setLocation('/coordinator/admin/login');
         }
 
     }, [])
