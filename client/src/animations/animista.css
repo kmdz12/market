@@ -7,10 +7,9 @@
 
 /**
  * ----------------------------------------
- * animation shadow-pop-br
+ * animation shadow-pop-br/reverse
  * fade-in-right
  * focus-in-expand
- * slide-in-top
  * ----------------------------------------
  */
 
@@ -32,24 +31,32 @@
 
 @keyframes shadow-pop-br {
   0% {
-    box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
     transform: translateX(0) translateY(0);
   }
 
   100% {
-    box-shadow: 1px 1px #3e3e3e, 2px 2px #3e3e3e, 3px 3px #3e3e3e, 4px 4px #3e3e3e, 5px 5px #3e3e3e;
+    -webkit-box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
+    box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
     transform: translateX(-2px) translateY(-2px);
   }
 }
 
 @keyframes shadow-pop-reverse {
   0% {
-    box-shadow: 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e, 0 0 #3e3e3e;
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
     transform: translateX(0) translateY(0);
   }
 
   100% {
-    box-shadow: 1px 1px #3e3e3e, 2px 2px #3e3e3e, 3px 3px #3e3e3e, 4px 4px #3e3e3e, 5px 5px #3e3e3e;
+    -webkit-box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
+    box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
     transform: translateX(-2px) translateY(-2px);
   }
 }
