@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { Button, Card, Typography, Dialog, DialogHeader, DialogBody, DialogFooter, Input, Select, Option, Textarea, Checkbox } from '@material-tailwind/react';
 import DatePicker from "react-datepicker";
+import { Button, Card, Typography, Dialog, DialogHeader, DialogBody, DialogFooter, Input, Select, Option, Textarea, Checkbox, Spinner } from '@material-tailwind/react';
 import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
 import DataService from '../../service/dataService';
 import './CoordinatorProductos.style.css';
@@ -30,36 +30,47 @@ function CoordinatorProductosPage() {
     const [producto, setProducto] = useState(initialProductState);
     const [allProducts, setAllProducts] = useState();
     const [allCategories, setAllCategories] = useState();
+    const [isLoading, setIsLoading] = useState(true);
     const [location, setLocation] = useLocation();
     const dataService = new DataService();
 
     useEffect(() => {
+
         if (localStorage.getItem('token') !== null) {
+
             const token = localStorage.getItem('token');
 
             dataService.checkLoggedUser().then((response) => {
 
                 if (response.user !== import.meta.env.VITE_OWNER_EMAIL && response.user !== import.meta.env.VITE_SUBOWNER_EMAIL && response.user !== import.meta.env.VITE_ENTERPRISE_EMAIL) {
-                    setLocation('/')
+                    setLocation('/');
+
                 } else {
 
                     dataService.checkUserStatus(token).then((response) => {
 
                         if (response.auth === false) {
                             localStorage.removeItem('token');
-                            setLocation('/coordinator/admin/login')
+                            setLocation('/coordinator/admin/login');
                         }
                     })
                 }
             })
+
         } else {
-            setLocation('/coordinator/admin/login')
+            setLocation('/coordinator/admin/login');
         }
+
     }, [])
 
     useEffect(() => {
         dataService.getAllProducts().then((response) => setAllProducts(response));
         dataService.getCategories().then((response) => setAllCategories(response));
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1500);
+
     }, [setAllProducts])
 
     function handleOpen() {
@@ -82,17 +93,17 @@ function CoordinatorProductosPage() {
                     ...prevValue,
                     [name]: newValue
                 }
-            })
+            });
 
         } else {
+
             setProducto((prevValue) => {
                 return {
                     ...prevValue,
                     [name]: value
                 }
-            })
+            });
         }
-
     }
 
     function handleSelect(value) {
@@ -102,18 +113,20 @@ function CoordinatorProductosPage() {
                 ...prevValue,
                 ['category']: value
             }
-        })
+        });
     }
 
     async function handleCreate() {
 
+        setIsLoading(true);
+
         if (edit) {
-            await dataService.updateProduct(id, producto)
+            await dataService.updateProduct(id, producto);
         } else {
-            await dataService.createProduct(producto)
+            await dataService.createProduct(producto);
         }
 
-        await dataService.getAllProducts().then((response) => setAllProducts(response))
+        await dataService.getAllProducts().then((response) => setAllProducts(response)).finally(() => setIsLoading(false));
         setOpen(false);
     }
 
@@ -122,7 +135,7 @@ function CoordinatorProductosPage() {
         const editID = e.target.value;
         setId(editID);
 
-        const tempProduct = allProducts.filter((product) => product.id == editID)[0]
+        const tempProduct = allProducts.filter((product) => product.id == editID)[0];
 
         setProducto({
             sku: tempProduct.sku,
@@ -136,7 +149,7 @@ function CoordinatorProductosPage() {
             offer_duration: new Date(tempProduct.offer_duration),
             offer_price: tempProduct.offer_price,
             available: tempProduct.available
-        })
+        });
 
         setOpen(true);
         setEdit(true);
@@ -147,8 +160,9 @@ function CoordinatorProductosPage() {
         const id = e.target.value;
 
         if (window.confirm(`Esta seguro de eliminar el producto ${id}?`)) {
+            setIsLoading(true);
             await dataService.deleteProduct(id);
-            await dataService.getAllProducts().then((response) => setAllProducts(response));
+            await dataService.getAllProducts().then((response) => setAllProducts(response)).finally(() => setIsLoading(false));
         }
     }
 
@@ -158,13 +172,14 @@ function CoordinatorProductosPage() {
         data.append('image', e.target.files[0]);
 
         dataService.imageUpload(data).then((response) => {
+
             setProducto((prevValue) => {
                 return {
                     ...prevValue,
                     ['image_url']: response.url,
                     ['public_id']: response.public_id
                 }
-            })
+            });
         })
     }
 
@@ -172,26 +187,23 @@ function CoordinatorProductosPage() {
 
         if (window.confirm('Esta seguro de eliminar esta imagen?')) {
 
+            setIsLoading(true);
             dataService.deleteImage(producto.public_id).then((response) => {
 
                 if (response.result == 'ok') {
+
                     setProducto((prevValue) => {
                         return {
                             ...prevValue,
                             ['image_url']: initialProductState.image_url,
                             ['public_id']: initialProductState.public_id
                         }
-                    })
+                    });
                 }
-            })
+
+            }).finally(() => setIsLoading(false));
         }
-
     }
-
-    // useEffect(() => {
-    // console.log(allCategories)
-    // console.log(allProducts)
-    // }, [allProducts])
 
     return (
         <>
@@ -200,7 +212,7 @@ function CoordinatorProductosPage() {
             <div className='md:container md:mx-auto p-2'>
                 <div className="my-5 flex justify-between items-center">
                     <Typography variant="h2">ABM Productos</Typography>
-                    <Button variant="gradient" size="sm" color="green" onClick={handleOpen}>Nuevo</Button>
+                    <Button variant="gradient" size="sm" color="green" onClick={handleOpen} disabled={isLoading ? true : false}>Nuevo</Button>
                 </div>
                 <div>
                     <Card className="h-full w-full overflow-scroll">
@@ -221,39 +233,79 @@ function CoordinatorProductosPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {allProducts?.map(({ id, sku, name, price, available }, index) => (
-                                    <tr key={id} className="even:bg-blue-gray-50/50">
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {id}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {sku}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {name}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {price}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {available ? 'Si' : 'No'}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4 flex justify-around">
-                                            <Button variant="gradient" size="sm" color="amber" onClick={handleEdit} value={id}>Editar</Button>
-                                            <Button variant="gradient" size="sm" color="red" onClick={handleDelete} value={id}>Eliminar</Button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {
+                                    isLoading ?
+
+                                        <tr key={id} className="even:bg-blue-gray-50/50 animate-pulse">
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div>
+                                                    <div className="h-4 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                            <td className='p-4'>
+                                                <div className='flex justify-between'>
+                                                    <div className="h-4 w-1/2 mx-1 bg-gray-600 rounded"></div>
+                                                    <div className="h-4 w-1/2 mx-1 bg-gray-600 rounded"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        :
+
+                                        allProducts?.map(({ id, sku, name, price, available }, index) => (
+                                            <tr key={id} className="even:bg-blue-gray-50/50">
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {id}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {sku}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {name}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {price}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4">
+                                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                                        {available ? 'Si' : 'No'}
+                                                    </Typography>
+                                                </td>
+                                                <td className="p-4 flex justify-around">
+                                                    <Button variant="gradient" size="sm" color="amber" onClick={handleEdit} value={id}>Editar</Button>
+                                                    <Button variant="gradient" size="sm" color="red" onClick={handleDelete} value={id}>Eliminar</Button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                }
                             </tbody>
                         </table>
                     </Card>
@@ -265,8 +317,8 @@ function CoordinatorProductosPage() {
                 <DialogBody className='flex justify-center'>
                     <form className="w-full" encType='multipart/form-data'>
                         <div className="mb-1 flex flex-col gap-6">
-                            <div className='flex flex-col md:flex-col lg:flex-row'>
-                                <div className='lg:w-1/4 my-1 mx-1'>
+                            <div className='flex flex-col md:flex-col lg:flex-row lg:flex-wrap lg:grow'>
+                                <div className='my-1 mx-1 lg:w-1/3 lg:grow'>
                                     <Typography variant="h6" color="blue-gray" className="mb-3">
                                         Nombre
                                     </Typography>
@@ -283,7 +335,7 @@ function CoordinatorProductosPage() {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className='lg:w-1/4 my-1 mx-1'>
+                                <div className='my-1 mx-1 lg:w-1/3 lg:grow'>
                                     <Typography variant="h6" color="blue-gray" className="mb-3">
                                         SKU
                                     </Typography>
@@ -300,7 +352,7 @@ function CoordinatorProductosPage() {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className='lg:w-1/4 my-1 mx-1'>
+                                <div className='lg:w-1/3 lg:grow my-1 mx-1'>
                                     <Typography variant="h6" color="blue-gray" className="mb-3">
                                         Precio
                                     </Typography>
@@ -318,7 +370,7 @@ function CoordinatorProductosPage() {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className='lg:w-1/4 my-1 mx-1'>
+                                <div className='lg:w-1/3 lg:grow my-1 mx-1'>
                                     <Typography variant="h6" color="blue-gray" className="mb-3">
                                         Categoria
                                     </Typography>
@@ -374,9 +426,21 @@ function CoordinatorProductosPage() {
                                 <div className='md:w-1/2 my-1 mx-1'>
                                     <Input variant="static" name='image' type="file" accept="image/*" className='border-none' onChange={handleImageUpload} />
                                 </div>
-                                <div className='md:w-1/2 my-1 mx-1 flex justify-center'>
-                                    <Button color="red" onClick={handleDeleteImage}>Eliminar Imagen Actual</Button>
-                                </div>
+                                {
+                                    isLoading ?
+
+                                        <div className='md:w-1/2 my-1 mx-1 flex justify-center'>
+                                            <Button color="red" disabled className='w-52 flex justify-center items-center'>
+                                                <Spinner className="h-4" />
+                                            </Button>
+                                        </div>
+
+                                        :
+
+                                        <div className='md:w-1/2 my-1 mx-1 flex justify-center'>
+                                            <Button color="red" onClick={handleDeleteImage} className='w-52'>Eliminar Imagen Actual</Button>
+                                        </div>
+                                }
                             </div>
                             <div className='flex flex-col md:flex-col md:justify-between'>
                                 <Typography variant="h6" color="blue-gray" className="mb-3">
@@ -389,17 +453,15 @@ function CoordinatorProductosPage() {
                                 <Checkbox label="Esta en oferta?" name="offer" disabled value={producto.offer} onChange={handleChange} />
                             </div>
                             <div className='flex flex-col md:flex-row md:justify-between'>
-                                <div className='md:w-1/2 my-1 mx-1'>
+                                <div className='flex flex-col md:w-1/2 my-1 mx-1'>
                                     <Typography>Duracion de la Oferta</Typography>
                                     <DatePicker
-                                        className='w-72 md:w-96 border border-blue-gray-200 rounded py-1' disabled selected={producto.offer_duration} name="offer_duration" onChange={(date) => setProducto((prevValue) => {
+                                        className='w-full border border-blue-gray-200 rounded py-1' disabled selected={producto.offer_duration} name="offer_duration" onChange={(date) => setProducto((prevValue) => {
                                             return {
                                                 ...prevValue,
                                                 ['offer_duration']: date
                                             }
                                         })} />
-                                    <div className='w-auto'>
-                                    </div>
                                 </div>
                                 <div className='md:w-1/2 my-1 mx-1'>
                                     <Typography>Precio de la Oferta</Typography>
@@ -434,9 +496,19 @@ function CoordinatorProductosPage() {
                     >
                         <span>Salir</span>
                     </Button>
-                    <Button variant="gradient" color="green" onClick={handleCreate}>
-                        <span>Confirmar</span>
-                    </Button>
+                    {
+                        isLoading ?
+
+                            <Button variant="gradient" color="green" className='w-28' disabled>
+                                <Spinner className="h-4 w-full" />
+                            </Button>
+
+                            :
+
+                            <Button variant="gradient" color="green" className='w-28' onClick={handleCreate}>
+                                <span>Confirmar</span>
+                            </Button>
+                    }
                 </DialogFooter>
             </Dialog>
         </>

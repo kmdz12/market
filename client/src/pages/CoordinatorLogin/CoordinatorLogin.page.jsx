@@ -13,7 +13,7 @@ function CoordinatorLoginPage() {
         code: 0,
         message: '',
         show: false
-    })
+    });
 
     const dataService = new DataService();
 
@@ -37,32 +37,36 @@ function CoordinatorLoginPage() {
             dataService.adminLogin(email, password).then((response) => {
 
                 if (response.code === 200) {
-                    setAlertStatus({ code: 200, message: response.message, show: true })
-                    localStorage.setItem('token', response.token)
+                    setAlertStatus({ code: 200, message: response.message, show: true });
+                    localStorage.setItem('token', response.token);
 
                     setTimeout(() => {
+
                         setAlertStatus((prevValue) => ({
                             ...prevValue,
                             show: false
-                        }))
-                        setLocation("/coordinator/admin/panel")
+                        }));
+
+                        setLocation("/coordinator/admin/panel");
 
                     }, 4000);
 
                 } else if (response.code !== 200) {
-                    setAlertStatus({ code: response.code, message: response.message, show: true })
+                    setAlertStatus({ code: response.code, message: response.message, show: true });
 
                     setTimeout(() => {
+
                         setAlertStatus((prevValue) => ({
                             ...prevValue,
                             show: false
-                        }))
+                        }));
+
                         setIsLoading(false);
+
                     }, 4000);
                 }
             })
         }
-
     }
 
     return (
@@ -70,15 +74,7 @@ function CoordinatorLoginPage() {
         <div>
             {/* Background Image Container */}
             <div className="background w-screem h-screen absolute inset-0"></div>
-            {
-                alertStatus.show ?
-
-                    <div>
-                        <Alert className="flex justify-center" variant="gradient" color={alertStatus.code === 200 ? "green" : "red"} open={alertStatus.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alertStatus.message}</Alert>
-                    </div>
-                    :
-                    null
-            }
+            <Alert className="flex justify-center rounded-none" variant="gradient" color={alertStatus.code === 200 ? "green" : "red"} open={alertStatus.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alertStatus.message}</Alert>
             {/* Form Container */}
             <div className="absolute inset-0">
                 <div className="h-full w-full flex justify-center items-center">
@@ -135,7 +131,6 @@ function CoordinatorLoginPage() {
                                             <Button className="mt-6" fullWidth color="pink" type='submit'>
                                                 Iniciar Sesion!
                                             </Button>
-
                                     }
                                 </form>
                             </Card>

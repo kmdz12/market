@@ -10,9 +10,12 @@ const pgSession = require('connect-pg-simple')(session);
 //Express Init
 const app = express();
 
+app.set('trust proxy', '1');
+
 //Middlewares
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://km12-develop.netlify.app'],
+    origin: ['http://localhost:5173'],
+    // origin: ['http://localhost:5173', 'https://km12-develop.netlify.app'],
     // mobile
     // origin: ['http://localhost:5173', 'http://192.168.1.33:5173'],
     credentials: true
@@ -28,9 +31,10 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 1
+        maxAge: 1000 * 60 * 60 * 24 * 1,
+        // secure: true
     }
-}))
+}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -44,7 +48,7 @@ app.use('/', require('./routes/router.js'));
 //Server init
 app.listen(port, () => {
     console.log(`App running on port ${port}`)
-})
+});
 
 // mobile
 // app.listen(3000, '192.168.1.33')

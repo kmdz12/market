@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Typography, Card, Input, Button, Spinner, Alert } from '@material-tailwind/react';
 import DataService from '../../service/dataService';
+import './UserLogin.style.css';
 
 function UserLoginPage() {
 
@@ -13,7 +14,7 @@ function UserLoginPage() {
         code: 0,
         message: '',
         show: false
-    })
+    });
 
     const dataService = new DataService();
 
@@ -37,54 +38,51 @@ function UserLoginPage() {
             dataService.userLogin(email, password).then((response) => {
 
                 if (response.code === 200) {
-                    setAlertStatus({ code: 200, message: response.message, show: true })
-                    localStorage.setItem('token', response.token)
+                    setAlertStatus({ code: 200, message: response.message, show: true });
+                    localStorage.setItem('token', response.token);
 
                     setTimeout(() => {
+
                         setAlertStatus((prevValue) => ({
                             ...prevValue,
                             show: false
-                        }))
-                        setLocation("/store")
+                        }));
+
+                        setLocation("/store");
 
                     }, 4000);
 
                 } else if (response.code !== 200) {
-                    setAlertStatus({ code: response.code, message: response.message, show: true })
+
+                    setAlertStatus({ code: response.code, message: response.message, show: true });
 
                     setTimeout(() => {
+
                         setAlertStatus((prevValue) => ({
                             ...prevValue,
                             show: false
-                        }))
+                        }));
+
                         setIsLoading(false);
+
                     }, 4000);
                 }
             })
         }
-
     }
 
     return (
         <div>
             {/* Background Image Container */}
-            <div className="w-screem h-screen bg-[url('./images/login.jpg')] bg-auto bg-no-repeat bg-center absolute inset-0 blur-sm"></div>
-            {
-                alertStatus.show ?
-
-                    <div>
-                        <Alert className="flex justify-center" variant="gradient" color={alertStatus.code === 200 ? "green" : "red"} open={alertStatus.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alertStatus.message}</Alert>
-                    </div>
-                    :
-                    null
-            }
+            <div className="w-screem h-screen login bg-auto bg-no-repeat bg-center absolute inset-0 blur-sm lg:bg-cover" title='Foto de nrd en Unsplash'></div>
+            <Alert className="flex justify-center rounded-none" variant="gradient" color={alertStatus.code === 200 ? "green" : "red"} open={alertStatus.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alertStatus.message}</Alert>
             {/* Form Container */}
             <div className="absolute inset-0">
                 <div className="h-full w-full flex justify-center items-center">
                     <div className='h-1/2 w-4/5 md:w-1/2 lg:w-2/5 xl:w-1/3 2xl:w-1/4'>
                         <div className='bg-gray-300 flex justify-center items-center rounded'>
                             <Card color="transparent" shadow={false}>
-                                <Typography variant="h4" color="blue-gray" className='text-center text-base my-5'>
+                                <Typography variant="h5" color="blue-gray" className='text-center my-5'>
                                     Bienvenido!
                                 </Typography>
                                 <form className="my-5 mx-3 max-w-screen-lg" onSubmit={handleLogin}>
@@ -133,10 +131,10 @@ function UserLoginPage() {
                                             </Button>
 
                                     }
-                                    <Typography color="gray" className="mt-4 text-center font-normal">
+                                    <Typography color="gray" className="mt-4 text-center">
                                         No tenes una cuenta?{" "}
                                         <Link href="/login">
-                                            <Typography as={'a'} className="font-medium text-blue-900 inline-block">
+                                            <Typography as={'a'} className="text-blue-900 inline-block">
                                                 Registrate!
                                             </Typography>
                                         </Link>

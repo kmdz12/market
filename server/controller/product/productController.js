@@ -26,7 +26,32 @@ const productController = {
             res.status(200).json(query.rows);
 
         } catch (e) {
-            console.log(e)
+            console.log(e);
+        }
+    },
+
+    getAllClientProducts: async (req, res) => {
+
+        try {
+
+            const query = await pool.query('SELECT * FROM "productsView"');
+            res.status(200).json(query.rows);
+
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
+    getClientProductDetails: async (req, res) => {
+
+        try {
+
+            const { id } = req.params;
+            const query = await pool.query('SELECT * FROM "productsView" WHERE id = $1', [id]);
+            res.status(200).json(query.rows[0]);
+
+        } catch (e) {
+            console.log(e);
         }
     },
 
@@ -36,9 +61,9 @@ const productController = {
 
             const query = await pool.query('SELECT * FROM categories');
             res.status(200).json(query.rows);
-            
+
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     },
 
@@ -53,19 +78,20 @@ const productController = {
             res.status(200).json({ message: 'Producto actualizado exitosamente!' });
 
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     },
 
     deleteProduct: async (req, res) => {
 
         try {
+            
             const { id } = req.params;
             const query = await pool.query('DELETE FROM products WHERE id = $1', [id]);
-            res.status(200).json({ message: 'Producto eliminado exitosamente!' })
+            res.status(200).json({ message: 'Producto eliminado exitosamente!' });
 
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
     }
 }

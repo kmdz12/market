@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Navbar, Typography, Button, IconButton, Collapse } from "@material-tailwind/react";
 import DataService from '../../service/dataService';
-import './navbar.style.css'
+import '../../animations/animista.css';
 
 function NavBarComponent() {
 
     const [openNav, setOpenNav] = React.useState(false);
     const toggleOpen = () => setOpenNav((cur) => !cur);
     const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [location, setLocation] = useLocation();
     const dataService = new DataService();
 
@@ -21,11 +22,14 @@ function NavBarComponent() {
 
                 if (response.auth === false) {
                     localStorage.removeItem('token');
-                    setLocation('/')
+                    setLocation('/');
                 } else {
-                    setUserLoggedIn(response.auth)
+                    setUserLoggedIn(response.auth);
                 }
-            })
+            }).finally(() => setIsLoading(false));
+
+        } else {
+            setIsLoading(false);
         }
 
     }, [])
@@ -35,7 +39,7 @@ function NavBarComponent() {
         setUserLoggedIn(false);
     }
 
-    const navList = (
+    const nonUserNavList = (
         <ul className="mt-2 mb-4 flex flex-col gap-2 items-center lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             <Typography
                 as="li"
@@ -43,9 +47,9 @@ function NavBarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to='/store'>
                     Tienda
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -53,9 +57,9 @@ function NavBarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to='/cart'>
                     Carrito
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -63,9 +67,24 @@ function NavBarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to='/faq'>
                     FAQ
-                </a>
+                </Link>
+            </Typography>
+        </ul>
+    );
+
+    const userNavList = (
+        <ul className="mt-2 mb-4 flex flex-col gap-2 items-center lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal"
+            >
+                <Link to='/store'>
+                    Tienda
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -73,9 +92,29 @@ function NavBarComponent() {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
+                <Link to='/cart'>
+                    Carrito
+                </Link>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal"
+            >
+                <Link to='/faq'>
+                    FAQ
+                </Link>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal"
+            >
+                <Link to='/account'>
                     Mi Cuenta
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -92,7 +131,6 @@ function NavBarComponent() {
     );
 
     return (
-
         <div className="sticky top-0 z-10 max-h-[768px] w-[calc(100%)] overflow-none">
             <Navbar className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
                 <div className="flex items-center justify-between text-blue-gray-900">
@@ -101,11 +139,12 @@ function NavBarComponent() {
                         src="https://placehold.co/400"
                         alt="logo"
                     />
-                    <div className="flex items-center gap-4">
+                    <div className={`flex items-center gap-4 ${isLoading ? 'invisible' : 'visible'}`}>
                         {
                             userLoggedIn !== true ?
 
                                 <div className="flex items-center gap-x-5">
+                                    <div className="mr-4 hidden lg:block">{nonUserNavList}</div>
                                     <Link href="/register">
                                         <Button
                                             variant="filled"
@@ -130,13 +169,15 @@ function NavBarComponent() {
 
                                 :
 
-                                <div className="mr-4 hidden lg:block">{navList}</div>
+                                <div className="mr-4 hidden lg:block fade-in-right">{userNavList}</div>
                         }
                         <IconButton
                             variant="text"
                             className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
                             ripple={false}
                             onClick={toggleOpen}
+                            name='hamburger menu button'
+                            title='hamburger menu button'
                         >
                             {openNav ? (
                                 <svg
@@ -146,6 +187,7 @@ function NavBarComponent() {
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
                                     strokeWidth={2}
+                                    name='hamburger menu button'
                                 >
                                     <path
                                         strokeLinecap="round"
@@ -160,6 +202,7 @@ function NavBarComponent() {
                                     fill="none"
                                     stroke="currentColor"
                                     strokeWidth={2}
+                                    name='hamburger menu button'
                                 >
                                     <path
                                         strokeLinecap="round"
@@ -172,29 +215,41 @@ function NavBarComponent() {
                     </div>
                 </div>
                 <Collapse open={openNav}>
-                    {navList}
-                    <div className="flex justify-around gap-x-2">
-                        <Link href="/register">
-                            <Button
-                                variant="filled"
-                                size="md"
-                                className="w-48 rounded-none border-2 border-black"
-                                style={{ backgroundColor: "#FF5FAA" }}
-                            >
-                                <span className="text-black">Registrate</span>
-                            </Button>
-                        </Link>
-                        <Link href="/login">
-                            <Button
-                                variant="filled"
-                                size="md"
-                                className="w-48 rounded-none border-2 border-black"
-                                style={{ backgroundColor: "#66FF7B" }}
-                            >
-                                <span className="text-black">Inicia Sesion</span>
-                            </Button>
-                        </Link>
-                    </div>
+                    {
+                        userLoggedIn ?
+
+                            <div>
+                                {userNavList}
+                            </div>
+
+                            :
+
+                            <div>
+                                {nonUserNavList}
+                                <div className="flex justify-around gap-x-2 mt-4">
+                                    <Link to="/register">
+                                        <Button
+                                            variant="filled"
+                                            size="md"
+                                            className="w-48 rounded-none border-2 border-black"
+                                            style={{ backgroundColor: "#FF5FAA" }}
+                                        >
+                                            <span className="text-black">Registrate</span>
+                                        </Button>
+                                    </Link>
+                                    <Link to="/login">
+                                        <Button
+                                            variant="filled"
+                                            size="md"
+                                            className="w-48 rounded-none border-2 border-black"
+                                            style={{ backgroundColor: "#66FF7B" }}
+                                        >
+                                            <span className="text-black">Inicia Sesion</span>
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
+                    }
                 </Collapse>
             </Navbar>
         </div>
