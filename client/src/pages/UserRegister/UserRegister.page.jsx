@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Typography, Card, Input, Button, Alert, Spinner } from '@material-tailwind/react';
 import DataService from '../../service/dataService';
@@ -14,7 +14,7 @@ function UserRegisterPage() {
         code: 0,
         message: '',
         show: false
-    })
+    });
 
     const dataService = new DataService();
 
@@ -37,31 +37,37 @@ function UserRegisterPage() {
 
 
             dataService.userRegistration(email, password).then((response) => {
+
                 if (response.code === 200) {
-                    setAlertStatus({ code: 200, message: response.message, show: true })
+                    setAlertStatus({ code: 200, message: response.message, show: true });
 
                     setTimeout(() => {
+
                         setAlertStatus((prevValue) => ({
                             ...prevValue,
                             show: false
-                        }))
-                        setLocation("/login")
+                        }));
+
+                        setLocation("/login");
 
                     }, 4000);
 
                 } else if (response.code === 302) {
-                    setAlertStatus({ code: 302, message: response.message, show: true })
+
+                    setAlertStatus({ code: 302, message: response.message, show: true });
 
                     setTimeout(() => {
+
                         setAlertStatus((prevValue) => ({
                             ...prevValue,
                             show: false
-                        }))
+                        }));
+
                         setIsLoading(false);
+
                     }, 4000);
                 }
             })
-
         }
     }
 
@@ -109,7 +115,6 @@ function UserRegisterPage() {
                                         />
                                         <Typography variant="small" className="text-center">Contraseña debe tener minimo 8 caracteres</Typography>
                                     </div>
-
                                     {
                                         isLoading ?
 
@@ -141,7 +146,6 @@ function UserRegisterPage() {
                 </div>
             </div>
         </div>
-
     )
 }
 
