@@ -1,13 +1,14 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 
 const CartContext = createContext({
     items: [],
     total: 0,
-    paymentType: 0,
+    paymentType: 1,
     addItem: (item) => { },
     removeItem: (id) => { },
     destroyItem: (id) => { },
-    selectPayment: (value) => { }
+    selectPayment: (value) => { },
+    restoreCart: () => { }
 });
 
 export default CartContext;
