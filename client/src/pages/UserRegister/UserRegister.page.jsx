@@ -113,7 +113,7 @@ function UserRegisterPage() {
                                             required
                                             pattern="[0-9a-zA-Z]{8,}"
                                         />
-                                        <Typography variant="small" className="text-center">Contraseña debe tener minimo 8 caracteres</Typography>
+                                        <Typography variant="small" className="text-center">Contraseña debe tener mínimo 8 caracteres</Typography>
                                     </div>
                                     {
                                         isLoading ?
@@ -132,10 +132,10 @@ function UserRegisterPage() {
 
                                     }
                                     <Typography color="gray" className="mt-4 text-center font-normal">
-                                        Ya tenes una cuenta?{" "}
+                                        ¿Ya tenes una cuenta?{" "}
                                         <Link href="/login">
                                             <Typography as={'a'} className="font-medium text-blue-900 inline-block">
-                                                Inicia Sesion
+                                                Inicia Sesión
                                             </Typography>
                                         </Link>
                                     </Typography>

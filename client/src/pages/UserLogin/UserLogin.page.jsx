@@ -127,12 +127,12 @@ function UserLoginPage() {
                                             :
 
                                             <Button className="mt-6" fullWidth color="pink" type='submit'>
-                                                Iniciar Sesion!
+                                                Iniciar Sesión!
                                             </Button>
 
                                     }
                                     <Typography color="gray" className="mt-4 text-center">
-                                        No tenes una cuenta?{" "}
+                                        No tenés una cuenta?{" "}
                                         <Link href="/login">
                                             <Typography as={'a'} className="text-blue-900 inline-block">
                                                 Registrate!

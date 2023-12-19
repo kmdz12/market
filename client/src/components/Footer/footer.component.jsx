@@ -54,7 +54,7 @@ function FooterComponent() {
 
             {/* Copyright/Credits Container */}
             <div className="flex w-full flex-col items-center align-center mt-2">
-                <Typography variant="small">&copy; Kilometro 12 - 2023</Typography>
+                <Typography variant="small">&copy; Kilómetro 12 - 2023</Typography>
                 <Typography className='text-blue-900' variant="small"><a href="https://storyset.com/people">People illustrations by Storyset</a></Typography>
             </div>
         </div>

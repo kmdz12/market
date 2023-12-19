@@ -250,7 +250,7 @@ function DeliveryDetailsPage() {
 
                                 <div className='flex flex-col justify-between mt-5 grow lg:justify-end'>
                                     <div className='flex justify-between'>
-                                        <Typography variant='lead'>Metodo de Pago:</Typography>
+                                        <Typography variant='lead'>Método de Pago:</Typography>
                                         {
                                             cartProducts.paymentType === 1 ?
 
@@ -284,13 +284,13 @@ function DeliveryDetailsPage() {
                             {/* Delivery Details */}
                             <div className='flex flex-col my-4 bg-gray-300 p-5 lg:w-1/2'>
                                 <div>
-                                    <Typography variant="h2" className='text-center'>Informacion de Delivery</Typography>
-                                    <Typography variant='paragraph' className='text-center mt-5'>A continuacion, provee los detalles para el envio de tu pedido, o selecciona uno previamente guardado!</Typography>
+                                    <Typography variant="h2" className='text-center'>Información de Delivery</Typography>
+                                    <Typography variant='paragraph' className='text-center mt-5'>A continuación, provee los detalles para el envío de tu pedido, o selecciona uno previamente guardado!</Typography>
                                 </div>
 
                                 {/* Form Container */}
                                 <form className='flex flex-col grow' onSubmit={submitOrder}>
-                                    <Typography variant='paragraph' className='text-center mt-5'>Quien retira el envio?</Typography>
+                                    <Typography variant='paragraph' className='text-center mt-5'>¿Quién retira el pedido?</Typography>
                                     <div className='flex flex-col items-center xl:flex-row'>
                                         <div className='w-full p-3'>
                                             <Input label='Nombre' className='bg-white' name='name' value={pickup.name} onChange={handlePickupChange} required />
@@ -450,7 +450,7 @@ function DeliveryDetailsPage() {
                                                     </div>
 
                                                     <div className='flex flex-col justify-center items-center md:flex-col md:items-center grow md:justify-end mt-5'>
-                                                        <Checkbox label="Guardar direccion?" name="address" color='pink' value={saveAddress} checked={saveAddress} onChange={handleSaveAddress} />
+                                                        <Checkbox label="¿Guardar dirección?" name="address" color='pink' value={saveAddress} checked={saveAddress} onChange={handleSaveAddress} />
                                                     </div>
                                                 </div>
 

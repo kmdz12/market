@@ -126,7 +126,7 @@ function StorePage() {
 
                         <div>
                             <div className="flex flex-col justify-center items-center">
-                                <Button variant='gradient' color="pink" onClick={toggleOpen} className='shadow-pop-br'>Categorias</Button>
+                                <Button variant='gradient' color="pink" onClick={toggleOpen} className='shadow-pop-br'>Categorías</Button>
                                 <div>
                                     <Collapse open={open} >
                                         <Card className="my-2 mx-auto w-2/3">
@@ -154,8 +154,8 @@ function StorePage() {
                             <div className="flex flex-col justify-center items-center py-2 md:container md:mx-auto md:flex-row lg:justify-between">
                                 <div className="w-72 my-2 md:mx-5">
                                     <Select name='Selector Ordenar por' labelProps={{ className: 'text-black-900' }} label="Ordenar por" variant="outlined" size="lg" className="text-black-900 bg-white" onChange={handleSort}>
-                                        <Option value={'0'}>Precio mas bajo</Option>
-                                        <Option value={'1'}>Precio mas alto</Option>
+                                        <Option value={'0'}>Precio más bajo</Option>
+                                        <Option value={'1'}>Precio más alto</Option>
                                     </Select>
                                 </div>
                                 <div className='w-72 bg-white my-2 md:mx-5'>

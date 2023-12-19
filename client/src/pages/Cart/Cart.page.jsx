@@ -139,7 +139,7 @@ function CartPage() {
                                     :
 
                                     <div className='flex justify-center p-5'>
-                                        <Typography>No tenes productos en tu carrito!</Typography>
+                                        <Typography>No tenés productos en tu carrito!</Typography>
                                     </div>
 
                             }
@@ -173,13 +173,13 @@ function CartPage() {
                             <div className='p-5 lg:flex lg:flex-col lg:justify-around lg:grow'>
                                 <div className='flex flex-col justify-center items-center'>
                                     <Typography variant='h3' color='white' className='my-2'>
-                                        ATENCION
+                                        ATENCIÓN
                                     </Typography>
                                     <Typography variant="lead" color='white' className='my-2 md:px-10'>
-                                        En caso de elegir pago por transferencia, se generara una orden en la cual luego veras las instrucciones de como proceder con el pago.
+                                        En caso de elegir pago por transferencia, se generará una orden en la cual luego verás las instrucciones de cómo proceder con el pago.
                                     </Typography>
                                     <Typography variant="lead" color='white' className='my-2 md:px-10'>
-                                        Por otra parte, si elegis pagar con Mercado Pago, se te llevara al procesador de pago de Mercado Pago para que completes tu compra.
+                                        Por otra parte, si elegís pagar con Mercado Pago, se te llevara al procesador de pago de Mercado Pago para que completes tu compra.
                                     </Typography>
                                 </div>
 

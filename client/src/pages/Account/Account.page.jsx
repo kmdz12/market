@@ -206,7 +206,7 @@ function AccountPage() {
                                                         <Input className="bg-white" label='Apellido' variant="outlined" size='lg' name='surname' value={currentUser?.surname ?? ''} onChange={handleDataChange} required />
                                                     </div>
                                                     <div className='p-2 xl:w-full'>
-                                                        <Input className="bg-white" label="Telefono" type="number" variant="outlined" size='lg' name='phone' value={currentUser?.phone ?? ''} onChange={handleDataChange} required />
+                                                        <Input className="bg-white" label="Teléfono" type="number" variant="outlined" size='lg' name='phone' value={currentUser?.phone ?? ''} onChange={handleDataChange} required />
                                                     </div>
                                                 </div>
                                                 <div className='flex md:flex-col md:items-center md:py-2'>
@@ -306,7 +306,7 @@ function AccountPage() {
 
                                                             :
 
-                                                            <Button className='flex grow justify-center shadow-pop-br' color='pink' variant="gradient" type='submit'>Guardar Nueva Direccion</Button>
+                                                            <Button className='flex grow justify-center shadow-pop-br' color='pink' variant="gradient" type='submit'>Guardar Nueva Dirección</Button>
 
                                                     }
                                                 </div>
@@ -317,7 +317,7 @@ function AccountPage() {
 
 
                                 <div className='bg-gray-300 flex flex-col items-center rounded mb-5 px-4 lg:items-start lg:w-1/2 lg:m-0'>
-                                    <Typography variant='h5' className='py-3'>Mis Ordenes</Typography>
+                                    <Typography variant='h5' className='py-3'>Mis Órdenes</Typography>
 
                                     {
                                         allUserOrders.map((order, index) => {

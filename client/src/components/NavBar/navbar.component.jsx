@@ -162,7 +162,7 @@ function NavBarComponent() {
                                             className="hidden lg:inline-block rounded-none border-2 border-black shadow-pop-br"
                                             style={{ backgroundColor: "#66FF7B" }}
                                         >
-                                            <span className="text-black">Inicia Sesion</span>
+                                            <span className="text-black">Inicia Sesión</span>
                                         </Button>
                                     </Link>
                                 </div>
