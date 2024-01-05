@@ -126,12 +126,12 @@ function CoordinatorOrdenesPage() {
                                         </td>
                                         <td className="p-4">
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {order.cart.total}
+                                                {order.cart?.total}
                                             </Typography>
                                         </td>
                                         <td className="p-4">
                                             {
-                                                order.cart.paymentType === 1 ?
+                                                order.cart?.paymentType === 1 ?
 
                                                     <Typography variant="small" color="blue-gray" className="font-normal">
                                                         Transferencia
