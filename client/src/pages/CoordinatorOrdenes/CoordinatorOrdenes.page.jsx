@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Typography, Alert } from '@material-tailwind/react';
+import { Button, Card, Typography, Alert, Checkbox } from '@material-tailwind/react';
 import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
 import OrderDialogComponent from '../../components/OrderDialog/OrderDialog.component';
 import DataService from '../../service/dataService';
@@ -8,6 +8,13 @@ function CoordinatorOrdenesPage() {
 
     const TABLE_HEAD = ["ID", "Numero", "Creado", "Total", "Tipo Pago", "Estado", "Acciones"];
     const [orders, setOrders] = useState([]);
+    const [filteredOrders, setFilteredOrders] = useState(orders);
+    const [categories, setCategories] = useState([
+        'En Proceso',
+        'Completada',
+        'Rechazada'
+    ])
+    const [filteredCategories, setFilteredCategories] = useState([]);
     const [orderDetails, setOrderDetails] = useState({});
     const [open, setOpen] = useState(false);
     const [updateStatus, setUpdateStatus] = useState(false);
@@ -47,7 +54,11 @@ function CoordinatorOrdenesPage() {
 
     useEffect(() => {
         dataService.getAllOrders().then((response) => setOrders(response));
-    }, [setOrders])
+    }, [])
+
+    useEffect(() => {
+        setFilteredOrders(orders);
+    }, [orders])
 
     useEffect(() => {
 
@@ -79,16 +90,68 @@ function CoordinatorOrdenesPage() {
         setUpdateStatus(true);
     }
 
+    function handleCategory(e) {
+
+        if (e.target.checked) {
+
+            let tempValue = categories[parseInt(e.target.value)];
+            setFilteredCategories(prevValue => [...prevValue, tempValue]);
+
+        } else {
+            setFilteredCategories(filteredCategories.filter((cat) => cat !== categories[parseInt(e.target.value)]));
+        }
+    }
+
+    function filterCategories() {
+        let tempValue = orders.filter((ord) => filteredCategories.includes(ord.status));
+
+        if (tempValue.length <= 0) {
+            setFilteredOrders(orders)
+
+        } else {
+            setFilteredOrders(tempValue);
+        }
+    }
+
+    useEffect(() => {
+
+        if (filteredCategories.length <= 0) {
+            setFilteredOrders(orders);
+        } else {
+            filterCategories();
+        }
+
+    }, [filteredCategories])
+
     return (
         <>
             <AdminNavbarComponent />
             <OrderDialogComponent order={orderDetails} open={open} handleOpen={handleOpen} updateStatus={updateStatus} setUpdateStatus={setUpdateStatus} setAlert={setAlert} />
             <Alert className="sticky top-32 z-10 max-h-[768px] w-[calc(100%)] overflow-none flex justify-center" variant="gradient" color="amber" open={alert.show} animate={{ mount: { y: 0 }, unmount: { y: -100 } }}>{alert.message}</Alert>
             <div className='md:container md:mx-auto p-2'>
-                <div className="my-5 flex justify-between">
+                <div className="my-3 flex justify-between">
                     <Typography variant="h2">ABM Ordenes</Typography>
                 </div>
                 <div>
+                    <div className='py-2'>
+                        <div>
+                            <Typography variant='lead'>Tipo de Ordenes:</Typography>
+                            {
+                                categories?.map((cat, index) => (
+                                    <Checkbox
+                                        key={index}
+                                        label={cat}
+                                        color='pink'
+                                        ripple={false}
+                                        value={index}
+                                        onChange={handleCategory}
+                                        className="h-8 w-8 rounded-full border-pink-900/20 bg-pink-900/10 transition-all hover:scale-105 hover:before:opacity-0"
+                                        name={cat}
+                                    />
+                                ))
+                            }
+                        </div>
+                    </div>
                     <Card className="h-full w-full overflow-scroll">
                         <table className="md:w-full md:min-w-max table-auto text-center">
                             <thead>
@@ -107,7 +170,7 @@ function CoordinatorOrdenesPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {orders.map((order, index) => (
+                                {filteredOrders.map((order, index) => (
                                     <tr key={index} className="even:bg-blue-gray-50/50">
                                         <td className="p-4">
                                             <Typography variant="small" color="blue-gray" className="font-normal">
