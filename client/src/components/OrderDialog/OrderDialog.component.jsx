@@ -6,7 +6,12 @@ function OrderDialogComponent(props) {
 
     const [statusOption, setStatusOption] = useState('1');
     const [reasonStatus, setReasonStatus] = useState('');
+    const [directions, setDirections] = useState([]);
     const dataService = new DataService();
+
+    useEffect(() => {
+        dataService.getDirections().then((response) => setDirections(response));
+    }, [])
 
     useEffect(() => {
 
@@ -161,10 +166,26 @@ function OrderDialogComponent(props) {
 
                                 <Typography variant='h5' className='my-3'>Detalles de Entrega:</Typography>
                                 <Typography>Recibe: {props.order.pickup}</Typography>
-                                <Typography className='font-bold'>Direccion:</Typography>
-                                <Typography>{props.order.delivery_details?.departament_name} - {props.order.delivery_details?.locality_name}</Typography>
-                                <Typography>{props.order.delivery_details?.street}</Typography>
-                                <Typography>{props.order.delivery_details?.indications}</Typography>
+                                {
+                                    props.order.delivery_details?.street == null ?
+                                    
+                                    <div>
+                                            <Typography className='font-bold'>Direccion Temporal:</Typography>
+                                            <Typography>{directions[Number(props.order.temp_address?.department) - 1]?.departament_name} - {directions[Number(props.order.temp_address?.department) - 1]?.localities[Number(props.order.temp_address?.locality)].locality_name}</Typography>
+                                            <Typography>{props.order.temp_address?.street}</Typography>
+                                            <Typography>{props.order.temp_address?.indications}</Typography>
+                                        </div>
+
+                                        :
+
+                                        <div>
+                                            <Typography className='font-bold'>Direccion:</Typography>
+                                            <Typography>{props.order.delivery_details?.departament_name} - {props.order.delivery_details?.locality_name}</Typography>
+                                            <Typography>{props.order.delivery_details?.street}</Typography>
+                                            <Typography>{props.order.delivery_details?.indications}</Typography>
+                                        </div>
+
+                                }
                                 <Button
                                     variant="gradient"
                                     color="blue"
