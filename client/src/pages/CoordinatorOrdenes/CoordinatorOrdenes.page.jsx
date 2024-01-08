@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Typography, Alert, Checkbox } from '@material-tailwind/react';
+import { Button, Card, Typography, Alert, Checkbox, Input } from '@material-tailwind/react';
 import AdminNavbarComponent from '../../components/AdminNavbar/AdminNavbar.component';
 import OrderDialogComponent from '../../components/OrderDialog/OrderDialog.component';
 import DataService from '../../service/dataService';
@@ -90,6 +90,20 @@ function CoordinatorOrdenesPage() {
         setUpdateStatus(true);
     }
 
+    function handleSearch(e) {
+
+        let query = e.target.value;
+
+        if (query !== "") {
+
+            let tempValue = orders.filter((element) => element.created?.toLowerCase().includes(query) || element.order_number?.toLowerCase().includes(query));
+            setFilteredOrders(tempValue);
+
+        } else {
+            filterCategories();
+        }
+    }
+
     function handleCategory(e) {
 
         if (e.target.checked) {
@@ -133,7 +147,7 @@ function CoordinatorOrdenesPage() {
                     <Typography variant="h2">ABM Ordenes</Typography>
                 </div>
                 <div>
-                    <div className='py-2'>
+                    <div className='py-2 flex items-center justify-between'>
                         <div>
                             <Typography variant='lead'>Tipo de Ordenes:</Typography>
                             {
@@ -150,6 +164,9 @@ function CoordinatorOrdenesPage() {
                                     />
                                 ))
                             }
+                        </div>
+                        <div className='w-72 bg-white my-2 md:mx-5'>
+                            <Input name='Buscar' label="Buscar por fecha/numero orden" icon={<i className="fas fa-heart" />} onChange={handleSearch} />
                         </div>
                     </div>
                     <Card className="h-full w-full overflow-scroll">
