@@ -12,7 +12,7 @@ const orderController = {
 
         try {
 
-            const { pickup, currentAddress, cart, info_id, saveAddress } = req.body;
+            const { pickup, currentAddress, cart, info_id } = req.body;
 
             // Generate timestamp
             let currentDate = new Date();
@@ -56,16 +56,16 @@ const orderController = {
 
             let newPickup = Object.values(pickup).join(' ');
 
-            if (saveAddress) {
+            if (typeof currentAddress === 'number') {
 
-                // Make query to save in Orders table
+                // Save new Address of type integer as FK for direction
                 const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
                     orderNumber, localizedDate, cart, null, currentAddress, cart.paymentType, 1, info_id, newPickup, null, null
                 ]);
 
             } else {
 
-                // Make query to save in Orders table
+                // Save new Address of type object as json as temp direction
                 const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
                     orderNumber, localizedDate, cart, null, null, cart.paymentType, 1, info_id, newPickup, null, currentAddress
                 ]);
@@ -167,7 +167,6 @@ const orderController = {
 
             }).catch(console.log);
 
-
         } catch (e) {
             console.log(e);
         }
@@ -187,9 +186,24 @@ const orderController = {
                 if (data.status === 'approved') {
                     // Query in orders table with order metadata, update mp_transaction_order with transaction id recieved
                     // const query = await pool.query('UPDATE orders SET mp_transaction_order = $1 WHERE order_number = $2', [data.id, data.metadata.order_number])
-                    const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [
-                        data.metadata.order_number, data.metadata.localized_date, data.metadata.cart, null, data.metadata.current_address, data.metadata.cart.payment_type, 1, data.metadata.info_id, data.metadata.new_pickup, data.id
-                    ]);
+                    // const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [
+                    //     data.metadata.order_number, data.metadata.localized_date, data.metadata.cart, null, data.metadata.current_address, data.metadata.cart.payment_type, 1, data.metadata.info_id, data.metadata.new_pickup, data.id
+                    // ]);
+
+                    if (typeof data.metadata.currentAddress === 'number') {
+
+                        // Save new Address of type integer as FK for direction
+                        const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
+                            data.metadata.order_number, data.metadata.localized_date, data.metadata.cart, null, data.metadata.current_address, data.metadata.cart.payment_type, 1, data.metadata.info_id, data.metadata.new_pickup, data.id, null
+                        ]);
+        
+                    } else {
+        
+                        // Save new Address of type object as json as temp direction
+                        const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
+                            data.metadata.order_number, data.metadata.localized_date, data.metadata.cart, null, null, data.metadata.cart.payment_type, 1, data.metadata.info_id, data.metadata.new_pickup, data.id, data.metadata.current_address
+                        ]);
+                    }
                 }
             }
 
