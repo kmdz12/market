@@ -165,13 +165,13 @@ function DeliveryDetailsPage() {
 
                     if (cartProducts.paymentType === 1) {
 
-                        dataService.postOrder(pickup, response.id, cartProducts, currentUser.info_id, saveAddress).then((response) => {
+                        dataService.postOrder(pickup, response.id, cartProducts, currentUser.info_id).then((response) => {
                             setLocation('/order');
                         });
 
                     } else {
 
-                        dataService.postMPOrder(pickup, response.id, cartProducts, currentUser.info_id, saveAddress).then((response) => {
+                        dataService.postMPOrder(pickup, response.id, cartProducts, currentUser.info_id).then((response) => {
                             window.location.href = response.mp.init_point;
                         })
                     }
@@ -182,13 +182,13 @@ function DeliveryDetailsPage() {
                 // Using temporary address
                 if (cartProducts.paymentType === 1) {
 
-                    dataService.postOrder(pickup, newAddress, cartProducts, currentUser.info_id, saveAddress).then((response) => {
+                    dataService.postOrder(pickup, newAddress, cartProducts, currentUser.info_id).then((response) => {
                         setLocation('/order');
                     });
 
                 } else {
 
-                    dataService.postMPOrder(pickup, newAddress, cartProducts, currentUser.info_id, saveAddress).then((response) => {
+                    dataService.postMPOrder(pickup, newAddress, cartProducts, currentUser.info_id).then((response) => {
                         window.location.href = response.mp.init_point;
                     })
                 }
@@ -199,13 +199,13 @@ function DeliveryDetailsPage() {
             // Saved Address
             if (cartProducts.paymentType === 1) {
 
-                dataService.postOrder(pickup, currentAddress, cartProducts, currentUser.info_id, saveAddress).then((response) => {
+                dataService.postOrder(pickup, currentAddress, cartProducts, currentUser.info_id).then((response) => {
                     setLocation('/order');
                 });
 
             } else {
 
-                dataService.postMPOrder(pickup, currentAddress, cartProducts, currentUser.info_id, saveAddress).then((response) => {
+                dataService.postMPOrder(pickup, currentAddress, cartProducts, currentUser.info_id).then((response) => {
                     window.location.href = response.mp.init_point;
                 })
             }
