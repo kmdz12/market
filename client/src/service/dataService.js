@@ -67,12 +67,12 @@ class DataService {
         return this.service.get(`/client/products/${id}`).then((response) => response.data);
     }
 
-    postOrder = (pickup, currentAddress, cart, info_id, saveAddress) => {
-        return this.service.post('/order', { pickup, currentAddress, cart, info_id, saveAddress }).then((response) => response.data);
+    postOrder = (pickup, currentAddress, cart, info_id) => {
+        return this.service.post('/order', { pickup, currentAddress, cart, info_id }).then((response) => response.data);
     }
 
-    postMPOrder = (pickup, currentAddress, cart, info_id, saveAddress) => {
-        return this.service.post('/order-mp', { pickup, currentAddress, cart, info_id, saveAddress }).then((response) => response.data);
+    postMPOrder = (pickup, currentAddress, cart, info_id) => {
+        return this.service.post('/order-mp', { pickup, currentAddress, cart, info_id }).then((response) => response.data);
     }
 
     getAllProducts = () => {
