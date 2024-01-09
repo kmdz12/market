@@ -11,6 +11,7 @@ function DeliveryDetailsPage() {
 
     const cartCTX = useContext(CartContext);
     const [cartProducts, setCartProducts] = useState({});
+    const [deliveryCost, setDeliveryCost] = useState(0);
     const [userLogged, setUserLogged] = useState();
     const [currentUser, setCurrentUser] = useState({
         email: '',
@@ -72,6 +73,16 @@ function DeliveryDetailsPage() {
     }, [userLogged])
 
     useEffect(() => {
+
+        if (currentAddress !== -1) {
+            setDeliveryCost(Object.values(allDirections).find((elem) => elem.departament_name === addressList[currentAddress - 1].departament_name).localities.find((loc) => loc.locality_name === addressList[currentAddress - 1].locality_name).delivery_cost)
+        } else {
+            setDeliveryCost(Object.values(allDirections).find((elem) => elem.departament_name === addressList[departament - 1].departament_name)?.localities?.find((loc) => loc.id === Number(newAddress.locality))?.delivery_cost);
+        }
+
+    }, [currentAddress, newAddress])
+
+    useEffect(() => {
         setCurrentLocalities(allDirections.find((obj) => obj.id == departament)?.localities);
     }, [allDirections, departament])
 
@@ -115,6 +126,8 @@ function DeliveryDetailsPage() {
 
     function handleDepartment(value) {
 
+        setDepartament(value);
+
         setNewAddress((prevValue) => {
             return {
                 ...prevValue,
@@ -124,6 +137,8 @@ function DeliveryDetailsPage() {
     }
 
     function handleLocality(value) {
+
+        setLocality(value);
 
         setNewAddress((prevValue) => {
             return {
@@ -233,7 +248,7 @@ function DeliveryDetailsPage() {
                                     <div className='flex flex-col'>
                                         <Typography variant="lead" >Producto</Typography>
                                     </div>
-                                    <Typography variant="lead" >Subtotal</Typography>
+                                    <Typography variant="lead" >Costo por Producto</Typography>
                                 </div>
                                 {
                                     cartProducts.items?.map((item, index) => (
@@ -264,7 +279,7 @@ function DeliveryDetailsPage() {
                                     </div>
 
                                     <div className='flex justify-between'>
-                                        <Typography variant='lead'>Total:</Typography>
+                                        <Typography variant='lead'>Subtotal:</Typography>
                                         {
                                             cartProducts.paymentType === 1 ?
 
@@ -276,6 +291,35 @@ function DeliveryDetailsPage() {
                                                 :
 
                                                 <Typography variant='h5'>$ {cartProducts.total}</Typography>
+                                        }
+                                    </div>
+
+                                    <div className='flex justify-between'>
+                                        <Typography variant='lead'>Costo de Envio:</Typography>
+                                        {
+                                            deliveryCost === 0 ?
+
+                                                <Typography variant='lead'>TBD</Typography>
+
+                                                :
+
+                                                <Typography variant='lead'>$ {deliveryCost}</Typography>
+
+                                        }
+                                    </div>
+
+                                    <div className='flex justify-between'>
+                                        <Typography variant='lead'>Total:</Typography>
+                                        {
+                                            cartProducts.paymentType === 1 ?
+
+                                                <div className='flex'>
+                                                    <Typography className='ml-2' variant='h5'>$ {(cartProducts.total - (cartProducts.total * 5 / 100) + deliveryCost)}</Typography>
+                                                </div>
+
+                                                :
+
+                                                <Typography variant='h5'>$ {cartProducts.total + deliveryCost}</Typography>
                                         }
                                     </div>
                                 </div>
@@ -425,7 +469,7 @@ function DeliveryDetailsPage() {
                                                             {
                                                                 currentLocalities ?
 
-                                                                    <Select label="Localidad" className='bg-white' value={locality} onChange={handleLocality}>
+                                                                    <Select label="Localidad" className='bg-white' value={String(locality)} onChange={handleLocality}>
                                                                         {
 
                                                                             currentLocalities?.map((loc, index) => (
