@@ -33,10 +33,26 @@ function OrderDialogComponent(props) {
 
 
     function handleRedirectMaps() {
-        const street = props.order.delivery_details?.street;
-        const locality = props.order.delivery_details?.locality_name;
-        const departament = props.order.delivery_details?.departament_name;
 
+        let street;
+        let locality;
+        let departament;
+
+        if (Object.values(props.order.delivery_details).includes(null)) {
+
+            //Use temp address
+            street = props.order.temp_address.street;
+            departament = directions[Number(props.order.temp_address?.department) - 1]?.departament_name
+            locality = directions[Number(props.order.temp_address?.department) - 1]?.localities[Number(props.order.temp_address?.locality)].locality_name
+
+        } else {
+
+            //Use saved address
+            street = props.order.delivery_details?.street;
+            locality = props.order.delivery_details?.locality_name;
+            departament = props.order.delivery_details?.departament_name;
+        }
+        
         const address = street.concat(" ", locality, " ", departament).replaceAll(" ", "%20").replaceAll("-", "%2D");
         window.open(`https://www.google.com/maps/search/?api=1&query=${address}`);
     }
