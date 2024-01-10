@@ -68,11 +68,15 @@ class DataService {
     }
 
     postOrder = (pickup, currentAddress, cart, info_id) => {
-        return this.service.post('/order', { pickup, currentAddress, cart, info_id }).then((response) => response.data);
+        return this.service.post('/order', { pickup, currentAddress, cart, info_id }).then((response) => response.data).catch((e) => {
+            localStorage.setItem('cart', JSON.stringify({ items: [], total: 0, paymentType: 1 }));
+        });
     }
 
     postMPOrder = (pickup, currentAddress, cart, info_id) => {
-        return this.service.post('/order-mp', { pickup, currentAddress, cart, info_id }).then((response) => response.data);
+        return this.service.post('/order-mp', { pickup, currentAddress, cart, info_id }).then((response) => response.data).catch((e) => {
+            localStorage.setItem('cart', JSON.stringify({ items: [], total: 0, paymentType: 1 }));
+        });
     }
 
     getAllProducts = () => {
