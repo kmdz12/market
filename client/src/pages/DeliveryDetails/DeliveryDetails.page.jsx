@@ -232,10 +232,6 @@ function DeliveryDetailsPage() {
         }
     }
 
-    useEffect(() => {
-        console.log(deliveryCost)
-    }, [deliveryCost])
-
     return (
         <>
             <div className='flex flex-col h-screen'>
