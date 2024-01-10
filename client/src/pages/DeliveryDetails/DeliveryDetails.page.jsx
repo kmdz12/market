@@ -245,7 +245,7 @@ function DeliveryDetailsPage() {
 
                         :
 
-                        <div className='p-2 background lg:flex lg:justify-center grow'>
+                        <div className='p-2 background flex flex-col-reverse lg:flex-row lg:justify-center grow '>
                             {/* Final Cart Details */}
                             <div className='flex flex-col my-4 bg-gray-300 p-5 lg:w-1/2'>
                                 <Typography variant="h2" className='text-center'>Tu Carrito</Typography>
