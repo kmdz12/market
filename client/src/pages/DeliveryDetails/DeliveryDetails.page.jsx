@@ -77,7 +77,12 @@ function DeliveryDetailsPage() {
         if (currentAddress !== -1) {
             setDeliveryCost(Object.values(allDirections).find((elem) => elem.departament_name === addressList[currentAddress - 1].departament_name).localities.find((loc) => loc.locality_name === addressList[currentAddress - 1].locality_name).delivery_cost)
         } else {
-            setDeliveryCost(Object.values(allDirections).find((elem) => elem.departament_name === addressList[departament - 1].departament_name)?.localities?.find((loc) => loc.id === Number(newAddress.locality))?.delivery_cost);
+
+            if (newAddress.locality) {
+                setDeliveryCost(Object.values(allDirections).find((elem) => elem.departament_name === addressList[departament - 1].departament_name)?.localities?.find((loc) => loc.id === Number(newAddress.locality))?.delivery_cost);
+            } else {
+                setDeliveryCost(0);
+            }
         }
 
     }, [currentAddress, newAddress])
@@ -226,6 +231,10 @@ function DeliveryDetailsPage() {
             }
         }
     }
+
+    useEffect(() => {
+        console.log(deliveryCost)
+    }, [deliveryCost])
 
     return (
         <>
