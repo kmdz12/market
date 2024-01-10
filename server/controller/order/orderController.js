@@ -49,29 +49,50 @@ const orderController = {
                 }
             });
 
-            // Replace verifiedCart with Request Cart, apply discount for paymentType selected, and replace value in request total.
-            cart.items = verifiedCart;
-            let discount = cart.total * 5 / 100;
-            cart.total -= discount;
+            const verifiedTotal = verifiedCart.reduce((accum, value) => accum + (value.unit_price * value.quantity), 0);
 
-            let newPickup = Object.values(pickup).join(' ');
+            if (verifiedTotal < 1000) {
 
-            if (typeof currentAddress === 'number') {
-
-                // Save new Address of type integer as FK for direction
-                const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
-                    orderNumber, localizedDate, cart, null, currentAddress, cart.paymentType, 1, info_id, newPickup, null, null
-                ]);
+                res.status(400).json({ message: 'Total cart price not reached!' })
 
             } else {
 
-                // Save new Address of type object as json as temp direction
-                const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
-                    orderNumber, localizedDate, cart, null, null, cart.paymentType, 1, info_id, newPickup, null, currentAddress
-                ]);
+                // Replace verifiedCart with Request Cart, apply discount for paymentType selected, and replace value in request total.
+                cart.items = verifiedCart;
+                cart.total = verifiedTotal;
+                let discount = verifiedTotal * 5 / 100;
+                cart.total -= discount;
+
+                let newPickup = Object.values(pickup).join(' ');
+
+                if (typeof currentAddress === 'number') {
+
+                    const findLocality = await pool.query('SELECT "locality_name" FROM "userDirectionsView" WHERE id = $1', [currentAddress]);
+
+                    const localityCost = await pool.query('SELECT "delivery_cost" FROM locality WHERE locality_name = $1', [findLocality.rows[0]['locality_name']]);
+
+                    cart.total += localityCost.rows[0]['delivery_cost'];
+
+                    // Save new Address of type integer as FK for direction
+                    const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
+                        orderNumber, localizedDate, cart, null, currentAddress, cart.paymentType, 1, info_id, newPickup, null, null
+                    ]);
+
+                } else {
+
+                    const localityCost = await pool.query('SELECT "delivery_cost" FROM locality WHERE id = $1', [currentAddress.locality]);
+
+                    cart.total += localityCost.rows[0]['delivery_cost'];
+
+                    // Save new Address of type object as json as temp direction
+                    const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
+                        orderNumber, localizedDate, cart, null, null, cart.paymentType, 1, info_id, newPickup, null, currentAddress
+                    ]);
+                }
+
+                res.status(200).json({ order: orderNumber });
             }
 
-            res.status(200).json({ order: orderNumber });
 
         } catch (e) {
             console.log(e);
@@ -119,53 +140,79 @@ const orderController = {
                 }
             });
 
-            let newPickup = Object.values(pickup).join(' ');
+            const verifiedTotal = verifiedCart.reduce((accum, value) => accum + (value.unit_price * value.quantity), 0);
 
-            // Mercado Pago
-            const preference = new mercadopago.Preference(client);
+            if (verifiedTotal < 1000) {
 
-            preference.create({
-                body: {
-                    items: verifiedCart,
-                    back_urls: {
-                        success: process.env.MP_SUCCESS_URL,
-                    },
-                    notification_url: process.env.MP_WEBHOOK_URL,
-                    metadata: {
-                        orderNumber: orderNumber,
-                        localizedDate: localizedDate,
-                        cart: cart,
-                        currentAddress: currentAddress,
-                        info_id,
-                        newPickup
-                    },
-                    payment_methods: {
-                        installments: 1,
-                        excluded_payment_types: [
-                            {
-                                id: "ticket"
-                            },
-                            {
-                                id: "credit_card"
-                            }
-                        ]
-                    },
-                    statement_descriptor: "Kilometro 12"
+                res.status(400).json({ message: 'Total cart price not reached!' })
+
+            } else {
+
+                let newPickup = Object.values(pickup).join(' ');
+
+                let findLocality, localityCost;
+
+                if (typeof currentAddress === 'number') {
+
+                    findLocality = await pool.query('SELECT "locality_name" FROM "userDirectionsView" WHERE id = $1', [currentAddress]);
+                    localityCost = await pool.query('SELECT "delivery_cost" FROM locality WHERE locality_name = $1', [findLocality.rows[0]['locality_name']]);
+
+                } else {
+                    localityCost = await pool.query('SELECT "delivery_cost" FROM locality WHERE id = $1', [currentAddress.locality]);
                 }
-            }).then((response) => {
 
-                res.status(200).json(({
-                    mp: response,
-                    orderNumber: orderNumber
-                }));
+                // Mercado Pago
+                const preference = new mercadopago.Preference(client);
 
-            }).finally(async () => {
+                preference.create({
+                    body: {
+                        items: verifiedCart,
+                        shipments: {
+                            mode: 'not_specified',
+                            cost: localityCost.rows[0]['delivery_cost'],
+                        },
+                        back_urls: {
+                            success: process.env.MP_SUCCESS_URL,
+                        },
+                        notification_url: process.env.MP_WEBHOOK_URL,
+                        metadata: {
+                            orderNumber: orderNumber,
+                            localizedDate: localizedDate,
+                            cart: cart,
+                            currentAddress: currentAddress,
+                            info_id,
+                            newPickup,
+                            deliveryCost: localityCost.rows[0]['delivery_cost']
+                        },
+                        payment_methods: {
+                            installments: 1,
+                            excluded_payment_types: [
+                                {
+                                    id: "ticket"
+                                },
+                                {
+                                    id: "credit_card"
+                                }
+                            ]
+                        },
+                        statement_descriptor: "Kilometro 12"
+                    }
+                }).then((response) => {
 
-                // const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [
-                //     orderNumber, localizedDate, cart, null, currentAddress, cart.paymentType, 1, info_id, newPickup, null
-                // ])
+                    res.status(200).json(({
+                        mp: response,
+                        orderNumber: orderNumber
+                    }));
 
-            }).catch(console.log);
+                }).finally(async () => {
+
+                    // const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [
+                    //     orderNumber, localizedDate, cart, null, currentAddress, cart.paymentType, 1, info_id, newPickup, null
+                    // ])
+
+                }).catch(console.log);
+            }
+
 
         } catch (e) {
             console.log(e);
@@ -190,15 +237,17 @@ const orderController = {
                     //     data.metadata.order_number, data.metadata.localized_date, data.metadata.cart, null, data.metadata.current_address, data.metadata.cart.payment_type, 1, data.metadata.info_id, data.metadata.new_pickup, data.id
                     // ]);
 
+                    data.metadata.cart.total += data.metadata.delivery_cost;
+
                     if (typeof data.metadata.currentAddress === 'number') {
 
                         // Save new Address of type integer as FK for direction
                         const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
                             data.metadata.order_number, data.metadata.localized_date, data.metadata.cart, null, data.metadata.current_address, data.metadata.cart.payment_type, 1, data.metadata.info_id, data.metadata.new_pickup, data.id, null
                         ]);
-        
+
                     } else {
-        
+
                         // Save new Address of type object as json as temp direction
                         const query = await pool.query('INSERT INTO orders (order_number, created, cart, reason, directions_users_fk, payment_fk, status_fk, info_users_fk, pickup, mp_transaction_order, temp_address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', [
                             data.metadata.order_number, data.metadata.localized_date, data.metadata.cart, null, null, data.metadata.cart.payment_type, 1, data.metadata.info_id, data.metadata.new_pickup, data.id, data.metadata.current_address
