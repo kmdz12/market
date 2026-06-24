@@ -8,7 +8,7 @@ const userController = {
         try {
 
             const { user } = req.session;
-            const query = await pool.query('SELECT * FROM "userView" WHERE email = $1', [user]);
+            const query = await pool.query('SELECT * FROM "userview" WHERE email = $1', [user]);
             res.status(200).json(query.rows[0]);
 
         } catch (e) {
@@ -23,8 +23,8 @@ const userController = {
 
             const { user } = req.session;
             const { name, surname, phone } = req.body;
-            const { id, info_id } = await (await pool.query('SELECT id, info_id FROM "userView" WHERE email = $1', [user])).rows[0];
-            const infoCheck = await pool.query('SELECT EXISTS (SELECT 1 FROM "userView" WHERE name IS NULL AND surname IS NULL AND phone IS NULL AND email = $1) AS empty;', [user]);
+            const { id, info_id } = await (await pool.query('SELECT id, info_id FROM "userview" WHERE email = $1', [user])).rows[0];
+            const infoCheck = await pool.query('SELECT EXISTS (SELECT 1 FROM "userview" WHERE name IS NULL AND surname IS NULL AND phone IS NULL AND email = $1) AS empty;', [user]);
 
             if (infoCheck.rows[0].empty) {
                 // In case of creating

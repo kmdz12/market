@@ -34,7 +34,7 @@ const productController = {
 
         try {
 
-            const query = await pool.query('SELECT * FROM "productsView"');
+            const query = await pool.query('SELECT * FROM "productsview"');
             res.status(200).json(query.rows);
 
         } catch (e) {
@@ -47,7 +47,7 @@ const productController = {
         try {
 
             const { id } = req.params;
-            const query = await pool.query('SELECT * FROM "productsView" WHERE id = $1', [id]);
+            const query = await pool.query('SELECT * FROM "productsview" WHERE id = $1', [id]);
             res.status(200).json(query.rows[0]);
 
         } catch (e) {

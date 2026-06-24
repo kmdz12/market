@@ -36,7 +36,7 @@ const orderController = {
             const productsNames = pluck(cart.items, 'title');
 
             // Find these products using the names as query
-            const checkCart = await pool.query('SELECT * FROM "productsView" WHERE name = ANY ($1) ORDER BY name', [productsNames]);
+            const checkCart = await pool.query('SELECT * FROM "productsview" WHERE name = ANY ($1) ORDER BY name', [productsNames]);
 
             // Build a new object saving title and quantity from our cart, and price from our DB.
             const verifiedCart = cart.items.map((item, index) => {
@@ -127,7 +127,7 @@ const orderController = {
             const productsNames = pluck(cart.items, 'title');
 
             // Find these products using the names as query
-            const checkCart = await pool.query('SELECT * FROM "productsView" WHERE name = ANY ($1) ORDER BY name', [productsNames]);
+            const checkCart = await pool.query('SELECT * FROM "productsview" WHERE name = ANY ($1) ORDER BY name', [productsNames]);
 
             // Build a new object with the structure required for Mercado Pago API, saving title and quantity from our cart, and price from our DB.
             const verifiedCart = cart.items.map((item, index) => {
