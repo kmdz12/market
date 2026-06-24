@@ -91,8 +91,8 @@ function CartPage() {
                     <div className='block text-center py-3'>
                         <Typography variant="h2">Mi Carrito</Typography>
                     </div>
-                    <div>
-                        <div className='flex flex-col'>
+                    <div className='flex flex-col grow'>
+                        <div className='flex flex-col grow'>
                             {/* Cart List */}
                             {
                                 cartProducts.items?.length !== 0 && Object.keys(cartProducts).length !== 0 ?
@@ -147,7 +147,16 @@ function CartPage() {
                         </div>
 
                         {/* Total */}
-                        <div className='flex justify-center p-5'>
+                        <div className='flex flex-col items-center justify-center p-5'>
+                            {
+                                cartProducts.total < 1000 ?
+
+                                    <Typography variant="h3" color='red'>La compra minima es de $1000!</Typography>
+
+                                    :
+
+                                    null
+                            }
                             <Typography variant="h3">Total: $ {cartProducts.total}</Typography>
                         </div>
                     </div>
@@ -187,17 +196,27 @@ function CartPage() {
                                     <Link to="/store">
                                         <Button className='p-5 my-2 shadow-pop-br' color='white' variant="gradient" size="lg">Volver a la Tienda</Button>
                                     </Link>
-                                    {
-                                        isLoading ?
 
-                                            <Button className='p-5 my-2 flex justify-center items-center' color='white' variant="gradient" size='lg' disabled>
-                                                <Spinner className='mr-1 h-5' color='blue' />
-                                                <span>Procesando</span>
-                                            </Button>
+                                    {
+                                        cartProducts.total >= 1000 ?
+
+
+                                            isLoading ?
+
+                                                <Button className='p-5 my-2 flex justify-center items-center' color='white' variant="gradient" size='lg' disabled>
+                                                    <Spinner className='mr-1 h-5' color='blue' />
+                                                    <span>Procesando</span>
+                                                </Button>
+
+                                                :
+
+                                                <Button className='p-5 my-2 shadow-pop-br' color='white' variant="gradient" size='lg' onClick={handleDirectionsCheck}>Continuar</Button>
+
+
 
                                             :
 
-                                            <Button className='p-5 my-2 shadow-pop-br' color='white' variant="gradient" size='lg' onClick={handleDirectionsCheck}>Continuar</Button>
+                                            <Button className='p-5 my-2 shadow-pop-br' color='white' variant="gradient" size='lg' onClick={handleDirectionsCheck} disabled>Continuar</Button>
 
                                     }
                                 </div>
